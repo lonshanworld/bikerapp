@@ -30,7 +30,6 @@ class SignalRController extends GetxController{
     super.onReady();
   }
 
-  @pragma('vm:entry-point')
   Future startSignalR()async{
     await hubConnection.start()?.then((_){
       print("This is success in signalR");

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:get/get_state_manager/src/rx_flutter/rx_disposable.dart';
 import 'package:intl/intl.dart';
+import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../models/noti_model.dart';
@@ -15,7 +16,8 @@ class DBservices{
   @pragma('vm:entry-point')
   static Future<void> initDB() async{
     var databasepath = await getDatabasesPath();
-    String path = "$databasepath$_tablename";
+    // String path = "$databasepath$_tablename";
+    String path = join(databasepath, _tablename);
     print("This is db path -----------------------------------------------------------$path");
     if(_db != null){
       // await deleteDatabase(path);

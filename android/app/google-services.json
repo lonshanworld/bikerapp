@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:511888475060:android:90a59265a941e4fb1ee8e1",
         "android_client_info": {
-          "package_name": "com.delivery.quickfood"
+          "package_name": "com.quickfood.biker"
         }
       },
       "oauth_client": [
@@ -38,7 +38,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:511888475060:android:e809705aa2dd4c7c1ee8e1",
         "android_client_info": {
-          "package_name": "com.quickfood.delivery"
+          "package_name": "com.quickfood.biker"
         }
       },
       "oauth_client": [
