@@ -50,7 +50,7 @@ Future<dynamic> myBackgroundMessageHandler(RemoteMessage message)async{
       print("the type is orderpickedup");
       NotiOrderModel notiData = NotiOrderModel();
       notiData.title = message.notification?.title;
-      // var jsonbodydata = json.decode(_notificationInfo!.body);
+
       notiData.body = message.notification?.body;
       notiData.notiBodyModel = NotiBodyModel(
         orderTitle: notiData.title!,
