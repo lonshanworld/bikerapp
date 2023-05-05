@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "511888475060",
+    "project_id": "quickfood-2022",
+    "storage_bucket": "quickfood-2022.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:511888475060:android:90a59265a941e4fb1ee8e1",
+        "android_client_info": {
+          "package_name": "com.delivery.quickfood"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "511888475060-uqkfat3vhc37g087lbcu8mm2qsckhev7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDo5Ny3fFOjbmUTuAfuYxir4nNUh1rEkm0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "511888475060-uqkfat3vhc37g087lbcu8mm2qsckhev7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:511888475060:android:e809705aa2dd4c7c1ee8e1",
+        "android_client_info": {
+          "package_name": "com.quickfood.delivery"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "511888475060-uqkfat3vhc37g087lbcu8mm2qsckhev7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDo5Ny3fFOjbmUTuAfuYxir4nNUh1rEkm0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "511888475060-uqkfat3vhc37g087lbcu8mm2qsckhev7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

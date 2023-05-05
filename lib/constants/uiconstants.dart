@@ -1,0 +1,78 @@
+import "dart:ui";
+
+import "package:flutter/material.dart";
+import "package:get/get.dart";
+
+class UIConstant{
+  // static double screenHeight = Get.context!.height;   // 781
+  // static double screenWidth = Get.context!.width;   // 392.7
+  //
+  // static double oneUnitHeight = screenHeight / 772;
+  // static double oneUnitWidth = screenWidth / 360;
+
+  static const Color orange = Color(0xFFF26600);
+  static const Color pink = Color(0xFFFFEAD1);
+  static const Color bgWhite = Color(0xFFF8F8F8);
+  static const Color bgDark = Color(0xFF333333);
+
+
+  // static const Color txtBlack = Colors.black;
+  // static const Color txtWhite = Colors.white;
+  static const Color secondarytxtClr = Colors.grey;
+
+  static final lightTheme = ThemeData(
+    primaryColor: Colors.black,
+    brightness: Brightness.light,
+    useMaterial3: true,
+    appBarTheme: AppBarTheme(
+      backgroundColor: pink,
+      titleTextStyle: TextStyle(
+        fontSize: 18,
+        color: Colors.black,
+      ),
+    ),
+    scaffoldBackgroundColor: Colors.white,
+  );
+
+  static final darkTheme = ThemeData(
+    primaryColor: Colors.white,
+    brightness: Brightness.dark,
+    useMaterial3: true,
+    appBarTheme: AppBarTheme(
+      backgroundColor: orange,
+      titleTextStyle: TextStyle(
+        fontSize: 18,
+        color: Colors.white,
+      ),
+    ),
+    scaffoldBackgroundColor: Colors.black,
+  );
+
+  // static TextStyle maintitle = TextStyle(
+  //   fontSize: 24,
+  //   fontWeight: FontWeight.bold,
+  //   // color: txtClr,
+  // );
+  //
+  // static TextStyle title = TextStyle(
+  //   fontSize: 20,
+  //   fontWeight: FontWeight.bold,
+  //   // color: txtClr,
+  // );
+  //
+  // static TextStyle minititle = TextStyle(
+  //   fontSize: 16,
+  //   fontWeight: FontWeight.bold,
+  //   // color: txtClr,
+  // );
+  //
+  // static TextStyle normal = TextStyle(
+  //   fontSize: 14,
+  //   // color: txtClr,
+  // );
+  //
+  // static TextStyle tinytext = TextStyle(
+  //   fontSize: 10,
+  //   // color: secondarytxtClr,
+  // );
+}
