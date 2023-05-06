@@ -1,7 +1,7 @@
 import 'package:delivery/constants/uiconstants.dart';
 import 'package:delivery/widgets/customButton_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
+
 
 class ErrorScreen extends StatelessWidget {
   final String title;
@@ -32,16 +32,11 @@ class ErrorScreen extends StatelessWidget {
       backgroundColor: Theme.of(context).brightness == Brightness.dark ? UIConstant.bgDark : UIConstant.bgWhite,
       title: Text(
         title,
-        style: TextStyle(
-          fontSize: 18.sp,
-          fontWeight: FontWeight.bold,
-        ),
+        style: UIConstant.title,
       ),
       content: Text(
         txt,
-        style: TextStyle(
-          fontSize: 12.sp,
-        ),
+        style:  UIConstant.normal ,
       ),
       actions: [
         Align(

@@ -7,7 +7,7 @@ import "package:flutter/material.dart";
 import "package:google_maps_flutter/google_maps_flutter.dart";
 
 import 'package:get/get.dart';
-import "package:sizer/sizer.dart";
+
 
 import "../models/listofplaces_model.dart";
 
@@ -159,6 +159,9 @@ class _MapScreenState extends State<MapScreen> {
   @override
   Widget build(BuildContext context) {
 
+    final double deviceWidth = MediaQuery.of(context).size.width;
+    final double deviceHeight = MediaQuery.of(context).size.height;
+
     final Marker marker1 = Marker(
       markerId: MarkerId("1"),
       position: LatLng(lat,long),
@@ -227,7 +230,7 @@ class _MapScreenState extends State<MapScreen> {
                 left: 0,
                 right: 0,
                 child: GoogleMap(
-                  padding: EdgeInsets.all(3.h),
+                  padding: EdgeInsets.all(20),
                   initialCameraPosition:  _initialcameraPosition,
                   zoomControlsEnabled: false,
                   // mapType: MapType.hybrid,
@@ -263,18 +266,18 @@ class _MapScreenState extends State<MapScreen> {
                 ),
               ),
               Positioned(
-                bottom: 4.h,
-                left: 3.h,
-                right: 3.h,
+                bottom: 30,
+                left: 20,
+                right: 20,
                 child: Container(
                   padding: EdgeInsets.symmetric(
-                    horizontal: 3.h,
-                    vertical: 1.5.h,
+                    horizontal: 20,
+                    vertical: 10,
                   ),
                   decoration: BoxDecoration(
                       color: UIConstant.pink,
                       borderRadius: BorderRadius.all(
-                        Radius.circular(1.5.h),
+                        Radius.circular(10),
                       ),
                       border: Border.all(
                         style: BorderStyle.solid,
@@ -284,16 +287,16 @@ class _MapScreenState extends State<MapScreen> {
                   ),
                   child: Text(
                     placename,
-                    style: TextStyle(
+                    style: UIConstant.normal.copyWith(
                       color: Colors.black,
                     ),
                   ),
                 ),
               ),
               Positioned(
-                top: 6.h,
-                left: 1.5.h,
-                right: 1.5.h,
+                top: 45,
+                left: 10,
+                right: 10,
                 child:Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -303,7 +306,7 @@ class _MapScreenState extends State<MapScreen> {
                       },
                       icon: Icon(
                         Icons.arrow_back,
-                        size: 30.sp,
+                        size: 30,
                         color: UIConstant.orange,
                       ),
                     ),
@@ -322,7 +325,7 @@ class _MapScreenState extends State<MapScreen> {
               left: 0,
               right: 0,
               child: GoogleMap(
-                padding: EdgeInsets.all(3.h),
+                padding: EdgeInsets.all(20),
                 initialCameraPosition:  _initialcameraPosition,
                 zoomControlsEnabled: false,
                 // mapType: MapType.hybrid,
@@ -360,18 +363,18 @@ class _MapScreenState extends State<MapScreen> {
               ),
             ),
             Positioned(
-              bottom: 4.h,
-              left: 3.h,
-              right: 3.h,
+              bottom: 30,
+              left: 20,
+              right: 20,
               child: Container(
                 padding: EdgeInsets.symmetric(
-                  horizontal: 3.h,
-                  vertical: 1.5.h,
+                  horizontal: 20,
+                  vertical: 10,
                 ),
                 decoration: BoxDecoration(
                     color: UIConstant.pink,
                     borderRadius: BorderRadius.all(
-                      Radius.circular(1.5.h),
+                      Radius.circular(10),
                     ),
                     border: Border.all(
                       style: BorderStyle.solid,
@@ -388,9 +391,9 @@ class _MapScreenState extends State<MapScreen> {
               ),
             ),
             Positioned(
-              top: 6.h,
-              left: 1.5.h,
-              right: 2.h,
+              top: 45,
+              left: 10,
+              right: 20,
               child:Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -400,7 +403,7 @@ class _MapScreenState extends State<MapScreen> {
                     },
                     icon: Icon(
                       Icons.arrow_back,
-                      size: 30.sp,
+                      size: 30,
                       color: UIConstant.orange,
                     ),
                   ),
@@ -408,7 +411,7 @@ class _MapScreenState extends State<MapScreen> {
                     decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.all(
-                          Radius.circular(1.5.h),
+                          Radius.circular(10),
                         ),
                         boxShadow: [
                           BoxShadow(
@@ -423,22 +426,20 @@ class _MapScreenState extends State<MapScreen> {
                       children: [
                         Container(
                           padding: EdgeInsets.symmetric(
-                            horizontal: 1.5.h,
+                            horizontal: 10,
                             vertical: 0,
                           ),
-                          width : 62.w,
+                          width : (deviceWidth / 100) * 62,
                           child: TextField(
                             controller: _textController,
                             decoration: InputDecoration(
                               border: InputBorder.none,
                               hintText: "Enter Address...",
-                              hintStyle: TextStyle(
+                              hintStyle: UIConstant.normal.copyWith(
                                 color: Colors.grey,
-                                fontSize: 12.sp,
                               ),
                             ),
-                            style: TextStyle(
-                              fontSize: 12.sp,
+                            style: UIConstant.normal.copyWith(
                               color: Colors.black,
                             ),
                             onChanged: (value){
@@ -472,10 +473,10 @@ class _MapScreenState extends State<MapScreen> {
               ),
             ),
             if(_showbox) Positioned(
-              top: 14.h,
-              left: 6.h,
-              right: 6.h,
-              bottom: 30.h,
+              top: 90,
+              left: 40,
+              right: 40,
+              bottom: (deviceHeight/100) * 60,
               child: ListView.builder(
                 itemCount: placeList.length,
                 itemBuilder: (ctx, index){
@@ -504,8 +505,8 @@ class _MapScreenState extends State<MapScreen> {
                       },
                       child: Padding(
                         padding: EdgeInsets.symmetric(
-                          vertical: 1.h,
-                          horizontal: 1.5.h,
+                          vertical: 8,
+                          horizontal: 10,
                         ),
                         child: Text(
                           placeList[index].placename,
@@ -520,8 +521,8 @@ class _MapScreenState extends State<MapScreen> {
               ),
             ),
             Positioned(
-              bottom: 14.h,
-              right: 3.h,
+              bottom: 100,
+              right: 20,
               child: ElevatedButton(
                 onPressed: () {
                   getcurlocation();
@@ -531,11 +532,11 @@ class _MapScreenState extends State<MapScreen> {
                   shape: CircleBorder(
                     side: BorderSide.none,
                   ),
-                  padding: EdgeInsets.all(1.5.h),
+                  padding: EdgeInsets.all(10),
                 ),
                 child: Icon(
                   Icons.gps_fixed_outlined,
-                  size: 28.sp,
+                  size: 28,
                   color: Colors.black,
                 ),
               ),

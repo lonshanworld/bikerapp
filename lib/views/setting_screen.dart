@@ -2,8 +2,6 @@ import "package:delivery/constants/uiconstants.dart";
 import "package:delivery/widgets/customButton_widget.dart";
 import"package:flutter/material.dart";
 import "package:get_storage/get_storage.dart";
-import "package:get/get.dart";
-import "package:sizer/sizer.dart";
 
 
 import "../constants/txtconstants.dart";
@@ -38,10 +36,7 @@ class _SettingScreenState extends State<SettingScreen> {
       backgroundColor: Theme.of(context).brightness == Brightness.dark ? UIConstant.bgDark : UIConstant.bgWhite,
       title: Text(
         "Settings",
-        style: TextStyle(
-          fontSize: 18.sp,
-          fontWeight: FontWeight.bold
-        ),
+        style: UIConstant.title,
       ),
       actions: [
         Row(
@@ -49,9 +44,7 @@ class _SettingScreenState extends State<SettingScreen> {
             Expanded(
               child: Text(
                 "Change to Dark Mode",
-                style: TextStyle(
-                  fontSize: 12.sp
-                ),
+                style: UIConstant.normal,
               ),
             ),
             Transform.scale(
@@ -74,7 +67,7 @@ class _SettingScreenState extends State<SettingScreen> {
           child: CustomButton(
             verticalPadding: oneUnitHeight * 5,
             horizontalPadding: oneUnitWidth * 30,
-            txt: "ok".tr,
+            txt: "OK",
             func: (){
               Navigator.of(context).pop();
             },

@@ -48,7 +48,6 @@ dependencies:
   sqflite: ^2.2.7
   url_launcher: ^6.1.10
   image_picker: ^0.8.7+4
-  sizer: ^2.0.15
   google_maps_flutter: ^2.2.5
   geolocator: ^9.0.2
   geocoding: ^2.1.0

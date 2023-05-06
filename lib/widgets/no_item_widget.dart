@@ -1,6 +1,5 @@
 import "package:delivery/constants/uiconstants.dart";
 import "package:flutter/material.dart";
-import "package:sizer/sizer.dart";
 
 class NoItemListWidget extends StatelessWidget {
 
@@ -21,11 +20,11 @@ class NoItemListWidget extends StatelessWidget {
 
     return Container(
       padding: EdgeInsets.symmetric(
-        vertical: 2.h,
+        vertical: 15,
       ),
       margin: EdgeInsets.symmetric(
-        vertical:  1.h,
-        horizontal:  2.h,
+        vertical:  10,
+        horizontal:  10,
       ),
       decoration: BoxDecoration(
         boxShadow: [
@@ -37,15 +36,14 @@ class NoItemListWidget extends StatelessWidget {
           ),
         ],
         borderRadius: BorderRadius.all(
-          Radius.circular( 1.5.h),
+          Radius.circular( 10),
         ),
         color: Theme.of(context).brightness == Brightness.dark ? UIConstant.bgDark : UIConstant.bgWhite,
       ),
       alignment: Alignment.center,
       child: Text(
         txt,
-        style:TextStyle(
-          fontSize: 12.sp,
+        style: UIConstant.normal.copyWith(
           color: UIConstant.secondarytxtClr,
           fontWeight: FontWeight.bold,
         ),

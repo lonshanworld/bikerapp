@@ -1,6 +1,6 @@
 import "package:delivery/constants/uiconstants.dart";
 import "package:flutter/material.dart";
-import 'package:sizer/sizer.dart';
+
 
 class SubTitleWidget extends StatelessWidget {
 
@@ -21,15 +21,12 @@ class SubTitleWidget extends StatelessWidget {
 
     return Padding(
       padding: EdgeInsets.only(
-        left: 2.h,
-        top: 2.h,
+        left: 15,
+        top: 15,
       ),
       child: Text(
         txt,
-        style: TextStyle(
-          fontSize: 12.sp,
-          fontWeight: FontWeight.bold,
-        ),
+        style: UIConstant.minititle,
       ),
     );
   }

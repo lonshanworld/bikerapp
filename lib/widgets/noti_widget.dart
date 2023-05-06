@@ -7,7 +7,6 @@ import "package:get/get.dart";
 
 import "../views/loading_screen.dart";
 import "customButton_widget.dart";
-import 'package:sizer/sizer.dart';
 
 
 class NotiWidget extends StatefulWidget {
@@ -74,8 +73,8 @@ class _NotiWidgetState extends State<NotiWidget> with SingleTickerProviderStateM
 
     return Container(
       margin: EdgeInsets.symmetric(
-        horizontal: 3.h,
-        vertical: 1.h,
+        horizontal: 20,
+        vertical: 10,
       ),
       decoration: BoxDecoration(
         boxShadow: [
@@ -87,7 +86,7 @@ class _NotiWidgetState extends State<NotiWidget> with SingleTickerProviderStateM
           ),
         ],
         borderRadius: BorderRadius.all(
-          Radius.circular(1.h),
+          Radius.circular(10),
         ),
         color: Theme.of(context).brightness == Brightness.dark ? UIConstant.bgDark : UIConstant.bgWhite,
       ),
@@ -97,8 +96,8 @@ class _NotiWidgetState extends State<NotiWidget> with SingleTickerProviderStateM
         reverseDuration: Duration(milliseconds: 500),
         child: ListView(
           padding: EdgeInsets.symmetric(
-            horizontal: 2.h,
-            vertical: 1.h,
+            horizontal: 15,
+            vertical: 10,
           ),
           physics: NeverScrollableScrollPhysics(),
           shrinkWrap: true,
@@ -114,17 +113,15 @@ class _NotiWidgetState extends State<NotiWidget> with SingleTickerProviderStateM
                           Expanded(
                             child: Text(
                               widget.shopName,
-                              style: TextStyle(
+                              style: UIConstant.normal.copyWith(
                                 overflow: TextOverflow.ellipsis,
-                                fontSize: 13.sp,
                                 color: UIConstant.orange,
                               ),
                             ),
                           ),
                           Text(
                             "( ${widget.distance} m )",
-                            style: TextStyle(
-                              fontSize: 11.sp,
+                            style: UIConstant.small.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -132,16 +129,15 @@ class _NotiWidgetState extends State<NotiWidget> with SingleTickerProviderStateM
                       ),
                       Text(
                         "Earn : ${widget.earning} MMK ",
-                        style: TextStyle(
+                        style: UIConstant.small.copyWith(
                           color: UIConstant.secondarytxtClr,
-                          fontSize: 11.sp,
                         ),
                       ),
                     ],
                   ),
                 ),
                 SizedBox(
-                  width: 1.h,
+                  width: 10,
                 ),
                 RotationTransition(
                   turns: _animation,
@@ -158,7 +154,7 @@ class _NotiWidgetState extends State<NotiWidget> with SingleTickerProviderStateM
                     },
                     icon: Icon(
                       Icons.arrow_drop_up,
-                      size: 30.sp,
+                      size: 32,
                       color: Colors.grey,
                     ),
                   ),
@@ -166,7 +162,7 @@ class _NotiWidgetState extends State<NotiWidget> with SingleTickerProviderStateM
               ],
             ),
             if(showDetail)Divider(
-              height: 1.h,
+              height: 10,
               color: UIConstant.orange,
             ),
             if(showDetail)ListView(
@@ -178,27 +174,24 @@ class _NotiWidgetState extends State<NotiWidget> with SingleTickerProviderStateM
                   children: [
                     Text(
                       widget.orderBody,
-                      style: TextStyle(
-                        fontSize: 12.sp,
+                      style: UIConstant.small.copyWith(
                         fontWeight: FontWeight.bold,
                         color: UIConstant.orange,
                       ),
                     ),
                     Text(
                       "New Order",
-                      style: TextStyle(
-                        fontSize: 12.sp
-                      ),
+                      style: UIConstant.normal,
                     ),
                   ],
                 ),
                 SizedBox(
-                  height: 1.h,
+                  height: 10,
                 ),
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(
-                      Radius.circular(1.h),
+                      Radius.circular(10),
                     ),
                     image: DecorationImage(
                         image: NetworkImage(
@@ -207,10 +200,10 @@ class _NotiWidgetState extends State<NotiWidget> with SingleTickerProviderStateM
                         fit: BoxFit.cover
                     ),
                   ),
-                  height: 14.h,
+                  height: 100,
                 ),
                 SizedBox(
-                  height: 1.h,
+                  height: 10,
                 ),
                 Row(
                   // mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -218,34 +211,29 @@ class _NotiWidgetState extends State<NotiWidget> with SingleTickerProviderStateM
                     Expanded(
                       child: Text(
                         widget.shopName,
-                        style: TextStyle(
-                          fontSize: 12.sp
-                        ),
+                        style: UIConstant.small,
                       ),
                     ),
                     Text(
                       "${widget.distance} m",
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                      ),
+                      style: UIConstant.small,
                     ),
                   ],
                 ),
                 SizedBox(
-                  height: 1.h,
+                  height: 10,
                 ),
                 Align(
                   alignment: Alignment.center,
                   child: Text(
                     "Your Earn : ${widget.earning} MMK",
-                    style: TextStyle(
-                      fontSize: 12.sp,
+                    style: UIConstant.normal.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
                 CustomButton(
-                  verticalPadding: 1.h,
+                  verticalPadding: 10,
                   horizontalPadding: 0,
                   txt: "Accept",
                   func: ()async{
@@ -267,8 +255,8 @@ class _NotiWidgetState extends State<NotiWidget> with SingleTickerProviderStateM
                   },
                   txtClr: Colors.white,
                   bgClr: Color.fromRGBO(44, 193, 156, 1),
-                  txtsize: 12.sp,
-                  rad: 1.h,
+                  txtsize: 14,
+                  rad: 10,
                 ),
               ],
             ),

@@ -7,7 +7,6 @@ import "package:delivery/widgets/loading_widget.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
 import "package:hand_signature/signature.dart";
-import "package:sizer/sizer.dart";
 import "../constants/uiconstants.dart";
 import "../models/order_model.dart";
 import "../widgets/order_detail_widget.dart";
@@ -67,6 +66,11 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
   @override
   Widget build(BuildContext context) {
 
+    final double deviceWidth = MediaQuery.of(context).size.width;
+    final double deviceHeight = MediaQuery.of(context).size.height;
+    final double oneUnitWidth = deviceWidth / 360;
+    final double oneUnitHeight = deviceHeight/772;
+
     final control = HandSignatureControl(
       threshold: 3.0,
       smoothRatio: 0.65,
@@ -100,26 +104,22 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
       ),
       body: ListView(
         padding: EdgeInsets.only(
-          left: 3.h,
-          right: 3.h,
-          top: 3.h,
-          bottom: 14.h,
+          left: 20,
+          right: 20,
+          top: 20,
+          bottom: 100,
         ),
         children: [
           Text(
             "Drop-off Summary",
-            style: TextStyle(
-              fontSize: 16.sp,
-              fontWeight: FontWeight.bold
-            ),
+            style: UIConstant.minititle,
           ),
           SizedBox(
-            height: 3.h,
+            height: 20,
           ),
           Text(
             "Order Details",
-            style: TextStyle(
-              fontSize: 12.sp,
+            style: UIConstant.normal.copyWith(
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -134,25 +134,23 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
             ],
           ),
           SizedBox(
-            height:3.h,
+            height: 20,
           ),
           Text(
             "Order Summary",
-            style: TextStyle(
-
-              fontSize: 12.sp,
+            style: UIConstant.normal.copyWith(
               fontWeight: FontWeight.bold,
             ),
           ),
           SizedBox(
-            height: 0.5.h,
+            height: 5,
           ),
           Container(
-            padding: EdgeInsets.all(2.h),
+            padding: EdgeInsets.all(15),
             decoration: BoxDecoration(
               color: Theme.of(context).brightness == Brightness.dark ? UIConstant.bgDark : UIConstant.bgWhite,
               borderRadius: BorderRadius.all(
-                Radius.circular(1.5.h),
+                Radius.circular(10),
               ),
             ),
             child: Column(
@@ -162,57 +160,48 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
                   children: [
                     Text(
                       "Order Total",
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                      ),
+                      style: UIConstant.small,
                     ),
                     Text(
                       "${_orderDetailModel!.totalOnlinePrice} MMK",
-                      style: TextStyle(
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.bold
+                      style: UIConstant.small.copyWith(
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ],
                 ),
                 SizedBox(
-                  height: 1.h,
+                  height: 5,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       "Delivery Charges",
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                      ),
+                      style: UIConstant.small,
                     ),
                     Text(
                       "${_orderDetailModel!.deliCharges} MMK",
-                      style: TextStyle(
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.bold
+                      style: UIConstant.small.copyWith(
+                        fontWeight: FontWeight.bold
                       ),
                     ),
                   ],
                 ),
                 SizedBox(
-                  height: 1.h,
+                  height: 5,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       "Cash Collect",
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                      ),
+                      style: UIConstant.small,
                     ),
                     Text(
                       "${_orderDetailModel!.totalOnlinePrice! + _orderDetailModel!.deliCharges!} MMK",
-                      style: TextStyle(
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.bold
+                      style: UIConstant.small.copyWith(
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ],
@@ -221,23 +210,22 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
             ),
           ),
           SizedBox(
-            height: 3.h,
+            height: 20,
           ),
           Text(
             "Payment Options",
-            style: TextStyle(
-              fontSize: 12.sp,
+            style: UIConstant.normal.copyWith(
               fontWeight: FontWeight.bold,
             ),
           ),
           SizedBox(
-            height: 0.5.h,
+            height: 5,
           ),
           Container(
             decoration: BoxDecoration(
               color: Theme.of(context).brightness == Brightness.dark ? UIConstant.bgDark : UIConstant.bgWhite,
               borderRadius: BorderRadius.all(
-                Radius.circular(1.5.h),
+                Radius.circular(10),
               ),
             ),
             child: Column(
@@ -247,9 +235,7 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
                   value: item,
                   title: Text(
                     item,
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                    ),
+                    style: UIConstant.normal,
                   ),
                   groupValue: radioValue,
                   activeColor: UIConstant.orange,
@@ -263,16 +249,16 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
             ),
           ),
           SizedBox(
-            height: 3.h,
+            height: 20,
           ),
         ],
       ),
       bottomSheet: Container(
         padding: EdgeInsets.only(
-          top: 2.5.h,
-          bottom: 2.5.h,
-          left: 3.h,
-          right: 3.h,
+          top: 15,
+          bottom: 15,
+          left: 20,
+          right: 20,
         ),
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
@@ -285,14 +271,14 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
             ),
           ],
           borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(3.h),
-            topRight: Radius.circular(3.h),
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
           ),
           color: Theme.of(context).brightness == Brightness.dark ? UIConstant.bgDark : UIConstant.bgWhite,
         ),
         child: CustomButton(
-          verticalPadding: 1.h,
-          horizontalPadding: 3.h,
+          verticalPadding: 10,
+          horizontalPadding: 20,
           txt: "Confirm",
           func: (){
             showDialog(
@@ -300,23 +286,23 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
               builder: (BuildContext context){
                 return AlertDialog(
                   contentPadding: EdgeInsets.symmetric(
-                    horizontal: 5.w,
-                    vertical: 1.h,
+                    horizontal: 15,
+                    vertical: 10,
                   ),
                   titlePadding: EdgeInsets.only(
-                    left: 5.w,
-                    right: 5.w,
-                    top: 2.h,
-                    bottom: 1.h
+                    left: 15,
+                    right: 15,
+                    top: 15,
+                    bottom: 10,
                   ),
                   actionsPadding:EdgeInsets.only(
-                      left: 5.w,
-                      right: 5.w,
+                      left: 15,
+                      right: 15,
                       top: 0,
-                      bottom: 1.h
+                      bottom: 10,
                   ),
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(2.h),
+                      borderRadius: BorderRadius.circular(15),
                       side: BorderSide(
                         color: UIConstant.orange,
                       )
@@ -324,16 +310,13 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
                   backgroundColor:  Theme.of(context).brightness == Brightness.dark ? UIConstant.bgDark : UIConstant.bgWhite,
                   title: Text(
                     "Please use E-sign and confirm order.",
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: UIConstant.minititle,
                   ),
                   content: Container(
-                    height: 45.h,
+                    height: deviceHeight / 2,
                     decoration: BoxDecoration(
                       color: Theme.of(context).primaryColor,
-                      borderRadius: BorderRadius.all(Radius.circular(1.h)),
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
                     ),
                     child: Stack(
                       children: [
@@ -345,19 +328,19 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
                           child: widgetPainter,
                         ),
                         Positioned(
-                          top: 1.h,
-                          right: 2.h,
+                          top: 10,
+                          right: 15,
                           child: CustomButton(
-                              verticalPadding: 1.h,
-                              horizontalPadding: 2.h,
+                              verticalPadding: 10,
+                              horizontalPadding: 15,
                               txt: "Clear Sign",
                               func: (){
                                 control.clear();
                               },
                               txtClr: Colors.white,
                               bgClr: UIConstant.orange,
-                              txtsize: 10.sp,
-                              rad: 0.5.h
+                              txtsize: 10,
+                              rad: 5,
                           ),
                         ),
                       ],
@@ -368,7 +351,7 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
                       children: [
                         Expanded(
                           child: CustomButton(
-                            verticalPadding: 1.h,
+                            verticalPadding: 10,
                             horizontalPadding: 0,
                             txt: "Cancel",
                             func: (){
@@ -377,16 +360,16 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
                             },
                             txtClr: Colors.black,
                             bgClr: UIConstant.pink,
-                            txtsize: 10.sp,
-                            rad: 1.h,
+                            txtsize: 10,
+                            rad: 10,
                           ),
                         ),
                         SizedBox(
-                          width: 5.w,
+                          width: 20,
                         ),
                         Expanded(
                           child: CustomButton(
-                            verticalPadding: 1.h,
+                            verticalPadding: 10,
                             horizontalPadding: 0,
                             txt: "Confirm",
                             func: (){
@@ -394,8 +377,8 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
                             },
                             txtClr: Colors.white,
                             bgClr: UIConstant.orange,
-                            txtsize: 10.sp,
-                            rad: 1.h,
+                            txtsize: 10,
+                            rad: 10,
                           ),
                         ),
                       ],
@@ -407,8 +390,8 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
           },
           txtClr: Colors.white,
           bgClr: Colors.green,
-          txtsize: 14.sp,
-          rad: 3.h,
+          txtsize: 16,
+          rad: 20,
         ),
       ),
     );

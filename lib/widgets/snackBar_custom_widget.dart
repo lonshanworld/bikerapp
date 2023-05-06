@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../constants/uiconstants.dart';
-import 'package:sizer/sizer.dart';
 
 class CustomGlobalSnackbar{
   final String title;
@@ -35,7 +34,7 @@ class CustomGlobalSnackbar{
           backgroundColor: Theme.of(context).brightness == Brightness.dark ? UIConstant.pink : UIConstant.orange,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(
-              Radius.circular(1.h),
+              Radius.circular(10),
             ),
           ),
           content: Column(
@@ -45,34 +44,29 @@ class CustomGlobalSnackbar{
                 children: [
                   Icon(
                     icon,
-                    size: 20.sp,
+                    size: 28,
                     color: Theme.of(context).brightness == Brightness.dark ? Colors.red : Colors.white,
                   ),
                   Text(
                     title,
-                    style: TextStyle(
-                      fontSize:13.sp,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: UIConstant.minititle,
                   ),
                 ],
               ),
               SizedBox(
-                height: 1.h,
+                height: 5,
               ),
               Text(
                 txt,
-                style: TextStyle(
-                    fontSize: 11.sp,
-                ),
+                style: UIConstant.normal,
               ),
             ],
           ),
           behavior: SnackBarBehavior.floating,
           margin: EdgeInsets.only(
-            left: 2.h,
-            right:  2.h,
-            bottom:  position ? deviceHeight- (13.h) : 5.h,
+            left: 15,
+            right:  15,
+            bottom:  position ? deviceHeight- (100) : 40,
             // bottom: deviceHeight - (oneUnitHeight * 130),
           ),
         )

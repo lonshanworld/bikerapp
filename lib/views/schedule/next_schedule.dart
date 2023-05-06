@@ -3,7 +3,6 @@ import 'package:delivery/controllers/schedule_controller.dart';
 import 'package:delivery/models/schedule_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sizer/sizer.dart';
 
 import '../../constants/uiconstants.dart';
 import '../../widgets/schedule_widget.dart';
@@ -33,7 +32,7 @@ class _NextScheduleState extends State<NextSchedule> {
         child: Obx((){
           return Container(
             margin: EdgeInsets.symmetric(
-                vertical: 1.5.h
+                vertical: 10,
             ),
             height: MediaQuery.of(context).size.height,
             child: ListView.builder(

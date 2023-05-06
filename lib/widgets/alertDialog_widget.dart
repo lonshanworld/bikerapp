@@ -2,7 +2,6 @@
 import "package:delivery/constants/uiconstants.dart";
 import "package:delivery/widgets/customButton_widget.dart";
 import "package:flutter/material.dart";
-import "package:sizer/sizer.dart";
 
 
 class AlertDialogWidget extends StatelessWidget {
@@ -29,7 +28,7 @@ class AlertDialogWidget extends StatelessWidget {
     return AlertDialog(
       backgroundColor: Theme.of(context).brightness == Brightness.dark ? UIConstant.bgDark : UIConstant.bgWhite,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(1.h),
+        borderRadius: BorderRadius.circular(10),
         side: BorderSide(
           color: UIConstant.orange,
         )
@@ -39,24 +38,24 @@ class AlertDialogWidget extends StatelessWidget {
       actionsAlignment: MainAxisAlignment.spaceAround,
       actions: <Widget>[
         CustomButton(
-            verticalPadding: 1.h,
-            horizontalPadding: 3.h,
+            verticalPadding: 10,
+            horizontalPadding: 20,
             txt: refusetxt,
             func: refusefunc,
             txtClr: UIConstant.orange,
             bgClr: UIConstant.pink,
-            txtsize: 12.sp,
-            rad: 1.h,
+            txtsize: 14,
+            rad: 10,
         ),
         CustomButton(
-            verticalPadding: 1.h,
-            horizontalPadding: 3.h,
+            verticalPadding: 10,
+            horizontalPadding: 20,
             txt: accepttxt,
             func: acceptfunc,
             txtClr: UIConstant.pink,
             bgClr: UIConstant.orange,
-            txtsize: 12.sp,
-            rad: 1.h,
+            txtsize: 14,
+            rad: 10,
         )
       ],
     );

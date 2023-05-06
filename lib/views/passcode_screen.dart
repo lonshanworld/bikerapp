@@ -5,7 +5,6 @@ import 'package:delivery/routehelper.dart';
 import 'package:delivery/widgets/customButton_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sizer/sizer.dart';
 import '../constants/uiconstants.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 
@@ -77,7 +76,7 @@ class _PasscodeScreenState extends State<PasscodeScreen> {
             },
             icon: Icon(
               Icons.arrow_back_ios,
-              size: 24.sp,
+              size: 24,
             ),
             color: UIConstant.orange,
           ),
@@ -85,42 +84,36 @@ class _PasscodeScreenState extends State<PasscodeScreen> {
         body:  Obx((){
           return ListView(
             padding: EdgeInsets.only(
-              left: 3.h,
-              right: 3.h,
-              top: 10.h,
+              left: 20,
+              right: 20,
+              top: 80,
             ),
             children: [
               Text(
                 'Verification',
-                style: TextStyle(
-                  fontSize: 20.sp,
-                  fontWeight: FontWeight.bold,
-                  color: UIConstant.orange,
+                style: UIConstant.maintitle.copyWith(
+                  color: UIConstant.orange
                 ),
               ),
               Text(userAccountController.randomnum.toString()),
               // Text(userAccountController.phoneNumber.toString()),
               SizedBox(
-                height: 3.h,
+                height: 20,
               ),
               Text(
                 'Enter the OTP code from the SMS we just sent you.',
-                style: TextStyle(
+                style: UIConstant.normal.copyWith(
                   fontWeight: FontWeight.bold,
-                  fontSize: 14.sp,
                 ),
               ),
               SizedBox(
-                height: 3.h,
+                height: 20,
               ),
               OtpTextField(
                 numberOfFields: 6,
                 borderColor: Colors.grey,
                 focusedBorderColor: UIConstant.orange,
-                textStyle: TextStyle(
-                  fontSize: 20.sp,
-                  fontWeight: FontWeight.bold,
-                ),
+                textStyle: UIConstant.title,
                 showFieldAsBox: false,
                 borderWidth: 4.0,
                 //runs when every textfield is filled
@@ -142,7 +135,7 @@ class _PasscodeScreenState extends State<PasscodeScreen> {
                 },
               ),
               SizedBox(
-                height: 5.h,
+                height: 40,
               ),
               // if(!showresendBtn)Text(
               //   "Do you want to resend code in $time seconds",
@@ -156,33 +149,30 @@ class _PasscodeScreenState extends State<PasscodeScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Do you want to resend code in ",
+                    "Do you want to resend code in  ",
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      color: UIConstant.secondarytxtClr,
+                    style: UIConstant.small.copyWith(
+                      color: Colors.grey,
                     ),
                   ),
                   Text(
                     time.toString(),
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 14.sp,
+                    style: UIConstant.small.copyWith(
                       color: Colors.redAccent,
                     ),
                   ),
                   Text(
-                    " seconds",
+                    "  seconds",
                     textAlign: TextAlign.center,
-                    style:TextStyle(
-                      fontSize: 12.sp,
-                      color: UIConstant.secondarytxtClr,
+                    style: UIConstant.small.copyWith(
+                      color: Colors.grey,
                     ),
                   ),
                 ],
               ),
               if(showresendBtn)CustomButton(
-                verticalPadding: 1.5.h,
+                verticalPadding: 10,
                 horizontalPadding: 0,
                 txt: "Resend code again",
                 func: ()async{
@@ -198,8 +188,8 @@ class _PasscodeScreenState extends State<PasscodeScreen> {
                 },
                 txtClr: Colors.white,
                 bgClr: UIConstant.orange,
-                txtsize: 12.sp,
-                rad: 1.5.h,
+                txtsize: 14,
+                rad: 10,
               ),
             ],
           );

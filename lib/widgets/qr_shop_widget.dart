@@ -1,7 +1,6 @@
 
 import "package:delivery/constants/uiconstants.dart";
 import "package:flutter/material.dart";
-import "package:sizer/sizer.dart";
 
 class QrShopWidget extends StatelessWidget {
 
@@ -17,11 +16,11 @@ class QrShopWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(1.5.h),
+      padding: EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: Theme.of(context).brightness == Brightness.dark ? UIConstant.bgDark : UIConstant.bgWhite,
         borderRadius: BorderRadius.all(
-          Radius.circular(1.h),
+          Radius.circular(10),
         ),
       ),
       child: Row(
@@ -29,20 +28,19 @@ class QrShopWidget extends StatelessWidget {
         children: [
           Text(
             name,
-            style: TextStyle(
+            style: UIConstant.normal.copyWith(
               fontWeight: FontWeight.bold,
-              fontSize: 14.sp,
             ),
           ),
           Container(
             padding: EdgeInsets.symmetric(
-              vertical: 0.3.h,
-              horizontal: 1.h
+              vertical: 3,
+              horizontal: 10,
             ),
             decoration: BoxDecoration(
               color: pickUp ? Colors.green : UIConstant.orange,
               borderRadius: pickUp ? null : BorderRadius.all(
-                Radius.circular(1.h),
+                Radius.circular(10),
               ),
               shape: pickUp ? BoxShape.circle : BoxShape.rectangle
             ),
@@ -51,13 +49,13 @@ class QrShopWidget extends StatelessWidget {
               Icon(
                 Icons.check,
                 color: Colors.white,
-                size: 13.sp,
+                size: 18,
               )
                 :
               Text(
                 "Pending ...",
                 style: TextStyle(
-                  fontSize: 8.sp,
+                  fontSize: 8,
                   color: Colors.white
                 ),
               ),

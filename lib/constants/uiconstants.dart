@@ -25,6 +25,8 @@ class UIConstant{
     brightness: Brightness.light,
     useMaterial3: true,
     appBarTheme: AppBarTheme(
+      toolbarHeight: 50,
+      centerTitle: true,
       backgroundColor: pink,
       titleTextStyle: TextStyle(
         fontSize: 18,
@@ -39,6 +41,8 @@ class UIConstant{
     brightness: Brightness.dark,
     useMaterial3: true,
     appBarTheme: AppBarTheme(
+      toolbarHeight: 50,
+      centerTitle: true,
       backgroundColor: orange,
       titleTextStyle: TextStyle(
         fontSize: 18,
@@ -48,31 +52,35 @@ class UIConstant{
     scaffoldBackgroundColor: Colors.black,
   );
 
-  // static TextStyle maintitle = TextStyle(
-  //   fontSize: 24,
-  //   fontWeight: FontWeight.bold,
-  //   // color: txtClr,
-  // );
-  //
-  // static TextStyle title = TextStyle(
-  //   fontSize: 20,
-  //   fontWeight: FontWeight.bold,
-  //   // color: txtClr,
-  // );
-  //
-  // static TextStyle minititle = TextStyle(
-  //   fontSize: 16,
-  //   fontWeight: FontWeight.bold,
-  //   // color: txtClr,
-  // );
-  //
-  // static TextStyle normal = TextStyle(
-  //   fontSize: 14,
-  //   // color: txtClr,
-  // );
-  //
-  // static TextStyle tinytext = TextStyle(
-  //   fontSize: 10,
-  //   // color: secondarytxtClr,
-  // );
+  static TextStyle maintitle = TextStyle(
+    fontSize: 24,
+    fontWeight: FontWeight.bold,
+    // color: txtClr,
+  );
+
+  static TextStyle title = TextStyle(
+    fontSize: 20,
+    fontWeight: FontWeight.bold,
+    // color: txtClr,
+  );
+
+  static TextStyle minititle = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.bold,
+    // color: txtClr,
+  );
+
+  static TextStyle normal = TextStyle(
+    fontSize: 14,
+    // color: txtClr,
+  );
+
+  static TextStyle small = TextStyle(
+    fontSize: 12,
+  );
+
+  static TextStyle tinytext = TextStyle(
+    fontSize: 10,
+    // color: secondarytxtClr,
+  );
 }

@@ -1,7 +1,6 @@
 import 'package:delivery/constants/uiconstants.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:sizer/sizer.dart';
 
 
 class ScheduleWidget extends StatelessWidget {
@@ -29,15 +28,15 @@ class ScheduleWidget extends StatelessWidget {
 
     return Container(
       margin: EdgeInsets.symmetric(
-        horizontal: 2.h,
-        vertical: 2.h,
+        horizontal: 15,
+        vertical: 15,
       ),
       padding: EdgeInsets.symmetric(
-        vertical: 1.5.h,
+        vertical: 10,
       ),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.all(
-            Radius.circular(2.h),
+            Radius.circular(15),
           ),
           color: Theme.of(context).brightness == Brightness.dark ? UIConstant.bgDark : UIConstant.bgWhite,
           boxShadow: [
@@ -54,13 +53,10 @@ class ScheduleWidget extends StatelessWidget {
         children: [
           Text(
             scheduleName.toString(),
-            style: TextStyle(
-              fontSize: 14.sp,
-              fontWeight: FontWeight.bold,
-            ),
+            style: UIConstant.minititle,
           ),
           SizedBox(
-            height: 0.5.h,
+            height: 3,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -72,15 +68,15 @@ class ScheduleWidget extends StatelessWidget {
                 children: [
                   Text(
                     DateFormat("dd, MMM").format(scheduleId),
-                    style: TextStyle(
-                      fontSize: 18.sp,
+                    style: UIConstant.title.copyWith(
+                      fontWeight: FontWeight.normal,
                       color: UIConstant.orange,
                     ),
                   ),
                   Text(
                     DateFormat("E").format(scheduleId),
-                    style: TextStyle(
-                      fontSize: 16.sp,
+                    style: UIConstant.minititle.copyWith(
+                      fontWeight: FontWeight.normal,
                     ),
                   ),
                 ],
@@ -90,27 +86,22 @@ class ScheduleWidget extends StatelessWidget {
                   Center(
                     child: Text(
                       startSchedule,
-                      style: TextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.bold,
-                       ),
+                      style: UIConstant.normal.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                   Center(
                     child: Text(
                       "~",
-                      style: TextStyle(
-                          fontSize: 20.sp,
-                          fontWeight: FontWeight.bold,
-                     ),
+                      style: UIConstant.title,
                     ),
                   ),
                   Center(
                     child: Text(
                       endSchedule,
-                      style: TextStyle(
-                          fontSize: 14.sp ,
-                          fontWeight: FontWeight.bold,
+                      style: UIConstant.normal.copyWith(
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),

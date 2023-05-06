@@ -7,7 +7,6 @@ import 'package:delivery/views/loading_screen.dart';
 import 'package:delivery/widgets/customButton_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sizer/sizer.dart';
 
 import '../controllers/cameraImage_controller.dart';
 import '../controllers/check_in_out_controller.dart';
@@ -61,8 +60,8 @@ class _CheckInScreenState extends State<CheckInScreen> {
   @override
   Widget build(BuildContext context) {
 
-    // final double deviceWidth = MediaQuery.of(context).size.width;
-    // final double deviceHeight = MediaQuery.of(context).size.height;
+    final double deviceWidth = MediaQuery.of(context).size.width;
+    final double deviceHeight = MediaQuery.of(context).size.height;
     // final double oneUnitWidth = deviceWidth / 360;
     // final double oneUnitHeight = deviceHeight/772;
 
@@ -74,7 +73,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
-            size: 28.sp,
+            size: 28,
           ),
           onPressed: (){
             Get.offAllNamed(RouteHelper.getHomePage());
@@ -84,15 +83,15 @@ class _CheckInScreenState extends State<CheckInScreen> {
 
       body:ListView(
         padding: EdgeInsets.symmetric(
-          horizontal: 3.h,
-          vertical: 3.h,
+          horizontal: 20,
+          vertical: 20,
         ),
         children: [
           CameraWidget(
               gettoCamerafun: (){
                 getCamera();
               },
-              height: 40.h,
+              height: (deviceHeight / 100 ) * 40,
               isshowImage: isShowImage,
               iamgePath: newselectedImage,
               removephotofun: (){
@@ -100,10 +99,10 @@ class _CheckInScreenState extends State<CheckInScreen> {
               },
           ),
           SizedBox(
-            height: 1.5.h,
+            height: 10,
           ),
           CustomButton(
-            verticalPadding: 1.5.h,
+            verticalPadding: 10,
             horizontalPadding: 0,
             txt: "Check In",
             func: ()async{
@@ -158,8 +157,8 @@ class _CheckInScreenState extends State<CheckInScreen> {
             },
             txtClr: Colors.white,
             bgClr: !hideBtn ? UIConstant.orange : Colors.grey,
-            txtsize: 14.sp,
-            rad: 1.5.h,
+            txtsize: 16,
+            rad: 10,
           ),
 
         ],

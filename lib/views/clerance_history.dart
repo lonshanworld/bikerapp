@@ -7,7 +7,6 @@ import 'package:delivery/widgets/no_item_widget.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:sizer/sizer.dart';
 
 import '../models/clearance_history_model.dart';
 import '../widgets/loading_widget.dart';
@@ -56,14 +55,14 @@ class _ClearanceHistoryState extends State<ClearanceHistory> {
       ListView(
         children: [
           SizedBox(
-            height: 2.h,
+            height: 20,
           ),
           NoItemListWidget(txt: "There is no item in clearance history."),
         ],
       )
           :
       ListView.builder(
-        padding: EdgeInsets.all(1.5.h),
+        padding: EdgeInsets.all(10),
         itemCount: clearanceHistoryList.length,
         itemBuilder: (context, index) {
           final data = clearanceHistoryList[index];
@@ -77,102 +76,96 @@ class _ClearanceHistoryState extends State<ClearanceHistory> {
                     children: [
                       Text(
                         "Payment Date : ${data.date}",
-                        style: TextStyle(
-                            fontSize: 15.sp,
-                            fontWeight: FontWeight.w600,
-                        ),
+                        style: UIConstant.minititle,
                       ),
                     ],
                   ),
-                  SizedBox(height: 1.5.h),
+                  SizedBox(height: 10),
                   Row(
                     children: [
                       Text(
                         "Zone : ${data.zoneName}",
-                        style: TextStyle(
-                            fontSize: 13.sp,
-                            fontWeight: FontWeight.w600,
+                        style: UIConstant.normal.copyWith(
+                          fontWeight: FontWeight.bold
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(height: 1.5.h),
+                  SizedBox(height: 10),
                   Row(
                     children: [
                       Expanded(
                         child: Text(
                           "Total Qrder Qty ",
-                          style: TextStyle(
-                              fontSize: 11.sp,
-                              fontWeight: FontWeight.w600,
+                          style: UIConstant.small.copyWith(
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
                       Expanded(
                         child: Text(
                           "Total Distance ",
-                          style: TextStyle(
-                              fontSize: 11.sp,
-                              fontWeight: FontWeight.w600,
+                          style: UIConstant.small.copyWith(
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
                       Expanded(
                         child: Text(
                           "Total Cash Collect ",
-                          style: TextStyle(
-                              fontSize: 11.sp,
-                              fontWeight: FontWeight.w600,
+                          style: UIConstant.small.copyWith(
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(height: 1.5.h),
+                  SizedBox(height: 10),
                   Row(
                     children: [
                       Expanded(
                         child: Text(
                           data.totalOrderQty.toString(),
-                          style: TextStyle(
-                              fontSize: 20.sp,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.red
+                          style: UIConstant.title.copyWith(
+                            color: Colors.redAccent
                           ),
                         ),
                       ),
                       Expanded(
                         child: Text(
                           data.totalDistanceMeter.toString(),
-                          style: TextStyle(
-                              fontSize: 20.sp,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.red
+                          style: UIConstant.title.copyWith(
+                              color: Colors.redAccent
                           ),
                         ),
                       ),
                       Expanded(
                         child: Text(
                           data.totalCashCollect.toString(),
-                          style: TextStyle(
-                              fontSize: 20.sp,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.red),
+                          style: UIConstant.title.copyWith(
+                              color: Colors.redAccent
+                          ),
                         ),
                       ),
                     ],
                   ),
-                  CustomButton(
-                    verticalPadding: 3.h,
-                    horizontalPadding: 14.h,
-                    txt: "Clearance Detail",
-                    func: (){
-                      Get.to(() => ClearanceHistoryDetails(data: data));
-                    },
-                    txtClr: Colors.white,
-                    bgClr: UIConstant.orange,
-                    txtsize: 14.sp,
-                    rad: 3.h,
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CustomButton(
+                          verticalPadding: 10,
+                          horizontalPadding: 0,
+                          txt: "Clearance Detail",
+                          func: (){
+                            Get.to(() => ClearanceHistoryDetails(data: data));
+                          },
+                          txtClr: Colors.white,
+                          bgClr: UIConstant.orange,
+                          txtsize: 16,
+                          rad: 20,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),

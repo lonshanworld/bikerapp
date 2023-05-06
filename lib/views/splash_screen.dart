@@ -5,7 +5,6 @@ import "package:delivery/routehelper.dart";
 import "package:flutter/material.dart";
 import "package:geolocator/geolocator.dart";
 import "package:get_storage/get_storage.dart";
-import "package:sizer/sizer.dart";
 
 import "../constants/txtconstants.dart";
 import "../constants/uiconstants.dart";
@@ -88,7 +87,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
 
   @override
   Widget build(BuildContext context) {
-    // final double deviceWidth = MediaQuery.of(context).size.width;
+    final double deviceWidth = MediaQuery.of(context).size.width;
     // final double deviceHeight = MediaQuery.of(context).size.height;
     // final double oneUnitWidth = deviceWidth / 360;
     // final double oneUnitHeight = deviceHeight/772;
@@ -99,7 +98,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
         child: Center(
           child: Image.asset(
             "assets/images/ic_launcher.png",
-            width: 80.w,
+            width: (deviceWidth /100) * 80,
           ),
         ),
       ),

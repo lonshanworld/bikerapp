@@ -7,7 +7,6 @@ import "package:delivery/views/setting_screen.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
 import "package:get_storage/get_storage.dart";
-import "package:sizer/sizer.dart";
 
 import "../constants/txtconstants.dart";
 import "../widgets/alertDialog_widget.dart";
@@ -18,10 +17,12 @@ class DrawerPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    // final double deviceWidth = MediaQuery.of(context).size.width;
-    // final double deviceHeight = MediaQuery.of(context).size.height;
-    // final double oneUnitWidth = deviceWidth / 360;
-    // final double oneUnitHeight = deviceHeight/772;
+    final double deviceWidth = MediaQuery.of(context).size.width;
+    final double deviceHeight = MediaQuery.of(context).size.height;
+    final double oneUnitWidth = deviceWidth / 360;
+    final double oneUnitHeight = deviceHeight/772;
+
+    final double drawerWidth = deviceWidth > 500 ? 400 : (deviceWidth / 4) * 3;
 
     final UserAccountController userAccountController = Get.find<UserAccountController>();
     final NotiController notiController = Get.find<NotiController>();
@@ -33,13 +34,11 @@ class DrawerPage extends StatelessWidget {
         leading: Icon(
           icon,
           color: UIConstant.orange,
-          size: 22.sp,
+          size: 26,
         ),
         title: Text(
           title,
-          style: TextStyle(
-            fontSize: 12.sp
-          ),
+          style: UIConstant.normal,
         ),
         onTap: Func,
       );
@@ -115,13 +114,13 @@ class DrawerPage extends StatelessWidget {
     }
 
     return SizedBox(
-      width: 75.w,
+      width: drawerWidth,
       child: Drawer(
         child: Obx((){
           return ListView(
             children: [
               SizedBox(
-                height: 2.h,
+                height: 15,
               ),
               InkWell(
                 onTap: (){
@@ -131,14 +130,14 @@ class DrawerPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     CircleAvatar(
-                      radius: 5.h,
+                      radius: deviceHeight > 800 ? 80 : 50,
                       backgroundImage: NetworkImage(
                         userAccountController.bikermodel[0].profileImage ?? 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgWv75KuTKR5tEa6fNHmINh0SrIAoWhlAYbvoxnG7poIN8dLV4Fxe5IErjDo2RG6grnyU&usqp=CAU',
                       ),
                     ),
                     Container(
                       margin: EdgeInsets.only(
-                        left: 3.h,
+                        left: 20,
                       ),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -146,19 +145,16 @@ class DrawerPage extends StatelessWidget {
                         children: [
                           Text(
                             userAccountController.bikermodel[0].fullName!,
-                            style: TextStyle(
-                              fontSize: 12.sp,
+                            style: UIConstant.small.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           SizedBox(
-                            height: 0.5.h,
+                            height: 5,
                           ),
                           Text(
                             userAccountController.bikermodel[0].phone!,
-                            style: TextStyle(
-                              fontSize: 10.sp
-                            ),
+                            style: UIConstant.small,
                           ),
                         ],
                       ),
@@ -168,11 +164,11 @@ class DrawerPage extends StatelessWidget {
               ),
               Container(
                 padding: EdgeInsets.symmetric(
-                  vertical: 1.h,
+                  vertical: 8,
                 ),
                 margin: EdgeInsets.only(
-                  top: 1.5.h,
-                  bottom: 1.h,
+                  top: 15,
+                  bottom: 8,
                 ),
                 decoration: const BoxDecoration(
                   border: Border.symmetric(
@@ -187,24 +183,19 @@ class DrawerPage extends StatelessWidget {
                   children: [
                     Text(
                       "Cash Collected : ",
-                      style: TextStyle(
-                        fontSize: 12.sp
-                      ),
+                      style: UIConstant.normal,
                     ),
                     Row(
                       children: [
                         Text(
                           userAccountController.bikermodel[0].cashCollect.toString(),
-                          style: TextStyle(
-                              fontSize: 12.sp,
+                          style: UIConstant.normal.copyWith(
                             color: UIConstant.orange,
                           ),
                         ),
                         Text(
                           "MMK",
-                          style: TextStyle(
-                              fontSize: 12.sp
-                          ),
+                          style: UIConstant.normal,
                         ),
                       ],
                     ),
@@ -215,20 +206,17 @@ class DrawerPage extends StatelessWidget {
                 leading: Icon(
                   Icons.person,
                   color: UIConstant.orange,
-                  size: 22.sp,
+                  size: 24,
                 ),
                 title: Text(
                   "Profile",
-                  style: TextStyle(
-                      fontSize: 12.sp
-                  ),
+                  style: UIConstant.normal,
                 ),
 
                 subtitle: Text(
                   "Credit ${userAccountController.bikermodel[0].creditAmt} MMK  ||  MISC ${userAccountController.bikermodel[0].miscUsage} MMK",
-                  style: TextStyle(
-                      fontSize: 10.sp,
-                    color: UIConstant.secondarytxtClr
+                  style: UIConstant.tinytext.copyWith(
+                    color: UIConstant.secondarytxtClr,
                   ),
                 ),
                 onTap: () {

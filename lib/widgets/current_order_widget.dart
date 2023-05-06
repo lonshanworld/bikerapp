@@ -5,7 +5,6 @@ import "package:delivery/routehelper.dart";
 import "package:delivery/widgets/customButton_widget.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
-import "package:sizer/sizer.dart";
 import "package:url_launcher/url_launcher.dart";
 
 
@@ -47,13 +46,13 @@ class _CurrentOrderWidgetState extends State<CurrentOrderWidget> {
       padding: EdgeInsets.symmetric(
         // left: 15,
         // right: 15,
-       vertical: 1.h,
+       vertical: 10,
       ),
       margin: EdgeInsets.only(
-        left: 3.h,
-        right: 3.h,
-        top: 1.h,
-        bottom: 1.h,
+        left: 20,
+        right: 20,
+        top: 10,
+        bottom: 10,
       ),
       decoration: BoxDecoration(
         color: Theme.of(context).brightness == Brightness.dark ? UIConstant.bgDark :UIConstant.bgWhite,
@@ -62,7 +61,7 @@ class _CurrentOrderWidgetState extends State<CurrentOrderWidget> {
           color: UIConstant.orange,
         ),
         borderRadius: BorderRadius.all(
-          Radius.circular(1.5.h),
+          Radius.circular(10),
         ),
       ),
       child: InkWell(
@@ -77,7 +76,7 @@ class _CurrentOrderWidgetState extends State<CurrentOrderWidget> {
           reverseDuration: Duration(milliseconds: 500),
           child: ListView(
             padding: EdgeInsets.symmetric(
-              horizontal: 1.5.h,
+              horizontal: 10,
             ),
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
@@ -90,7 +89,7 @@ class _CurrentOrderWidgetState extends State<CurrentOrderWidget> {
                       shape: CircleBorder(
                         side: BorderSide.none,
                       ),
-                      padding: EdgeInsets.all(1.h),
+                      padding: EdgeInsets.all(10),
                       minimumSize: Size(0, 0),
                       elevation: 0,
                     ),
@@ -99,12 +98,12 @@ class _CurrentOrderWidgetState extends State<CurrentOrderWidget> {
                     },
                     child: Icon(
                       Icons.phone,
-                      size: 26.sp,
+                      size: 28,
                       color: UIConstant.orange,
                     ),
                   ),
                   SizedBox(
-                    width: 1.h,
+                    width: 10,
                   ),
                   Expanded(
                     child: Column(
@@ -112,15 +111,13 @@ class _CurrentOrderWidgetState extends State<CurrentOrderWidget> {
                       children: [
                         Text(
                           widget.currentOrderModel.cusName!,
-                          style: TextStyle(
-                            fontSize: 11.sp,
-                            fontWeight: FontWeight.bold,
+                          style: UIConstant.small.copyWith(
+                            fontWeight: FontWeight.bold
                           ),
                         ),
                         Text(
                           widget.currentOrderModel.phone!,
-                          style: TextStyle(
-                            fontSize: 11.sp,
+                          style: UIConstant.small.copyWith(
                             color: UIConstant.secondarytxtClr,
                           ),
                         ),
@@ -131,17 +128,17 @@ class _CurrentOrderWidgetState extends State<CurrentOrderWidget> {
                     decoration: BoxDecoration(
                       color: (widget.currentOrderModel.orderStatus == "Order Way On") ? Colors.blue : Colors.green,
                       borderRadius: BorderRadius.all(
-                        Radius.circular(1.h),
+                        Radius.circular(10),
                       ),
                     ),
                     padding: EdgeInsets.symmetric(
-                      horizontal: 1.h,
-                      vertical: 0.5.h,
+                      horizontal: 10,
+                      vertical: 5,
                     ),
                     child: Text(
                       widget.currentOrderModel.orderStatus!,
                       style: TextStyle(
-                        fontSize: 8.sp,
+                        fontSize: 8,
                         color: Colors.white,
                       ),
                     ),
@@ -154,12 +151,12 @@ class _CurrentOrderWidgetState extends State<CurrentOrderWidget> {
                 children: [
                   Divider(
                     color: Colors.grey,
-                    height: 2.h,
+                    height: 15,
                   ),
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(
-                        Radius.circular(1.5.h),
+                        Radius.circular(10),
                       ),
                       image: DecorationImage(
                           image: NetworkImage(
@@ -168,10 +165,10 @@ class _CurrentOrderWidgetState extends State<CurrentOrderWidget> {
                           fit: BoxFit.cover
                       ),
                     ),
-                    height: 14.h,
+                    height: 100,
                   ),
                   SizedBox(
-                    height: 1.5.h,
+                    height: 10,
                   ),
                   Row(
                     // mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -179,25 +176,22 @@ class _CurrentOrderWidgetState extends State<CurrentOrderWidget> {
                       Expanded(
                         child: Text(
                           widget.currentOrderModel.shopName ?? "",
-                          style: TextStyle(
-                            fontSize: 12.sp,
+                          style: UIConstant.normal.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
                       Text(
                         "${widget.currentOrderModel.distanceMeter} m",
-                        style: TextStyle(
-                          fontSize: 12.sp,
-                        ),
+                        style: UIConstant.small,
                       ),
                     ],
                   ),
                   SizedBox(
-                    height: 1.h,
+                    height: 10,
                   ),
                   CustomButton(
-                      verticalPadding: 1.h,
+                      verticalPadding: 10,
                       horizontalPadding: 0,
                       txt: "Order Detail",
                       func: (){
@@ -243,8 +237,8 @@ class _CurrentOrderWidgetState extends State<CurrentOrderWidget> {
                       },
                       txtClr: UIConstant.orange,
                       bgClr: UIConstant.pink,
-                      txtsize: 12.sp,
-                      rad: 1.h,
+                      txtsize: 14,
+                      rad: 10,
                   ),
                 ],
               ),

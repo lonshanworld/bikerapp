@@ -5,7 +5,6 @@ import 'package:delivery/models/clearance_model.dart';
 import 'package:delivery/widgets/no_item_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sizer/sizer.dart';
 import "dart:io";
 
 import '../controllers/cameraImage_controller.dart';
@@ -82,6 +81,10 @@ class _CleranceState extends State<Clerance> {
 
   @override
   Widget build(BuildContext context) {
+
+    final double deviceWidth = MediaQuery.of(context).size.width;
+    final double deviceHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Clerance"),
@@ -103,7 +106,7 @@ class _CleranceState extends State<Clerance> {
       ListView(
         children: [
           SizedBox(
-            height: 2.h,
+            height: 20,
           ),
           NoItemListWidget(txt: "There is no Item in clearance"),
         ],
@@ -111,8 +114,8 @@ class _CleranceState extends State<Clerance> {
           :
       ListView(
         padding: EdgeInsets.symmetric(
-            vertical: 3.h,
-            horizontal: 3.h,
+            vertical: 20,
+            horizontal: 20,
         ),
         children: [
           TextFieldwithLabel(
@@ -120,25 +123,25 @@ class _CleranceState extends State<Clerance> {
             txtController: levelController,
             inputType: TextInputType.text,
           ),
-          SizedBox(height: 1.h),
+          SizedBox(height: 5),
           TextFieldwithLabel(
             label: "Cash-on Delivery",
             txtController: cashController,
             inputType: TextInputType.number,
           ),
-          SizedBox(height: 1.h),
+          SizedBox(height: 5),
           TextFieldwithLabel(
             label: "MISC Usage",
             txtController: miscController,
             inputType: TextInputType.number,
           ),
-          SizedBox(height: 1.h),
+          SizedBox(height: 5),
           TextFieldwithLabel(
             label: "Credit",
             txtController: creditController,
             inputType: TextInputType.number,
           ),
-          SizedBox(height: 1.h),
+          SizedBox(height: 5),
           TextFieldwithLabel(
             label: "Total Clearance",
             txtController: totalController,
@@ -151,7 +154,7 @@ class _CleranceState extends State<Clerance> {
               gettoCamerafun: (){
                 getCameraImage();
               },
-              height: 30.h,
+              height: (deviceHeight / 100) * 30,
               isshowImage: isShowImage,
               iamgePath: newselectedImage,
               removephotofun: (){
@@ -160,22 +163,22 @@ class _CleranceState extends State<Clerance> {
           ),
           Padding(
             padding: EdgeInsets.symmetric(
-              vertical: 1.5.h,
+              vertical: 10,
             ),
             child: CustomTextField(
               txtcontroller: paymentController,
-              txtsize: 16.sp,
-              verticalpadding: 2.h,
-              horizontalpadding: 2.h,
+              txtsize: 16,
+              verticalpadding: 15,
+              horizontalpadding: 15,
               textInputType: TextInputType.number,
               hinttxt: "Payment Amount",
             ),
           ),
           SizedBox(
-            height: 3.h,
+            height: 20,
           ),
           CustomButton(
-            verticalPadding: 1.5.h,
+            verticalPadding: 10,
             horizontalPadding: 0,
             txt: "Clearance",
             func: (){
@@ -183,8 +186,8 @@ class _CleranceState extends State<Clerance> {
             },
             txtClr: Colors.white,
             bgClr: UIConstant.orange,
-            txtsize: 14.sp,
-            rad: 1.5.h,
+            txtsize: 16,
+            rad: 10,
           ),
         ],
       ),

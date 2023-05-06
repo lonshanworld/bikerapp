@@ -4,7 +4,6 @@ import "package:delivery/widgets/loading_widget.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
 import "package:intl/intl.dart";
-import "package:sizer/sizer.dart";
 
 import "../models/punishment_model.dart";
 import "../widgets/no_item_widget.dart";
@@ -58,8 +57,8 @@ class _PunishmentScreenState extends State<PunishmentScreen> {
           :
         ListView(
         padding: EdgeInsets.symmetric(
-          vertical: 1.5.h,
-          horizontal: 3.h,
+          vertical: 10,
+          horizontal: 20,
         ),
         children: [
           if(punishmentList.isEmpty)NoItemListWidget(

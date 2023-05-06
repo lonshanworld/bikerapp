@@ -1,6 +1,5 @@
 
 import "package:flutter/material.dart";
-import "package:sizer/sizer.dart";
 
 import "customtextfield_widget.dart";
 
@@ -25,17 +24,17 @@ class TextFieldwithLabel extends StatelessWidget {
           child: Text(
             label,
             style: TextStyle(
-                fontSize: 12.sp,
-                fontWeight: FontWeight.w600,
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
             ),
           ),
         ),
         Expanded(
           child:CustomTextField(
             txtcontroller: txtController,
-            txtsize: 12.sp,
+            txtsize: 12,
             verticalpadding: 0,
-            horizontalpadding: 1.5.h,
+            horizontalpadding: 10,
             textInputType: inputType,
           ),
         ),

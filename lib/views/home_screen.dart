@@ -15,7 +15,6 @@ import "package:flutter/material.dart";
 
 import "package:get/get.dart";
 import "package:get_storage/get_storage.dart";
-import "package:sizer/sizer.dart";
 
 import "../main.dart";
 import "../models/noti_model.dart";
@@ -237,7 +236,6 @@ class _HomeScreenState extends State<HomeScreen> {
     return Obx((){
       return Scaffold(
         appBar: AppBar(
-          toolbarHeight: 7.h,
           title: Text(
             userAccountController.bikermodel[0].fullName ?? "",
             // style: UIConstant.title.copyWith(
@@ -252,7 +250,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                   icon: Icon(
                     Icons.menu_open,
-                    size: 28.sp,
+                    size: 28,
                   ),
                 );
               }
@@ -264,8 +262,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               child: Text(
                 box.read(TxtConstant.checkOutBtn) == true ? "Check Out" : "Check In",
-                style: TextStyle(
-                  fontSize: 13.sp,
+                style: UIConstant.normal.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -319,15 +316,12 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               Padding(
                 padding: EdgeInsets.only(
-                  left: 3.h,
-                  top: 1.5.h,
+                  left: 20,
+                  top: 10,
                 ),
                 child: Text(
                   "Dashboard",
-                  style: TextStyle(
-                    fontSize: 16.sp,
-                    color: Colors.black,
-                  ),
+                  style: UIConstant.title,
                 ),
               ),
               if(notiController.notiListByshowFlag.isEmpty)NoItemListWidget(

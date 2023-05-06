@@ -1,6 +1,5 @@
 import "package:delivery/widgets/customButton_widget.dart";
 import "package:flutter/material.dart";
-import "package:sizer/sizer.dart";
 
 
 import "../constants/uiconstants.dart";
@@ -29,7 +28,7 @@ class ConfirmAll_Screen extends StatelessWidget {
 
     return AlertDialog(
       shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(1.h),
+          borderRadius: BorderRadius.circular(10),
           side: BorderSide(
             color: UIConstant.orange,
           )
@@ -37,40 +36,35 @@ class ConfirmAll_Screen extends StatelessWidget {
       backgroundColor: Theme.of(context).brightness == Brightness.dark ? UIConstant.bgDark : UIConstant.bgWhite,
       title: Text(
         title,
-        style: TextStyle(
-          fontSize: 16.sp,
-          fontWeight: FontWeight.bold,
-        ),
+        style: UIConstant.minititle,
       ),
       content: Text(
         txt,
-        style: TextStyle(
-          fontSize: 12.sp,
-        ),
+        style: UIConstant.normal,
       ),
       actions: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             CustomButton(
-              verticalPadding: 1.h,
-              horizontalPadding: 4.h,
+              verticalPadding: 10,
+              horizontalPadding: 30,
               txt: "Cancel",
               func: refuseFun,
               txtClr:  Colors.black,
               bgClr: UIConstant.pink,
-              txtsize: 12.sp,
-              rad: 1.h,
+              txtsize: 14,
+              rad: 10,
             ),
             CustomButton(
-              verticalPadding:1.h,
-              horizontalPadding:4.h,
+              verticalPadding: 10,
+              horizontalPadding: 40,
               txt: "Yes",
               func: acceptFun,
               txtClr: Colors.white,
               bgClr: UIConstant.orange,
-              txtsize: 12.sp,
-              rad: 1.h,
+              txtsize: 14,
+              rad: 10,
             ),
           ],
         ),

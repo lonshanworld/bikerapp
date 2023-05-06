@@ -1,7 +1,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sizer/sizer.dart';
 
 import '../../constants/uiconstants.dart';
 import 'available_schedule.dart';
@@ -54,7 +53,7 @@ class _ScheduleTabbarState extends State<ScheduleTabbar>
           bottom: PreferredSize(
             preferredSize: Size.fromHeight(40),
             child: Container(
-              height: 6.h,
+              height: 45,
               decoration: BoxDecoration(
                 color: Theme.of(context).scaffoldBackgroundColor,
                 // border: Border(
@@ -70,7 +69,7 @@ class _ScheduleTabbarState extends State<ScheduleTabbar>
                 controller: _tabController,
                 labelColor: UIConstant.orange,
                 // labelPadding: EdgeInsets.only(top: 10.0),
-                unselectedLabelColor: Colors.black,
+                unselectedLabelColor: Theme.of(context).primaryColor,
                 tabs: [
                   Tab(
                     text: 'Next Schedule',

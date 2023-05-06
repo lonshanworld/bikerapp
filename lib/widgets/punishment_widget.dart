@@ -1,8 +1,6 @@
-
 import "package:delivery/constants/uiconstants.dart";
 import "package:flutter/material.dart";
 import "package:intl/intl.dart";
-import "package:sizer/sizer.dart";
 
 class PunishmentWidget extends StatelessWidget {
 
@@ -31,7 +29,6 @@ class PunishmentWidget extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final valueFormat = new NumberFormat("#,##0.00", "en_US");
-    
 
     Widget stylingContainer(String name, String txt2, {bool value = false,bool isReverse = false}){
       return Row(
@@ -41,14 +38,14 @@ class PunishmentWidget extends StatelessWidget {
               name,
             style: TextStyle(
               color: value ? Colors.grey : isReverse ? UIConstant.orange :Colors.black,
-              fontSize: isReverse ? 16.sp : 12.sp,
+              fontSize: isReverse ? 18 : 14,
             ),
           ),
           Text(
               txt2,
             style: TextStyle(
               color: value ? Colors.grey : isReverse ? Colors.black :  UIConstant.orange,
-              fontSize: isReverse ? 16.sp : 14.sp,
+              fontSize: isReverse ? 18 : 16,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -58,15 +55,15 @@ class PunishmentWidget extends StatelessWidget {
 
     return Container(
       margin: EdgeInsets.symmetric(
-        vertical: 1.h,
+        vertical: 10,
       ),
       padding: EdgeInsets.symmetric(
-        vertical: 2.h,
-        horizontal: 2.h,
+        vertical: 15,
+        horizontal: 15,
       ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(
-          Radius.circular(1.h),
+          Radius.circular(10),
         ),
         boxShadow: [
           if(isSatisfied)BoxShadow(
@@ -91,7 +88,7 @@ class PunishmentWidget extends StatelessWidget {
               value: isSatisfied,
           ),
           Divider(
-            height: 3.h,
+            height: 20,
             color: isSatisfied ? Colors.grey : UIConstant.orange,
             thickness: 1,
           ),
@@ -102,7 +99,7 @@ class PunishmentWidget extends StatelessWidget {
                   shopname,
                   style: TextStyle(
                     color: isSatisfied ? Colors.grey : Colors.black,
-                    fontSize: 12.sp,
+                    fontSize: 14,
                   ),
                 ),
               ),
@@ -110,31 +107,31 @@ class PunishmentWidget extends StatelessWidget {
                 date,
                 style: TextStyle(
                   color: isSatisfied ? Colors.grey : Colors.black,
-                  fontSize: 12.sp,
+                  fontSize: 12,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ],
           ),
           SizedBox(
-            height: 1.h,
+            height: 10,
           ),
           stylingContainer(valueFormat.format(punishmentAmount), " MMK", value: isSatisfied,isReverse: true),
           if(supportname != null)Row(
             children: [
               Icon(
                 Icons.info_outline,
-                size: 24.sp,
+                size: 28,
                 color: isSatisfied ? Colors.grey : UIConstant.orange,
               ),
               SizedBox(
-                width: 1.h,
+                width: 10,
               ),
               Text(
                 "${supportname!} :  ",
                 style: TextStyle(
                   color: isSatisfied ? Colors.grey : Colors.black,
-                  fontSize: 12.sp,
+                  fontSize: 12,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -144,7 +141,7 @@ class PunishmentWidget extends StatelessWidget {
                   supportremark!,
                   style: TextStyle(
                     color: isSatisfied ? Colors.grey : UIConstant.orange,
-                    fontSize: 12.sp,
+                    fontSize: 12,
                   ),
                 ),
               ),

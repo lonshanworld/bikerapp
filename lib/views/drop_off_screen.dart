@@ -6,7 +6,6 @@ import 'package:delivery/routehelper.dart';
 import 'package:delivery/widgets/loading_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:sizer/sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 import "package:get/get.dart";
 
@@ -15,7 +14,7 @@ import '../constants/uiconstants.dart';
 import '../controllers/location_controller.dart';
 import '../widgets/customButton_widget.dart';
 import 'map_screen.dart';
-import 'order_summary_screen.dart';
+
 
 class DropOffScreen extends StatefulWidget {
 
@@ -125,6 +124,11 @@ class _DropOffScreenState extends State<DropOffScreen> {
   @override
   Widget build(BuildContext context) {
 
+    final double deviceWidth = MediaQuery.of(context).size.width;
+    final double deviceHeight = MediaQuery.of(context).size.height;
+    final double oneUnitWidth = deviceWidth / 360;
+    final double oneUnitHeight = deviceHeight/772;
+
     late Marker marker1 = Marker(
       markerId: MarkerId("1"),
       position: LatLng(curlat,curlong),
@@ -200,7 +204,7 @@ class _DropOffScreenState extends State<DropOffScreen> {
         ),
         body: ListView(
           padding: EdgeInsets.symmetric(
-            horizontal: 3.h,
+            horizontal: 20,
           ),
           children: [
             Row(
@@ -208,29 +212,28 @@ class _DropOffScreenState extends State<DropOffScreen> {
               children: [
                 Text(
                     "Customer Map",
-                  style: TextStyle(
-                    fontSize: 12.sp,
+                  style: UIConstant.normal.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 CustomButton(
-                  verticalPadding: 0.5.h,
-                  horizontalPadding: 3.h,
+                  verticalPadding: 5,
+                  horizontalPadding: 20,
                   txt: "Ask for Help",
                   func: (){
 
                   },
                   txtClr: Colors.white,
                   bgClr: UIConstant.orange,
-                  txtsize: 10.sp,
-                  rad: 1.h,
+                  txtsize: 10,
+                  rad: 5,
                 ),
               ],
             ),
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(
-                  Radius.circular(1.5.h),
+                  Radius.circular(10),
                 ),
                 boxShadow: [
                   BoxShadow(
@@ -241,10 +244,10 @@ class _DropOffScreenState extends State<DropOffScreen> {
                   ),
                 ],
               ),
-              height: 50.h,
+              height: deviceHeight / 2,
               child: ClipRRect(
                 borderRadius: BorderRadius.all(
-                  Radius.circular(1.5.h),
+                  Radius.circular(10),
                 ),
                 child: GoogleMap(
                   initialCameraPosition: _initialcameraPosition,
@@ -285,15 +288,14 @@ class _DropOffScreenState extends State<DropOffScreen> {
               children: [
                 Text(
                   orderDetailModel!.phone!,
-                  style: TextStyle(
+                  style: UIConstant.normal.copyWith(
+                    fontWeight: FontWeight.bold,
                     color: UIConstant.orange,
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.bold
                   ),
                 ),
                 CustomButton(
-                  verticalPadding: 0.5.h,
-                  horizontalPadding: 3.h,
+                  verticalPadding: 5,
+                  horizontalPadding: 20,
                   txt: "View large map",
                   func: (){
                     Get.to(() => MapScreen(
@@ -306,29 +308,26 @@ class _DropOffScreenState extends State<DropOffScreen> {
                   },
                   txtClr: Colors.white,
                   bgClr: Colors.grey.shade600,
-                  txtsize: 10.sp,
-                  rad: 1.h,
+                  txtsize: 10,
+                  rad: 5,
                 ),
               ],
             ),
             Text(
               orderDetailModel!.cusName!,
-              style: TextStyle(
-                fontSize: 10.sp,
+              style: UIConstant.small.copyWith(
                 fontWeight: FontWeight.bold,
               ),
             ),
             Text(
               orderDetailModel!.cusAddress!,
-              style: TextStyle(
-                fontSize: 10.sp,
-              ),
+              style: UIConstant.small,
             ),
             SizedBox(
-              height: 1.5.h,
+              height: 10,
             ),
             CustomButton(
-              verticalPadding: 1.h,
+              verticalPadding: 5,
               horizontalPadding: 0,
               txt: "Call",
               func: (){
@@ -336,8 +335,8 @@ class _DropOffScreenState extends State<DropOffScreen> {
               },
               txtClr: Colors.white,
               bgClr: UIConstant.orange,
-              txtsize: 12.sp,
-              rad: 1.h,
+              txtsize: 12,
+              rad: 5,
             ),
             // Row(
             //   children: [
@@ -378,10 +377,10 @@ class _DropOffScreenState extends State<DropOffScreen> {
         ),
         bottomSheet: Container(
           padding: EdgeInsets.only(
-            top: 2.5.h,
-            bottom: 2.5.h,
-            left: 3.h,
-            right: 3.h,
+            top: 20,
+            bottom: 20,
+            left: 25,
+            right: 25,
           ),
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
@@ -394,22 +393,22 @@ class _DropOffScreenState extends State<DropOffScreen> {
               ),
             ],
             borderRadius: BorderRadius.only(
-              topRight: Radius.circular(3.h),
-              topLeft: Radius.circular(3.h),
+              topRight: Radius.circular(20),
+              topLeft: Radius.circular(20),
             ),
             color:  Theme.of(context).brightness == Brightness.dark ? UIConstant.bgDark : UIConstant.bgWhite,
           ),
           child: CustomButton(
-            verticalPadding: 1.h,
-            horizontalPadding: 3.h,
+            verticalPadding: 10,
+            horizontalPadding: 20,
             txt: "Drop off",
             func: (){
               Get.toNamed(RouteHelper.getOrderSummaryPage(orderId: widget.orderId));
             },
             txtClr: Colors.white,
             bgClr: UIConstant.orange,
-            txtsize: 14.sp,
-            rad: 3.h,
+            txtsize: 16,
+            rad: 20,
           ),
         ),
       );

@@ -4,8 +4,6 @@ import "package:delivery/widgets/customButton_widget.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
 import "package:google_maps_flutter/google_maps_flutter.dart";
-import "package:loading_animation_widget/loading_animation_widget.dart";
-import "package:sizer/sizer.dart";
 
 import "../constants/uiconstants.dart";
 import "../models/order_model.dart";
@@ -67,10 +65,10 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
   @override
   Widget build(BuildContext context) {
 
-    // final double deviceWidth = MediaQuery.of(context).size.width;
-    // final double deviceHeight = MediaQuery.of(context).size.height;
-    // final double oneUnitWidth = deviceWidth / 360;
-    // final double oneUnitHeight = deviceHeight/772;
+    final double deviceWidth = MediaQuery.of(context).size.width;
+    final double deviceHeight = MediaQuery.of(context).size.height;
+    final double oneUnitWidth = deviceWidth / 360;
+    final double oneUnitHeight = deviceHeight/772;
 
     return Scaffold(
       appBar: AppBar(
@@ -100,13 +98,13 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
             top: 0,
             left: 0,
             right: 0,
-            bottom: 9.h,
+            bottom: 70,
             child: ListView(
               padding: EdgeInsets.only(
-                left: 3.h,
-                right: 3.h,
-                top: 1.5.h,
-                bottom: widget.hasButton ? 9.h : 1.5.h,
+                left: 20,
+                right: 20,
+                top: 10,
+                bottom: widget.hasButton ? 70 : 10,
               ),
               children: [
                 Row(
@@ -114,28 +112,26 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                   children: [
                     Text(
                       "Ref-No: ${_orderDetailModel.refNo} ",
-                      style:TextStyle(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.bold,
+                      style: UIConstant.minititle.copyWith(
                         color: UIConstant.orange,
                       ),
                     ),
                     CustomButton(
-                      verticalPadding:0.5.h,
-                      horizontalPadding: 1.5.h,
+                      verticalPadding: 5,
+                      horizontalPadding: 10,
                       txt: "Transfer to Others",
                       func: (){
 
                       },
                       txtClr: Colors.white,
                       bgClr: UIConstant.orange,
-                      txtsize: 10.sp,
-                      rad: 1.h,
+                      txtsize: 10,
+                      rad: 5,
                     ),
                   ],
                 ),
                 Container(
-                  height: 17.h,
+                  height: deviceHeight / 17,
                   decoration: BoxDecoration(
                     image: DecorationImage(
                         image: NetworkImage(
@@ -144,7 +140,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                         fit: BoxFit.cover
                     ),
                     borderRadius: BorderRadius.all(
-                      Radius.circular(1.5.h),
+                      Radius.circular(10),
                     ),
                   ),
                 ),
@@ -153,14 +149,13 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                   children: [
                     Text(
                       _orderDetailModel.shopName!,
-                      style: TextStyle(
-                        fontSize: 12.sp,
+                      style: UIConstant.normal.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     CustomButton(
-                      verticalPadding: 0.5.h,
-                      horizontalPadding: 3.h,
+                      verticalPadding: 5,
+                      horizontalPadding: 20,
                       txt: "View Map",
                       func: (){
 
@@ -176,68 +171,60 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                       },
                       txtClr: Colors.white,
                       bgClr: Colors.grey,
-                      txtsize: 10.sp,
-                      rad: 1.h,
+                      txtsize: 10,
+                      rad: 5,
                     ),
                   ],
                 ),
                 SizedBox(
-                  height: 1.h,
+                  height: 10,
                 ),
                 Text(
                   "Customer Info",
-                  style: TextStyle(
-                    fontSize: 12.sp,
+                  style: UIConstant.normal.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 SizedBox(
-                  height: 0.5.h,
+                  height: 10,
                 ),
                 Container(
                   decoration: BoxDecoration(
                     color: Theme.of(context).brightness == Brightness.dark ? UIConstant.bgDark : UIConstant.bgWhite,
                     borderRadius: BorderRadius.all(
-                      Radius.circular(1.5.h),
+                      Radius.circular(10),
                     ),
                   ),
-                  padding: EdgeInsets.all(2.h),
+                  padding: EdgeInsets.all(15),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         _orderDetailModel.phone!,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 10.sp,
+                        style: UIConstant.small.copyWith(
+                          fontWeight: FontWeight.bold
                         ),
                       ),
                       SizedBox(
-                        height: 1.h,
+                        height: 10,
                       ),
                       Text(
                         _orderDetailModel.cusName!,
-                        style: TextStyle(
-                          fontSize: 10.sp,
-
-                        ),
+                        style: UIConstant.small,
                       ),
                       Text(
                         "${_orderDetailModel.cusAddress} | Note: ${_orderDetailModel.addressNote}",
-                        style: TextStyle(
-                          fontSize: 10.sp,
-                        ),
+                        style: UIConstant.tinytext,
                       ),
                     ],
                   ),
                 ),
                 SizedBox(
-                  height: 2.h,
+                  height: 15,
                 ),
                 Text(
                   "Order Detail",
-                  style: TextStyle(
-                    fontSize: 14.sp,
+                  style: UIConstant.normal.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -258,24 +245,21 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                   ],
                 ),
                 SizedBox(
-                  height: 2.h,
+                  height: 15,
                 ),
                 Text(
                   "Order Summary",
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: UIConstant.minititle,
                 ),
                 SizedBox(
-                  height: 1.h,
+                  height: 10,
                 ),
                 Container(
-                  padding: EdgeInsets.all(2.h),
+                  padding: EdgeInsets.all(15),
                   decoration: BoxDecoration(
                     color : Theme.of(context).brightness == Brightness.dark ? UIConstant.bgDark : UIConstant.bgWhite,
                     borderRadius: BorderRadius.all(
-                      Radius.circular(1.5.h),
+                      Radius.circular(10),
                     ),
                   ),
                   child: Column(
@@ -285,57 +269,48 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                         children: [
                           Text(
                             "Order Total",
-                            style: TextStyle(
-                              fontSize: 11.sp,
-                            ),
+                            style: UIConstant.small,
                           ),
                           Text(
                             "${_orderDetailModel.totalOnlinePrice} MMK",
-                            style: TextStyle(
-                                fontSize: 11.sp,
-                                fontWeight: FontWeight.bold
+                            style: UIConstant.small.copyWith(
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ],
                       ),
                       SizedBox(
-                        height: 1.h,
+                        height: 10,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
                             "Delivery Charges",
-                            style: TextStyle(
-                              fontSize: 11.sp,
-                            ),
+                            style: UIConstant.small,
                           ),
                           Text(
                             "${_orderDetailModel.deliCharges} MMK",
-                            style: TextStyle(
-                                fontSize: 11.sp,
-                                fontWeight: FontWeight.bold
+                            style: UIConstant.small.copyWith(
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ],
                       ),
                       SizedBox(
-                        height: 1.h,
+                        height: 10,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
                             "Cash Collect",
-                            style: TextStyle(
-                              fontSize: 11.sp,
-                            ),
+                            style: UIConstant.small,
                           ),
                           Text(
                             "${_orderDetailModel.totalOnlinePrice! + _orderDetailModel.deliCharges!} MMK",
-                            style: TextStyle(
-                                fontSize: 11.sp,
-                                fontWeight: FontWeight.bold
+                            style: UIConstant.small.copyWith(
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ],
@@ -351,7 +326,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
             left: 0,
             right: 0,
             child: Container(
-              padding: EdgeInsets.all(3.h),
+              padding: EdgeInsets.all(20),
               decoration: BoxDecoration(
                 boxShadow: [
                   BoxShadow(
@@ -363,12 +338,12 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                 ],
                 color: Theme.of(context).brightness == Brightness.dark ? UIConstant.bgDark : UIConstant.bgWhite,
                 borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(3.h),
-                  topRight: Radius.circular(3.h),
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
                 ),
               ),
               child: CustomButton(
-                verticalPadding: 1.h,
+                verticalPadding: 10,
                 horizontalPadding: 0,
                 txt: "Pick up",
                 func: (){
@@ -376,8 +351,8 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                 },
                 txtClr: Colors.white,
                 bgClr: UIConstant.orange,
-                txtsize: 14.sp,
-                rad: 1.5.h,
+                txtsize: 16,
+                rad: 10,
               ),
             ),
           ),

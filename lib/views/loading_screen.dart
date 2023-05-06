@@ -1,7 +1,7 @@
 import 'package:delivery/constants/uiconstants.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:sizer/sizer.dart';
+
 
 import '../widgets/loading_widget.dart';
 

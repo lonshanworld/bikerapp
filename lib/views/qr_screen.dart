@@ -11,7 +11,6 @@ import "package:flutter/material.dart";
 
 import "package:get/get.dart";
 import "package:qr_flutter/qr_flutter.dart";
-import "package:sizer/sizer.dart";
 
 import "../models/order_model.dart";
 import "../widgets/qr_shop_widget.dart";
@@ -112,23 +111,20 @@ class _QRscreenState extends State<QRscreen> {
         color: UIConstant.orange,
         child: ListView(
           padding: EdgeInsets.only(
-            top: 3.h,
-            bottom: 15.h,
-            left: 3.h,
-            right: 3.h,
+            top: 20,
+            bottom: 120,
+            left: 20,
+            right: 20,
           ),
           children: [
             Text(
               "Order Pickup QR Scan",
-              style: TextStyle(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.bold,
-              ),
+              style: UIConstant.minititle,
             ),
             Container(
               alignment: Alignment.center,
               margin: EdgeInsets.symmetric(
-                vertical: 1.5.h,
+                vertical: 10,
               ),
               child: QrImage(
                 data: widget.orderId,
@@ -152,14 +148,13 @@ class _QRscreenState extends State<QRscreen> {
             ),
             Text(
               "Shops",
-              style: TextStyle(
+              style: UIConstant.normal.copyWith(
                 color: Colors.grey,
-                fontSize: 14.sp,
                 fontWeight: FontWeight.bold,
               ),
             ),
             SizedBox(
-              height: 1.5.h,
+              height: 10,
             ),
             if(orderItemShopnameList.isNotEmpty)Column(
               children: List.generate(
@@ -179,10 +174,10 @@ class _QRscreenState extends State<QRscreen> {
       ),
       bottomSheet: Container(
         padding: EdgeInsets.only(
-          top: 2.5.h,
-          bottom: 2.5.h,
-          left: 3.h,
-          right: 3.h,
+          top: 20,
+          bottom: 20,
+          left: 25,
+          right: 25,
         ),
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
@@ -195,13 +190,13 @@ class _QRscreenState extends State<QRscreen> {
             ),
           ],
           borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(3.h),
-            topRight:  Radius.circular(3.h),
+            topLeft: Radius.circular(20),
+            topRight:  Radius.circular(20),
           )
         ),
         child: CustomButton(
-            verticalPadding: 1.h,
-            horizontalPadding: 3.h,
+            verticalPadding: 10,
+            horizontalPadding: 20,
             txt: "Confirm",
             func: ()async{
               if(!pickupFlaglist.contains(false)){
@@ -213,8 +208,8 @@ class _QRscreenState extends State<QRscreen> {
             },
             txtClr: Colors.white,
             bgClr: pickupFlaglist.contains(false) ? Colors.grey : Colors.green,
-            txtsize: 14.sp,
-            rad: 3.h,
+            txtsize: 16,
+            rad: 20,
         ),
       ),
     );

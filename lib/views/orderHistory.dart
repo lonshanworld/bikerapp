@@ -8,7 +8,6 @@ import "package:delivery/widgets/no_item_widget.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
 import "package:intl/intl.dart";
-import "package:sizer/sizer.dart";
 
 import "order_detail_screen.dart";
 
@@ -89,7 +88,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
         ListView(
           children: [
             SizedBox(
-              height: 2.h,
+              height: 15,
             ),
             NoItemListWidget(txt: "There is no item in order history"),
           ],
@@ -97,19 +96,19 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
           :
         ListView.builder(
           padding: EdgeInsets.symmetric(
-            vertical: 1.5.h,
+            vertical: 10,
           ),
           itemCount: orderHistoryList.length,
           itemBuilder: (ctx,index){
             OrderDetailModel _item = orderHistoryList[index];
             return Padding(
               padding: EdgeInsets.symmetric(
-                vertical: 1.5.h,
-                horizontal: 3.h,
+                vertical: 10,
+                horizontal: 20,
               ),
               child: InkWell(
                 borderRadius: BorderRadius.all(
-                  Radius.circular(1.5.h),
+                  Radius.circular(10),
                 ),
                 onTap: (){
                   // _generalController.getOrderDetails(_item.orderId).then((value){
@@ -127,7 +126,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
                 child: Ink(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(
-                      Radius.circular(1.5.h),
+                      Radius.circular(10),
                     ),
                     boxShadow: [
                       BoxShadow(
@@ -138,7 +137,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
                       ),
                     ],
                   ),
-                  padding: EdgeInsets.all(2.h),
+                  padding: EdgeInsets.all(15),
 
                   child: Column(
                     children: [
@@ -147,26 +146,25 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
                         children: [
                           Text(
                             _item.cusName!,
-                            style: TextStyle(
+                            style: UIConstant.normal.copyWith(
                               fontWeight: FontWeight.bold,
-                              fontSize: 14.sp,
                             ),
                           ),
                           Container(
                             decoration: BoxDecoration(
                               color: getcolor(_item.orderStatus!),
                               borderRadius: BorderRadius.all(
-                                Radius.circular(1.5.h),
+                                Radius.circular(10),
                               ),
                             ),
                             padding: EdgeInsets.symmetric(
-                              vertical: 0.5.h,
-                              horizontal: 2.h,
+                              vertical: 3,
+                              horizontal: 15,
                             ),
                             child: Text(
                               _item.orderStatus!,
                               style: TextStyle(
-                                fontSize: 8.sp,
+                                fontSize: 8,
                               ),
                             ),
                           )
@@ -177,16 +175,14 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
                         children: [
                           Text(
                             _item.phone!,
-                            style: TextStyle(
-                              fontSize: 14.sp,
+                            style: UIConstant.normal.copyWith(
                               color: UIConstant.secondarytxtClr,
                             ),
                           ),
                           Text(
                             changeDateFormat(_item.orderDate!),
-                            style: TextStyle(
-                                fontSize: 10.sp,
-                                fontWeight: FontWeight.bold
+                            style: UIConstant.tinytext.copyWith(
+                              fontWeight: FontWeight.bold,
                             ),
                           )
                         ],

@@ -8,7 +8,6 @@ import"package:get/get.dart";
 import "package:image_picker/image_picker.dart";
 import "dart:io";
 
-import "package:sizer/sizer.dart";
 
 import "../routehelper.dart";
 
@@ -63,9 +62,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     Text customText(String name, String txt){
       return Text(
         "$name : $txt",
-        style: TextStyle(
-          fontSize: 10.sp,
-        ),
+        style: UIConstant.small,
       );
     }
 
@@ -75,8 +72,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
       body: ListView(
         padding: EdgeInsets.symmetric(
-          vertical: 3.h,
-          horizontal: 3.h,
+          vertical: 20,
+          horizontal: 20,
         ),
         children: [
           Row(
@@ -85,28 +82,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Column(
                 children: [
                   if(!isShowImage)CircleAvatar(
-                    radius: 8.h,
+                    radius: 60,
                     backgroundImage: NetworkImage(
                       userAccountController.bikermodel[0].profileImage ?? 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgWv75KuTKR5tEa6fNHmINh0SrIAoWhlAYbvoxnG7poIN8dLV4Fxe5IErjDo2RG6grnyU&usqp=CAU',
                     ),
                   ),
                   if(isShowImage)CircleAvatar(
-                    radius: 8.h,
+                    radius: 60,
                     backgroundImage: FileImage(
                       newselectedImage!,
                     ),
                   ),
                   CustomButton(
-                    verticalPadding: 0.5.h,
-                    horizontalPadding: 3.h,
+                    verticalPadding: 5,
+                    horizontalPadding: 20,
                     txt: "Upload",
                     func: (){
                       getCamera();
                     },
                     txtClr: Colors.white,
                     bgClr: UIConstant.orange,
-                    txtsize: 10.sp,
-                    rad: 1.h,
+                    txtsize: 12,
+                    rad: 5,
                   ),
                 ],
               ),
@@ -114,74 +111,73 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 children: [
                   Text(
                     userAccountController.bikermodel[0].fullName!,
-                    style: TextStyle(
-                      fontSize: 14.sp,
+                    style: UIConstant.normal.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   SizedBox(
-                    height: 1.h,
+                    height: 10,
                   ),
                   customText("Phone", userAccountController.bikermodel[0].phone!),
                   Text("================"),
                   customText("Level", userAccountController.bikermodel[0].level!),
                   SizedBox(
-                    height: 1.h,
+                    height: 10,
                   ),
                   customText("MISC", userAccountController.bikermodel[0].miscUsage.toString()),
                   SizedBox(
-                    height: 1.h,
+                    height: 10,
                   ),
                   customText("Zone", userAccountController.bikermodel[0].zoneId.toString()),
                   SizedBox(
-                    height: 1.h,
+                    height: 10,
                   ),
                   customText("Area", userAccountController.bikermodel[0].areaId.toString()),
                   SizedBox(
-                    height: 1.h,
+                    height: 10,
                   ),
                 ],
               ),
             ],
           ),
           SizedBox(
-            height: 5.h,
+            height: 40,
           ),
           CustomTextField(
             txtcontroller: nameController,
-            txtsize: 12.sp,
-            verticalpadding: 1.5.h,
-            horizontalpadding: 2.h,
+            txtsize: 14,
+            verticalpadding: 10,
+            horizontalpadding: 15,
             textInputType: TextInputType.text,
             hinttxt: "Enter your name",
           ),
           SizedBox(
-            height: 1.5.h,
+            height: 10,
           ),
           CustomTextField(
             txtcontroller: nrcController,
-            txtsize: 12.sp,
-            verticalpadding: 1.5.h,
-            horizontalpadding: 2.h,
+            txtsize: 14,
+            verticalpadding: 10,
+            horizontalpadding: 15,
             textInputType: TextInputType.text,
             hinttxt: "Enter your NRC",
           ),
           SizedBox(
-            height: 1.5.h,
+            height: 10,
           ),
           CustomTextField(
             txtcontroller: emailController,
-            txtsize: 12.sp,
-            verticalpadding: 1.5.h,
-            horizontalpadding: 2.h,
+            txtsize: 14,
+            verticalpadding: 10,
+            horizontalpadding: 15,
             textInputType: TextInputType.text,
             hinttxt: "Enter your email",
           ),
           SizedBox(
-            height: 3.h,
+            height: 25,
           ),
           CustomButton(
-            verticalPadding: 1.5.h,
+            verticalPadding: 15,
             horizontalPadding: 0,
             txt: "Update",
             func: ()async{
@@ -195,8 +191,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             },
             txtClr: Colors.white,
             bgClr: UIConstant.orange,
-            txtsize: 12.sp,
-            rad: 1.5.h,
+            txtsize: 14,
+            rad: 10,
           ),
         ],
       ),

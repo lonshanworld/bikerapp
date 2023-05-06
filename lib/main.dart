@@ -19,7 +19,6 @@ import 'package:sqflite/sqflite.dart';
 
 import 'constants/uiconstants.dart';
 import 'dependencies.dart';
-import 'package:sizer/sizer.dart';
 
 import 'models/noti_model.dart';
 
@@ -161,20 +160,16 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return Sizer(
-      builder: (context,orientation, deviceType) {
-        return GetMaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Quickfood BikerMobile',
-          theme: UIConstant.lightTheme,
-          darkTheme: UIConstant.darkTheme,
-          themeMode: ThemeService().theme,
-          // locale: LanguageService().locale,
-          // translations: LanguageKeyStrings(),
-          initialRoute: RouteHelper.getSplashPage(),
-          getPages: RouteHelper.routes,
-        );
-      }
+    return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Quickfood BikerMobile',
+      theme: UIConstant.lightTheme,
+      darkTheme: UIConstant.darkTheme,
+      themeMode: ThemeService().theme,
+      // locale: LanguageService().locale,
+      // translations: LanguageKeyStrings(),
+      initialRoute: RouteHelper.getSplashPage(),
+      getPages: RouteHelper.routes,
     );
   }
 

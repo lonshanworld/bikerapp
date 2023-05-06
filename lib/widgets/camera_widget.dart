@@ -2,7 +2,6 @@ import "dart:io";
 
 import "package:delivery/constants/uiconstants.dart";
 import "package:flutter/material.dart";
-import "package:sizer/sizer.dart";
 
 class CameraWidget extends StatelessWidget {
 
@@ -38,7 +37,7 @@ class CameraWidget extends StatelessWidget {
         height: height,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(
-            Radius.circular(1.5.h),
+            Radius.circular(10),
           ),
           color: Theme.of(context).scaffoldBackgroundColor,
           border: Border.all(
@@ -53,7 +52,7 @@ class CameraWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(Icons.camera_alt, color: Colors.orange),
-            SizedBox(height: 1.h),
+            SizedBox(height: 10),
             Text("Capture payment Document")
           ],
         )
@@ -63,7 +62,7 @@ class CameraWidget extends StatelessWidget {
             Container(
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(
-                    Radius.circular(1.5.h),
+                    Radius.circular(10),
                   ),
                   image: DecorationImage(
                       image: FileImage(
@@ -79,7 +78,7 @@ class CameraWidget extends StatelessWidget {
               child: IconButton(
                 icon: Icon(
                   Icons.cancel,
-                  size: 4.h,
+                  size: 32,
                   color: UIConstant.orange,
                 ),
                 onPressed: removephotofun,

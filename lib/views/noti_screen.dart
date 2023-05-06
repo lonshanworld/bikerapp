@@ -2,8 +2,6 @@ import "package:delivery/constants/uiconstants.dart";
 import "package:delivery/controllers/noti_controller.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
-import "package:intl/intl.dart";
-import "package:sizer/sizer.dart";
 
 import "../models/noti_model.dart";
 
@@ -27,7 +25,7 @@ class NotiScreen extends StatelessWidget {
             :
         ListView.builder(
           padding: EdgeInsets.symmetric(
-            vertical: 1.5.h,
+            vertical: 10,
           ),
           itemCount: notiController.notiList.length,
           itemBuilder: (_, index) {
@@ -56,11 +54,11 @@ class NotiScreen extends StatelessWidget {
                   )
               ),
               padding: EdgeInsets.symmetric(
-                  horizontal: 3.h,
-                  vertical: 2.h
+                  horizontal: 20,
+                  vertical: 15,
               ),
               margin: EdgeInsets.symmetric(
-                horizontal: 3.h,
+                horizontal: 20,
               ),
 
               child: Column(
@@ -72,28 +70,20 @@ class NotiScreen extends StatelessWidget {
                       Expanded(
                         child: Text(
                           item.title,
-                          style: TextStyle(
-                            fontSize: 12.sp,
+                          style: UIConstant.normal.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
                       Text(
                         item.date,
-                        style: TextStyle(
-                          color: UIConstant.orange,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 10.sp,
-                        ),
+                        style: UIConstant.small,
                       ),
                     ],
                   ),
                   Text(
                     item.body,
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 12.sp,
-                    ),
+                    style: UIConstant.small,
                   ),
                 ],
               ),

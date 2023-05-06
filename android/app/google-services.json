@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:511888475060:android:90a59265a941e4fb1ee8e1",
         "android_client_info": {
-          "package_name": "com.quickfood.biker"
+          "package_name": "com.delivery.quickfood"
         }
       },
       "oauth_client": [
@@ -29,6 +29,13 @@
             {
               "client_id": "511888475060-uqkfat3vhc37g087lbcu8mm2qsckhev7.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "511888475060-mgken4ao83pe8oa0t1cm4hjfad2b1ac3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.delivery.quickfood"
+              }
             }
           ]
         }
@@ -36,7 +43,7 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:511888475060:android:e809705aa2dd4c7c1ee8e1",
+        "mobilesdk_app_id": "1:511888475060:android:94959336d66f8df21ee8e1",
         "android_client_info": {
           "package_name": "com.quickfood.biker"
         }
@@ -58,6 +65,13 @@
             {
               "client_id": "511888475060-uqkfat3vhc37g087lbcu8mm2qsckhev7.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "511888475060-mgken4ao83pe8oa0t1cm4hjfad2b1ac3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.delivery.quickfood"
+              }
             }
           ]
         }

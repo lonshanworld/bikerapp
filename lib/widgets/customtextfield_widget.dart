@@ -1,7 +1,5 @@
-
 import "package:delivery/constants/uiconstants.dart";
 import "package:flutter/material.dart";
-import "package:sizer/sizer.dart";
 
 class CustomTextField extends StatelessWidget {
 
@@ -33,18 +31,18 @@ class CustomTextField extends StatelessWidget {
       decoration: InputDecoration(
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(color: UIConstant.orange, width:2),
-          borderRadius: BorderRadius.circular(1.5.h),
+          borderRadius: BorderRadius.circular(10),
         ),
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(color: Colors.grey, width: 2),
-          borderRadius: BorderRadius.circular(1.5.h),
+          borderRadius: BorderRadius.circular(10),
         ),
         contentPadding: EdgeInsets.symmetric(
           vertical: verticalpadding,
           horizontal: horizontalpadding,
         ),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(1.5.h),
+          borderRadius: BorderRadius.circular(10),
         ),
         hintText: hinttxt,
         hintStyle: TextStyle(color: Colors.grey),

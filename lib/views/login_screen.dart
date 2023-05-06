@@ -6,7 +6,6 @@ import "package:delivery/widgets/customButton_widget.dart";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import 'package:get/get.dart';
-import "package:sizer/sizer.dart";
 
 import "../widgets/snackBar_custom_widget.dart";
 import "loading_screen.dart";
@@ -35,7 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
         body: Center(
           child: ListView(
             padding: EdgeInsets.symmetric(
-              horizontal: 5.w,
+              horizontal: 20,
             ),
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
@@ -43,43 +42,38 @@ class _LoginScreenState extends State<LoginScreen> {
               Row(
                 children: [
                   Container(
-                    width: 20.w,
-                    height: 20.w,
+                    width: 60,
+                    height: 60,
                     decoration: BoxDecoration(
                       color: UIConstant.pink,
                       borderRadius: BorderRadius.all(
-                        Radius.circular(1.h,),
+                        Radius.circular(10),
                       ),
                     ),
                     alignment: Alignment.center,
                     child: Icon(
                       Icons.phone_iphone,
-                      size: 40.sp,
+                      size: 40,
                       color: UIConstant.orange,
                     ),
                   ),
                 ],
               ),
               SizedBox(
-                height: 2.h,
+                height: 20,
               ),
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
                   "Log In with phone number",
-                  style: TextStyle(
-                    fontSize: 18.sp,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: UIConstant.title,
                 ),
               ),
               SizedBox(
-                height: 2.h,
+                height: 15,
               ),
               TextField(
-                style: TextStyle(
-                  fontSize: 14.sp,
-                ),
+                style: UIConstant.minititle,
                 controller: textEditingController,
                 maxLength: 11,
                 keyboardType: TextInputType.phone,
@@ -88,36 +82,34 @@ class _LoginScreenState extends State<LoginScreen> {
                 ] ,
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.symmetric(
-                    vertical: 2.h,
-                    horizontal: 3.h,
+                    vertical: 15,
+                    horizontal: 20,
                   ),
                   fillColor: Colors.grey.shade200,
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(1.h)),
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
                     borderSide: BorderSide(
                       color: Colors.white,
                     ),
                   ),
                   hintText: "Enter Your Phone Number",
-                  helperStyle:  TextStyle(
-                    fontSize: 10.sp,
-                  ),
+                  helperStyle:  UIConstant.tinytext,
                   focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(1.h)),
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
                     borderSide: BorderSide(color: UIConstant.orange, width:2),
                   ),
                   enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(1.h)),
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
                     borderSide: BorderSide(color: Colors.grey, width: 2),
                   ),
                 ),
                 textInputAction: TextInputAction.done,
               ),
               SizedBox(
-                height: 2.h,
+                height: 15,
               ),
               CustomButton(
-                verticalPadding: 1.5.h,
+                verticalPadding: 10,
                 horizontalPadding: 0,
                 txt: "Login",
                 func: (){
@@ -151,8 +143,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 },
                 txtClr: Colors.white,
                 bgClr: UIConstant.orange,
-                txtsize: 14.sp,
-                rad: 1.h,
+                txtsize: 16,
+                rad: 10,
               ),
             ],
           ),
