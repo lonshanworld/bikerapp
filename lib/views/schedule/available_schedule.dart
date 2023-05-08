@@ -21,6 +21,10 @@ class _AvailableScheduleState extends State<AvailableSchedule> {
 
   @override
   Widget build(BuildContext context) {
+
+    final deviceHeight = MediaQuery.of(context).size.height;
+    final deviceWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       body: RefreshIndicator(
         color: UIConstant.orange,
@@ -30,23 +34,26 @@ class _AvailableScheduleState extends State<AvailableSchedule> {
           Get.back();
         },
         child: Obx((){
-          return Container(
-            margin: EdgeInsets.symmetric(
-                vertical: 10,
+          return Center(
+            child: Container(
+              margin: EdgeInsets.symmetric(
+                  vertical: 10,
+              ),
+              height: deviceHeight,
+              width: deviceWidth > 500 ? deviceWidth * 0.8 : deviceWidth,
+              child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: scheduleController.availableScheduleList.length,
+                  itemBuilder: (context, index) {
+                    ScheduleModel item = scheduleController.availableScheduleList[index];
+                    return ScheduleWidget(
+                      scheduleName: item.scheduleName!,
+                      scheduleId: item.scheduleId!,
+                      startSchedule: item.startSchedule!,
+                      endSchedule: item.endSchedule!,
+                    );
+                  }),
             ),
-            height: MediaQuery.of(context).size.height,
-            child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: scheduleController.availableScheduleList.length,
-                itemBuilder: (context, index) {
-                  ScheduleModel item = scheduleController.availableScheduleList[index];
-                  return ScheduleWidget(
-                    scheduleName: item.scheduleName!,
-                    scheduleId: item.scheduleId!,
-                    startSchedule: item.startSchedule!,
-                    endSchedule: item.endSchedule!,
-                  );
-                }),
           );
         }),
       ),

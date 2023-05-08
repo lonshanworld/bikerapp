@@ -305,8 +305,8 @@ class _MapScreenState extends State<MapScreen> {
                         Get.back();
                       },
                       icon: Icon(
-                        Icons.arrow_back,
-                        size: 30,
+                        Icons.arrow_back_ios,
+                        size: 28,
                         color: UIConstant.orange,
                       ),
                     ),
@@ -402,8 +402,8 @@ class _MapScreenState extends State<MapScreen> {
                       Get.back();
                     },
                     icon: Icon(
-                      Icons.arrow_back,
-                      size: 30,
+                      Icons.arrow_back_ios,
+                      size: 28,
                       color: UIConstant.orange,
                     ),
                   ),

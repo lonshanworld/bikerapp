@@ -42,9 +42,11 @@ class _ScheduleTabbarState extends State<ScheduleTabbar>
           leading: IconButton(
             icon: Icon(
               Icons.arrow_back_ios,
+              size: 28,
             ),
             onPressed: () {
-              Get.offAllNamed("/home");
+              // Get.offAllNamed("/home");
+              Get.back();
             },
           ),
           title: Text(

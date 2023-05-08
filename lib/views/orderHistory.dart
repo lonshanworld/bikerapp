@@ -67,15 +67,19 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
   @override
   Widget build(BuildContext context) {
 
+    final deviceWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Order History"),
         leading: IconButton(
           icon: Icon(
-            Icons.arrow_back,
+            Icons.arrow_back_ios,
+            size: 28,
           ),
-          onPressed: (){
-            Get.offAllNamed("/home");
+          onPressed: () {
+            // Get.offAllNamed("/home");
+            Get.back();
           },
         ),
       ),
@@ -83,117 +87,213 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
           ?
         LoadingWidget()
           :
-        (orderHistoryList.isEmpty)
-          ?
-        ListView(
-          children: [
-            SizedBox(
-              height: 15,
-            ),
-            NoItemListWidget(txt: "There is no item in order history"),
-          ],
-        )
-          :
-        ListView.builder(
-          padding: EdgeInsets.symmetric(
-            vertical: 10,
-          ),
-          itemCount: orderHistoryList.length,
-          itemBuilder: (ctx,index){
-            OrderDetailModel _item = orderHistoryList[index];
-            return Padding(
+        // (orderHistoryList.isEmpty)
+        //   ?
+        Center(
+          child: SizedBox(
+            width: deviceWidth > 500 ? deviceWidth * 0.8 : deviceWidth,
+            child: ListView(
               padding: EdgeInsets.symmetric(
-                vertical: 10,
-                horizontal: 20,
+                vertical: 10
               ),
-              child: InkWell(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10),
-                ),
-                onTap: (){
-                  // _generalController.getOrderDetails(_item.orderId).then((value){
-                  //   Get.to(()=> OrderDetailScreen(
-                  //     bikername:  _generalController.bikerModel[0].fullName,
-                  //     orderDetailModel: value,
-                  //     hasButton: false,
-                  //   ));
-                  // });
-                  Get.offNamed(RouteHelper.getOrderDetailPage(
-                    orderId: _item.orderId!,
-                    hasButton: false,
-                  ));
-                },
-                child: Ink(
-                  decoration: BoxDecoration(
+              children: [
+                if(orderHistoryList.isEmpty)NoItemListWidget(txt: "There is no item in order history"),
+                if(orderHistoryList.isNotEmpty)for(OrderDetailModel _item in orderHistoryList)Padding(
+                  padding: EdgeInsets.symmetric(
+                    vertical: 10,
+                    horizontal: 20,
+                  ),
+                  child: InkWell(
                     borderRadius: BorderRadius.all(
                       Radius.circular(10),
                     ),
-                    boxShadow: [
-                      BoxShadow(
-                        color:Theme.of(context).brightness == Brightness.dark ? Colors.grey.shade800 : Colors.grey.shade300,
-                        blurRadius: 4.0,
-                        spreadRadius: 1.0,
-                        offset: Offset(2.0, 2.0),
+                    onTap: (){
+                      // _generalController.getOrderDetails(_item.orderId).then((value){
+                      //   Get.to(()=> OrderDetailScreen(
+                      //     bikername:  _generalController.bikerModel[0].fullName,
+                      //     orderDetailModel: value,
+                      //     hasButton: false,
+                      //   ));
+                      // });
+                      Get.offNamed(RouteHelper.getOrderDetailPage(
+                        orderId: _item.orderId!,
+                        hasButton: false,
+                      ));
+                    },
+                    child: Ink(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color:Theme.of(context).brightness == Brightness.dark ? Colors.grey.shade800 : Colors.grey.shade300,
+                            blurRadius: 4.0,
+                            spreadRadius: 1.0,
+                            offset: Offset(2.0, 2.0),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                  padding: EdgeInsets.all(15),
+                      padding: EdgeInsets.all(15),
 
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      child: Column(
                         children: [
-                          Text(
-                            _item.cusName!,
-                            style: UIConstant.normal.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                _item.cusName!,
+                                style: UIConstant.normal.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: getcolor(_item.orderStatus!),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(10),
+                                  ),
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                  vertical: 3,
+                                  horizontal: 15,
+                                ),
+                                child: Text(
+                                  _item.orderStatus!,
+                                  style: TextStyle(
+                                    fontSize: 8,
+                                  ),
+                                ),
+                              )
+                            ],
                           ),
-                          Container(
-                            decoration: BoxDecoration(
-                              color: getcolor(_item.orderStatus!),
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                _item.phone!,
+                                style: UIConstant.normal.copyWith(
+                                  color: UIConstant.secondarytxtClr,
+                                ),
                               ),
-                            ),
-                            padding: EdgeInsets.symmetric(
-                              vertical: 3,
-                              horizontal: 15,
-                            ),
-                            child: Text(
-                              _item.orderStatus!,
-                              style: TextStyle(
-                                fontSize: 8,
-                              ),
-                            ),
+                              Text(
+                                changeDateFormat(_item.orderDate!),
+                                style: UIConstant.tinytext.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              )
+                            ],
                           )
                         ],
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            _item.phone!,
-                            style: UIConstant.normal.copyWith(
-                              color: UIConstant.secondarytxtClr,
-                            ),
-                          ),
-                          Text(
-                            changeDateFormat(_item.orderDate!),
-                            style: UIConstant.tinytext.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          )
-                        ],
-                      )
-                    ],
+                    ),
                   ),
-                ),
-              ),
-            );
-          },
+                )
+              ],
+            ),
+          ),
         )
+        //   :
+        // ListView.builder(
+        //   padding: EdgeInsets.symmetric(
+        //     vertical: 10,
+        //   ),
+        //   itemCount: orderHistoryList.length,
+        //   itemBuilder: (ctx,index){
+        //     OrderDetailModel _item = orderHistoryList[index];
+        //     return Padding(
+        //       padding: EdgeInsets.symmetric(
+        //         vertical: 10,
+        //         horizontal: 20,
+        //       ),
+        //       child: InkWell(
+        //         borderRadius: BorderRadius.all(
+        //           Radius.circular(10),
+        //         ),
+        //         onTap: (){
+        //           // _generalController.getOrderDetails(_item.orderId).then((value){
+        //           //   Get.to(()=> OrderDetailScreen(
+        //           //     bikername:  _generalController.bikerModel[0].fullName,
+        //           //     orderDetailModel: value,
+        //           //     hasButton: false,
+        //           //   ));
+        //           // });
+        //           Get.offNamed(RouteHelper.getOrderDetailPage(
+        //             orderId: _item.orderId!,
+        //             hasButton: false,
+        //           ));
+        //         },
+        //         child: Ink(
+        //           decoration: BoxDecoration(
+        //             borderRadius: BorderRadius.all(
+        //               Radius.circular(10),
+        //             ),
+        //             boxShadow: [
+        //               BoxShadow(
+        //                 color:Theme.of(context).brightness == Brightness.dark ? Colors.grey.shade800 : Colors.grey.shade300,
+        //                 blurRadius: 4.0,
+        //                 spreadRadius: 1.0,
+        //                 offset: Offset(2.0, 2.0),
+        //               ),
+        //             ],
+        //           ),
+        //           padding: EdgeInsets.all(15),
+        //
+        //           child: Column(
+        //             children: [
+        //               Row(
+        //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //                 children: [
+        //                   Text(
+        //                     _item.cusName!,
+        //                     style: UIConstant.normal.copyWith(
+        //                       fontWeight: FontWeight.bold,
+        //                     ),
+        //                   ),
+        //                   Container(
+        //                     decoration: BoxDecoration(
+        //                       color: getcolor(_item.orderStatus!),
+        //                       borderRadius: BorderRadius.all(
+        //                         Radius.circular(10),
+        //                       ),
+        //                     ),
+        //                     padding: EdgeInsets.symmetric(
+        //                       vertical: 3,
+        //                       horizontal: 15,
+        //                     ),
+        //                     child: Text(
+        //                       _item.orderStatus!,
+        //                       style: TextStyle(
+        //                         fontSize: 8,
+        //                       ),
+        //                     ),
+        //                   )
+        //                 ],
+        //               ),
+        //               Row(
+        //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //                 children: [
+        //                   Text(
+        //                     _item.phone!,
+        //                     style: UIConstant.normal.copyWith(
+        //                       color: UIConstant.secondarytxtClr,
+        //                     ),
+        //                   ),
+        //                   Text(
+        //                     changeDateFormat(_item.orderDate!),
+        //                     style: UIConstant.tinytext.copyWith(
+        //                       fontWeight: FontWeight.bold,
+        //                     ),
+        //                   )
+        //                 ],
+        //               )
+        //             ],
+        //           ),
+        //         ),
+        //       ),
+        //     );
+        //   },
+        // )
     );
   }
 }

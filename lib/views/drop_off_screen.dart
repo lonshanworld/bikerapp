@@ -126,8 +126,6 @@ class _DropOffScreenState extends State<DropOffScreen> {
 
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double deviceHeight = MediaQuery.of(context).size.height;
-    final double oneUnitWidth = deviceWidth / 360;
-    final double oneUnitHeight = deviceHeight/772;
 
     late Marker marker1 = Marker(
       markerId: MarkerId("1"),
@@ -178,10 +176,12 @@ class _DropOffScreenState extends State<DropOffScreen> {
           ),
           leading: IconButton(
             icon: Icon(
-              Icons.arrow_back,
+              Icons.arrow_back_ios,
+              size: 28,
             ),
             onPressed: (){
-              Get.offAllNamed(RouteHelper.getHomePage());
+              // Get.offAllNamed(RouteHelper.getHomePage());
+              Get.back();
             },
           ),
         ),
@@ -202,178 +202,183 @@ class _DropOffScreenState extends State<DropOffScreen> {
             },
           ),
         ),
-        body: ListView(
-          padding: EdgeInsets.symmetric(
-            horizontal: 20,
-          ),
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        body: Center(
+          child: SizedBox(
+            width: deviceWidth > 500 ? deviceWidth * 0.85 : deviceWidth,
+            child: ListView(
+              padding: EdgeInsets.symmetric(
+                horizontal: 20,
+              ),
               children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                        "Customer Map",
+                      style: UIConstant.normal.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    CustomButton(
+                      verticalPadding: 5,
+                      horizontalPadding: 20,
+                      txt: "Ask for Help",
+                      func: (){
+
+                      },
+                      txtClr: Colors.white,
+                      bgClr: UIConstant.orange,
+                      txtsize: 10,
+                      rad: 5,
+                    ),
+                  ],
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Theme.of(context).brightness == Brightness.dark ? Colors.grey.shade800 : Colors.grey.shade300,
+                        blurRadius: 4.0,
+                        spreadRadius: 1.0,
+                        offset: Offset(2.0, 2.0),
+                      ),
+                    ],
+                  ),
+                  height: deviceHeight / 2,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                    child: GoogleMap(
+                      initialCameraPosition: _initialcameraPosition,
+                      zoomControlsEnabled: false,
+                      onMapCreated: (GoogleMapController controller){
+                        setState(() {
+                          _controller = controller;
+                        });
+                        _controller?.animateCamera(
+                            CameraUpdate.newLatLngBounds(
+                              LatLngBounds(
+                                  southwest: LatLng(
+                                    curlat <= orderDetailModel!.cuslat!.toDouble() ? curlat : orderDetailModel!.cuslat!.toDouble(),
+                                    curlong <= orderDetailModel!.cuslong!.toDouble() ? curlong : orderDetailModel!.cuslong!.toDouble(),
+                                  ),
+                                  northeast: LatLng(
+                                    curlat >= orderDetailModel!.cuslat!.toDouble() ? curlat : orderDetailModel!.cuslat!.toDouble(),
+                                    curlong >= orderDetailModel!.cuslong!.toDouble() ? curlong : orderDetailModel!.cuslong!.toDouble(),
+                                  )
+                              ),
+                              80,
+                            )
+                        );
+                      },
+                      markers: <Marker>{
+                        marker1,
+                        shopMarker,
+                        cusMarker,
+                      },
+                      polylines: <Polyline>{
+                        _polyline,
+                      },
+                    ),
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      orderDetailModel!.phone!,
+                      style: UIConstant.normal.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: UIConstant.orange,
+                      ),
+                    ),
+                    CustomButton(
+                      verticalPadding: 5,
+                      horizontalPadding: 20,
+                      txt: "View large map",
+                      func: (){
+                        Get.to(() => MapScreen(
+                            shopLatLng: LatLng(orderDetailModel!.shoplat!.toDouble(),orderDetailModel!.shoplong!.toDouble()),
+                            cusLatLng: LatLng(orderDetailModel!.cuslat!.toDouble(),orderDetailModel!.cuslong!.toDouble()),
+                            cusAddress: orderDetailModel!.cusAddress!,
+                            shopaddress: orderDetailModel!.shopAddress!,
+                            isDropOff: true
+                        ));
+                      },
+                      txtClr: Colors.white,
+                      bgClr: Colors.grey.shade600,
+                      txtsize: 10,
+                      rad: 5,
+                    ),
+                  ],
+                ),
                 Text(
-                    "Customer Map",
-                  style: UIConstant.normal.copyWith(
+                  orderDetailModel!.cusName!,
+                  style: UIConstant.small.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
+                Text(
+                  orderDetailModel!.cusAddress!,
+                  style: UIConstant.small,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
                 CustomButton(
                   verticalPadding: 5,
-                  horizontalPadding: 20,
-                  txt: "Ask for Help",
+                  horizontalPadding: 0,
+                  txt: "Call",
                   func: (){
-
+                    _makePhoneCall(orderDetailModel!.phone!);
                   },
                   txtClr: Colors.white,
                   bgClr: UIConstant.orange,
-                  txtsize: 10,
+                  txtsize: 12,
                   rad: 5,
                 ),
+                // Row(
+                //   children: [
+                //     Expanded(
+                //       child: CustomButton(
+                //         verticalPadding: 1.5.h,
+                //         horizontalPadding: 0,
+                //         txt: "Call",
+                //         func: (){
+                //           _makePhoneCall(orderDetailModel!.phone!);
+                //         },
+                //         txtClr: Colors.white,
+                //         bgClr: UIConstant.orange,
+                //         txtsize: 12.sp,
+                //         rad: 1.h,
+                //       ),
+                //     ),
+                //     SizedBox(
+                //       width: 2.h,
+                //     ),
+                //     Expanded(
+                //       child: CustomButton(
+                //         verticalPadding: 1.5.h,
+                //         horizontalPadding: 0,
+                //         txt: "Chat",
+                //         func: (){
+                //
+                //         },
+                //         txtClr: Colors.white,
+                //         bgClr: UIConstant.orange,
+                //         txtsize: 12.sp,
+                //         rad: 1.h,
+                //       ),
+                //     ),
+                //   ],
+                // ),
               ],
             ),
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Theme.of(context).brightness == Brightness.dark ? Colors.grey.shade800 : Colors.grey.shade300,
-                    blurRadius: 4.0,
-                    spreadRadius: 1.0,
-                    offset: Offset(2.0, 2.0),
-                  ),
-                ],
-              ),
-              height: deviceHeight / 2,
-              child: ClipRRect(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10),
-                ),
-                child: GoogleMap(
-                  initialCameraPosition: _initialcameraPosition,
-                  zoomControlsEnabled: false,
-                  onMapCreated: (GoogleMapController controller){
-                    setState(() {
-                      _controller = controller;
-                    });
-                    _controller?.animateCamera(
-                        CameraUpdate.newLatLngBounds(
-                          LatLngBounds(
-                              southwest: LatLng(
-                                curlat <= orderDetailModel!.cuslat!.toDouble() ? curlat : orderDetailModel!.cuslat!.toDouble(),
-                                curlong <= orderDetailModel!.cuslong!.toDouble() ? curlong : orderDetailModel!.cuslong!.toDouble(),
-                              ),
-                              northeast: LatLng(
-                                curlat >= orderDetailModel!.cuslat!.toDouble() ? curlat : orderDetailModel!.cuslat!.toDouble(),
-                                curlong >= orderDetailModel!.cuslong!.toDouble() ? curlong : orderDetailModel!.cuslong!.toDouble(),
-                              )
-                          ),
-                          80,
-                        )
-                    );
-                  },
-                  markers: <Marker>{
-                    marker1,
-                    shopMarker,
-                    cusMarker,
-                  },
-                  polylines: <Polyline>{
-                    _polyline,
-                  },
-                ),
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  orderDetailModel!.phone!,
-                  style: UIConstant.normal.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: UIConstant.orange,
-                  ),
-                ),
-                CustomButton(
-                  verticalPadding: 5,
-                  horizontalPadding: 20,
-                  txt: "View large map",
-                  func: (){
-                    Get.to(() => MapScreen(
-                        shopLatLng: LatLng(orderDetailModel!.shoplat!.toDouble(),orderDetailModel!.shoplong!.toDouble()),
-                        cusLatLng: LatLng(orderDetailModel!.cuslat!.toDouble(),orderDetailModel!.cuslong!.toDouble()),
-                        cusAddress: orderDetailModel!.cusAddress!,
-                        shopaddress: orderDetailModel!.shopAddress!,
-                        isDropOff: true
-                    ));
-                  },
-                  txtClr: Colors.white,
-                  bgClr: Colors.grey.shade600,
-                  txtsize: 10,
-                  rad: 5,
-                ),
-              ],
-            ),
-            Text(
-              orderDetailModel!.cusName!,
-              style: UIConstant.small.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Text(
-              orderDetailModel!.cusAddress!,
-              style: UIConstant.small,
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            CustomButton(
-              verticalPadding: 5,
-              horizontalPadding: 0,
-              txt: "Call",
-              func: (){
-                _makePhoneCall(orderDetailModel!.phone!);
-              },
-              txtClr: Colors.white,
-              bgClr: UIConstant.orange,
-              txtsize: 12,
-              rad: 5,
-            ),
-            // Row(
-            //   children: [
-            //     Expanded(
-            //       child: CustomButton(
-            //         verticalPadding: 1.5.h,
-            //         horizontalPadding: 0,
-            //         txt: "Call",
-            //         func: (){
-            //           _makePhoneCall(orderDetailModel!.phone!);
-            //         },
-            //         txtClr: Colors.white,
-            //         bgClr: UIConstant.orange,
-            //         txtsize: 12.sp,
-            //         rad: 1.h,
-            //       ),
-            //     ),
-            //     SizedBox(
-            //       width: 2.h,
-            //     ),
-            //     Expanded(
-            //       child: CustomButton(
-            //         verticalPadding: 1.5.h,
-            //         horizontalPadding: 0,
-            //         txt: "Chat",
-            //         func: (){
-            //
-            //         },
-            //         txtClr: Colors.white,
-            //         bgClr: UIConstant.orange,
-            //         txtsize: 12.sp,
-            //         rad: 1.h,
-            //       ),
-            //     ),
-            //   ],
-            // ),
-          ],
+          ),
         ),
         bottomSheet: Container(
           padding: EdgeInsets.only(

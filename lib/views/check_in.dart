@@ -72,96 +72,102 @@ class _CheckInScreenState extends State<CheckInScreen> {
         ),
         leading: IconButton(
           icon: Icon(
-            Icons.arrow_back,
+            Icons.arrow_back_ios,
             size: 28,
           ),
           onPressed: (){
-            Get.offAllNamed(RouteHelper.getHomePage());
+            // Get.offAllNamed(RouteHelper.getHomePage());
+            Get.back();
           },
         ),
       ),
 
-      body:ListView(
-        padding: EdgeInsets.symmetric(
-          horizontal: 20,
-          vertical: 20,
-        ),
-        children: [
-          CameraWidget(
-              gettoCamerafun: (){
-                getCamera();
-              },
-              height: (deviceHeight / 100 ) * 40,
-              isshowImage: isShowImage,
-              iamgePath: newselectedImage,
-              removephotofun: (){
-                nullPhotoNew();
-              },
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          CustomButton(
-            verticalPadding: 10,
-            horizontalPadding: 0,
-            txt: "Check In",
-            func: ()async{
-              // if(!hideBtn) {newselectedImage!.path == "" || newselectedImage == null
-              //       ?
-              //   CustomGlobalSnackbar.show(
-              //     context: context,
-              //     title: "Require Image",
-              //     txt: "Image is required to proceed.",
-              //     icon: Icons.info_outline,
-              //     position: true,
-              //   )
-              //       :
-              //   generalController.checkIn(context, newselectedImage).then((value){
-              //     Get.snackbar(
-              //       value ? "Success" : "Failed",
-              //       value? "Checked In Successfully!" : "There is no item available to Check In!",
-              //       borderRadius: 10,
-              //       backgroundColor: GlobalStyle.primaryColor.withOpacity(0.2),
-              //       duration: Duration(seconds: 5),
-              //       snackPosition: SnackPosition.BOTTOM,
-              //     );
-              //     setState(() {
-              //       hideBtn = !value;
-              //     });
-              //     if(value){
-              //       Get.offAllNamed("/home");
-              //     }
-              //   });
-              // }
-              if(!hideBtn){
-                if(newselectedImage!.path == "" || newselectedImage == null){
-                  CustomGlobalSnackbar.show(
-                    context: context,
-                    title: "Require Image",
-                    txt: "Image is required to proceed.",
-                    icon: Icons.info_outline,
-                    position: true,
-                  );
-                }else{
-                  Get.dialog(const LoadingScreen(), barrierDismissible: false);
-                  bool value = await checkInOutController.checkIn(newselectedImage!);
-                  Get.back();
-                  setState(() {
-                    hideBtn = !value;
-                  });
-                  if(value){
-                    Get.offAllNamed(RouteHelper.getHomePage());
+      body:Center(
+        child: SizedBox(
+          width: deviceWidth > 500 ? deviceWidth * 0.8 : deviceWidth,
+          child: ListView(
+            padding: EdgeInsets.symmetric(
+              horizontal: 20,
+              vertical: 20,
+            ),
+            children: [
+              CameraWidget(
+                  gettoCamerafun: (){
+                    getCamera();
+                  },
+                  height: (deviceHeight / 100 ) * 40,
+                  isshowImage: isShowImage,
+                  iamgePath: newselectedImage,
+                  removephotofun: (){
+                    nullPhotoNew();
+                  },
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              CustomButton(
+                verticalPadding: 10,
+                horizontalPadding: 0,
+                txt: "Check In",
+                func: ()async{
+                  // if(!hideBtn) {newselectedImage!.path == "" || newselectedImage == null
+                  //       ?
+                  //   CustomGlobalSnackbar.show(
+                  //     context: context,
+                  //     title: "Require Image",
+                  //     txt: "Image is required to proceed.",
+                  //     icon: Icons.info_outline,
+                  //     position: true,
+                  //   )
+                  //       :
+                  //   generalController.checkIn(context, newselectedImage).then((value){
+                  //     Get.snackbar(
+                  //       value ? "Success" : "Failed",
+                  //       value? "Checked In Successfully!" : "There is no item available to Check In!",
+                  //       borderRadius: 10,
+                  //       backgroundColor: GlobalStyle.primaryColor.withOpacity(0.2),
+                  //       duration: Duration(seconds: 5),
+                  //       snackPosition: SnackPosition.BOTTOM,
+                  //     );
+                  //     setState(() {
+                  //       hideBtn = !value;
+                  //     });
+                  //     if(value){
+                  //       Get.offAllNamed("/home");
+                  //     }
+                  //   });
+                  // }
+                  if(!hideBtn){
+                    if(newselectedImage!.path == "" || newselectedImage == null){
+                      CustomGlobalSnackbar.show(
+                        context: context,
+                        title: "Require Image",
+                        txt: "Image is required to proceed.",
+                        icon: Icons.info_outline,
+                        position: true,
+                      );
+                    }else{
+                      Get.dialog(const LoadingScreen(), barrierDismissible: false);
+                      bool value = await checkInOutController.checkIn(newselectedImage!);
+                      Get.back();
+                      setState(() {
+                        hideBtn = !value;
+                      });
+                      if(value){
+                        Get.offAllNamed(RouteHelper.getHomePage());
+                      }
+                    }
                   }
-                }
-              }
-            },
-            txtClr: Colors.white,
-            bgClr: !hideBtn ? UIConstant.orange : Colors.grey,
-            txtsize: 16,
-            rad: 10,
-          ),
+                },
+                txtClr: Colors.white,
+                bgClr: !hideBtn ? UIConstant.orange : Colors.grey,
+                txtsize: 16,
+                rad: 10,
+              ),
 
-        ],
+            ],
+          ),
+        ),
       ),
     );
   }

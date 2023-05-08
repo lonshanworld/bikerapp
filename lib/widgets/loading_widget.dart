@@ -15,7 +15,7 @@ class LoadingWidget extends StatelessWidget {
     final double oneUnitHeight = deviceHeight/772;
     return Center(
       child: LoadingAnimationWidget.twistingDots(
-        size: oneUnitWidth * 80,
+        size: deviceWidth > 500 ? oneUnitWidth * 60 : oneUnitWidth * 80,
         leftDotColor: UIConstant.pink,
         rightDotColor: UIConstant.orange,
       ),

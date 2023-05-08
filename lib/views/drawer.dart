@@ -22,7 +22,7 @@ class DrawerPage extends StatelessWidget {
     final double oneUnitWidth = deviceWidth / 360;
     final double oneUnitHeight = deviceHeight/772;
 
-    final double drawerWidth = deviceWidth > 500 ? 400 : (deviceWidth / 4) * 3;
+    final double drawerWidth = deviceWidth > 500 ? 350 : (deviceWidth / 4) * 3;
 
     final UserAccountController userAccountController = Get.find<UserAccountController>();
     final NotiController notiController = Get.find<NotiController>();
@@ -130,7 +130,7 @@ class DrawerPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     CircleAvatar(
-                      radius: deviceHeight > 800 ? 80 : 50,
+                      radius: deviceWidth > 500 ? 50 : 80,
                       backgroundImage: NetworkImage(
                         userAccountController.bikermodel[0].profileImage ?? 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgWv75KuTKR5tEa6fNHmINh0SrIAoWhlAYbvoxnG7poIN8dLV4Fxe5IErjDo2RG6grnyU&usqp=CAU',
                       ),

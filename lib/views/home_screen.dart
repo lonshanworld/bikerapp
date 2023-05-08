@@ -227,7 +227,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
 
-    // final double deviceWidth = MediaQuery.of(context).size.width;
+    final double deviceWidth = MediaQuery.of(context).size.width;
     // final double deviceHeight = MediaQuery.of(context).size.height;
     // final double oneUnitWidth = deviceWidth / 360;
     // final double oneUnitHeight = deviceHeight/772;
@@ -312,92 +312,97 @@ class _HomeScreenState extends State<HomeScreen> {
           onRefresh: ()async{
             reloadFun();
           },
-          child: ListView(
-            children: [
-              Padding(
-                padding: EdgeInsets.only(
-                  left: 20,
-                  top: 10,
-                ),
-                child: Text(
-                  "Dashboard",
-                  style: UIConstant.title,
-                ),
-              ),
-              if(notiController.notiListByshowFlag.isEmpty)NoItemListWidget(
-                  txt: "There is no Notification"
-              ),
-              if(notiController.notiListByshowFlag.isNotEmpty)ListView.builder(
-                shrinkWrap: true,
-                physics: ScrollPhysics(),
-                itemCount: notiController.notiListByshowFlag.length,
-                itemBuilder: (ctx, index){
-                  print("Get the length of list ${notiController.notiListByshowFlag.length}");
-                  NotiOrderModel _item = notiController.notiListByshowFlag[notiController.notiListByshowFlag.length - index -1];
-                  // String name = generalController.bikerModel[0].fullName;
-                  return NotiWidget(
-                    orderBody: _item.body!,
-                    orderNo: _item.notiBodyModel!.refNo!,
-                    orderId: _item.notiBodyModel!.orderId!,
-                    earning: _item.notiBodyModel!.earning!,
-                    shopName: _item.notiBodyModel!.shopName!,
-                    distance: _item.notiBodyModel!.distanceMeter!,
-                    photo: _item.notiBodyModel!.photo!,
-                    func: (){
-                      // setState(() {
-                      //   _notiController.notiList.removeAt(index);
-                      // });
-                      notiController.updateshowFlag(_item.notiBodyModel!.orderId!);
+          child: Center(
+            child: SizedBox(
+              width: deviceWidth > 500 ? deviceWidth * 0.8 : deviceWidth,
+              child: ListView(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(
+                      left: 20,
+                      top: 10,
+                    ),
+                    child: Text(
+                      "Dashboard",
+                      style: UIConstant.title,
+                    ),
+                  ),
+                  if(notiController.notiListByshowFlag.isEmpty)NoItemListWidget(
+                      txt: "There is no Notification"
+                  ),
+                  if(notiController.notiListByshowFlag.isNotEmpty)ListView.builder(
+                    shrinkWrap: true,
+                    physics: ScrollPhysics(),
+                    itemCount: notiController.notiListByshowFlag.length,
+                    itemBuilder: (ctx, index){
+                      print("Get the length of list ${notiController.notiListByshowFlag.length}");
+                      NotiOrderModel _item = notiController.notiListByshowFlag[notiController.notiListByshowFlag.length - index -1];
+                      // String name = generalController.bikerModel[0].fullName;
+                      return NotiWidget(
+                        orderBody: _item.body!,
+                        orderNo: _item.notiBodyModel!.refNo!,
+                        orderId: _item.notiBodyModel!.orderId!,
+                        earning: _item.notiBodyModel!.earning!,
+                        shopName: _item.notiBodyModel!.shopName!,
+                        distance: _item.notiBodyModel!.distanceMeter!,
+                        photo: _item.notiBodyModel!.photo!,
+                        func: (){
+                          // setState(() {
+                          //   _notiController.notiList.removeAt(index);
+                          // });
+                          notiController.updateshowFlag(_item.notiBodyModel!.orderId!);
 
+                        },
+                      );
                     },
-                  );
-                },
-              ),
+                  ),
 
-              SubTitleWidget(txt: "Current Order"),
-              if(orderController.currentorderList.isEmpty)NoItemListWidget(
-                txt: "There is no Current Item",
-              ),
-              if(orderController.currentorderList.isNotEmpty)ListView.builder(
-                physics: ScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: orderController.currentorderList.length,
-                itemBuilder: (ctx, index){
-                  return CurrentOrderWidget(currentOrderModel: orderController.currentorderList[index]);
-                },
-              ),
-              SubTitleWidget(txt: "Check-In Schedule"),
-              if(checkinModel == null)NoItemListWidget(
-                  txt: "There is no Check-In Schedule"
-              ),
-              if(checkinModel != null)ScheduleWidget(
-                  scheduleName: checkinModel!.scheduleName!,
-                  scheduleId: checkinModel!.scheduleId!,
-                  startSchedule: checkinModel!.startSchedule!,
-                  endSchedule: checkinModel!.endSchedule!,
-              ),
-              const SubTitleWidget(txt: "Schedule"),
-              if(scheduleController.nextScheduleList.isEmpty)const NoItemListWidget(
-                  txt: "There is no Available Schedule"
-              ),
-              if(scheduleController.nextScheduleList.isNotEmpty)ListView.builder(
-                  physics: ScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: scheduleController.nextScheduleList.length,
-                  itemBuilder: (context, index) {
-                    ScheduleModel item = scheduleController.nextScheduleList[index];
-                    return ScheduleWidget(
-                      scheduleName: item.scheduleName!,
-                      scheduleId: item.scheduleId!,
-                      startSchedule: item.startSchedule!,
-                      endSchedule: item.endSchedule!,
-                    );
-                  }
-              ),
+                  SubTitleWidget(txt: "Current Order"),
+                  if(orderController.currentorderList.isEmpty)NoItemListWidget(
+                    txt: "There is no Current Item",
+                  ),
+                  if(orderController.currentorderList.isNotEmpty)ListView.builder(
+                    physics: ScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: orderController.currentorderList.length,
+                    itemBuilder: (ctx, index){
+                      return CurrentOrderWidget(currentOrderModel: orderController.currentorderList[index]);
+                    },
+                  ),
+                  SubTitleWidget(txt: "Check-In Schedule"),
+                  if(checkinModel == null)NoItemListWidget(
+                      txt: "There is no Check-In Schedule"
+                  ),
+                  if(checkinModel != null)ScheduleWidget(
+                      scheduleName: checkinModel!.scheduleName!,
+                      scheduleId: checkinModel!.scheduleId!,
+                      startSchedule: checkinModel!.startSchedule!,
+                      endSchedule: checkinModel!.endSchedule!,
+                  ),
+                  const SubTitleWidget(txt: "Schedule"),
+                  if(scheduleController.nextScheduleList.isEmpty)const NoItemListWidget(
+                      txt: "There is no Available Schedule"
+                  ),
+                  if(scheduleController.nextScheduleList.isNotEmpty)ListView.builder(
+                      physics: ScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: scheduleController.nextScheduleList.length,
+                      itemBuilder: (context, index) {
+                        ScheduleModel item = scheduleController.nextScheduleList[index];
+                        return ScheduleWidget(
+                          scheduleName: item.scheduleName!,
+                          scheduleId: item.scheduleId!,
+                          startSchedule: item.startSchedule!,
+                          endSchedule: item.endSchedule!,
+                        );
+                      }
+                  ),
 
 
 
-            ],
+                ],
+              ),
+            ),
           ),
         ),
       );

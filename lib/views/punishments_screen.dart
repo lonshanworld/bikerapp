@@ -39,15 +39,20 @@ class _PunishmentScreenState extends State<PunishmentScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    final deviceWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Punishments"),
         leading: IconButton(
           icon: Icon(
-            Icons.arrow_back,
+            Icons.arrow_back_ios,
+            size: 28,
           ),
-          onPressed: (){
-            Get.offAllNamed("/home");
+          onPressed: () {
+            // Get.offAllNamed("/home");
+            Get.back();
           },
         ),
       ),
@@ -55,27 +60,32 @@ class _PunishmentScreenState extends State<PunishmentScreen> {
           ?
         LoadingWidget()
           :
-        ListView(
-        padding: EdgeInsets.symmetric(
-          vertical: 10,
-          horizontal: 20,
-        ),
-        children: [
-          if(punishmentList.isEmpty)NoItemListWidget(
-            txt: "There is no punishment for this biker.",
-          ),
-          if(punishmentList.isNotEmpty)for(PunishmentModel item in punishmentList)PunishmentWidget(
-              date: DateFormat('y-MM-d').format(item.date!),
-              itemname: item.itemNameMm!,
-              shopname: item.shopName!,
-              quantity: item.damageQty!.toInt(),
-              punishmentAmount: item.punishAmount!.toDouble(),
-              isSatisfied: item.statementId == null ? false : true,
-              supportname: item.supportName,
-              supportremark: item.supportRemark,
-          ),
-        ],
+        Center(
+          child: SizedBox(
+            width: deviceWidth > 500 ? deviceWidth * 0.8 : deviceWidth,
+            child: ListView(
+            padding: EdgeInsets.symmetric(
+              vertical: 10,
+              horizontal: 20,
+            ),
+            children: [
+              if(punishmentList.isEmpty)NoItemListWidget(
+                txt: "There is no punishment for this biker.",
+              ),
+              if(punishmentList.isNotEmpty)for(PunishmentModel item in punishmentList)PunishmentWidget(
+                  date: DateFormat('y-MM-d').format(item.date!),
+                  itemname: item.itemNameMm!,
+                  shopname: item.shopName!,
+                  quantity: item.damageQty!.toInt(),
+                  punishmentAmount: item.punishAmount!.toDouble(),
+                  isSatisfied: item.statementId == null ? false : true,
+                  supportname: item.supportName,
+                  supportremark: item.supportRemark,
+              ),
+            ],
       ),
+          ),
+        ),
     );
   }
 }

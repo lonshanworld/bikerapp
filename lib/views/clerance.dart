@@ -90,10 +90,12 @@ class _CleranceState extends State<Clerance> {
         title: Text("Clerance"),
         leading: IconButton(
           icon: Icon(
-            Icons.arrow_back,
+            Icons.arrow_back_ios,
+            size: 28,
           ),
-          onPressed: (){
-            Get.offAllNamed("/home");
+          onPressed: () {
+            // Get.offAllNamed("/home");
+            Get.back();
           },
         ),
       ),
@@ -103,93 +105,103 @@ class _CleranceState extends State<Clerance> {
           :
       (clearanceModel == null)
           ?
-      ListView(
-        children: [
-          SizedBox(
-            height: 20,
+      Center(
+        child: SizedBox(
+          width: deviceWidth > 500 ? deviceWidth * 0.8 : deviceWidth,
+          child: ListView(
+            children: [
+              SizedBox(
+                height: 20,
+              ),
+              NoItemListWidget(txt: "There is no Item in clearance"),
+            ],
           ),
-          NoItemListWidget(txt: "There is no Item in clearance"),
-        ],
+        ),
       )
           :
-      ListView(
-        padding: EdgeInsets.symmetric(
-            vertical: 20,
-            horizontal: 20,
-        ),
-        children: [
-          TextFieldwithLabel(
-            label: "Level",
-            txtController: levelController,
-            inputType: TextInputType.text,
-          ),
-          SizedBox(height: 5),
-          TextFieldwithLabel(
-            label: "Cash-on Delivery",
-            txtController: cashController,
-            inputType: TextInputType.number,
-          ),
-          SizedBox(height: 5),
-          TextFieldwithLabel(
-            label: "MISC Usage",
-            txtController: miscController,
-            inputType: TextInputType.number,
-          ),
-          SizedBox(height: 5),
-          TextFieldwithLabel(
-            label: "Credit",
-            txtController: creditController,
-            inputType: TextInputType.number,
-          ),
-          SizedBox(height: 5),
-          TextFieldwithLabel(
-            label: "Total Clearance",
-            txtController: totalController,
-            inputType: TextInputType.number,
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          CameraWidget(
-              gettoCamerafun: (){
-                getCameraImage();
-              },
-              height: (deviceHeight / 100) * 30,
-              isshowImage: isShowImage,
-              iamgePath: newselectedImage,
-              removephotofun: (){
-                nullPhotoNew();
-              }
-          ),
-          Padding(
+      Center(
+        child: SizedBox(
+          width: deviceWidth > 500 ? deviceWidth * 0.8 : deviceWidth,
+          child: ListView(
             padding: EdgeInsets.symmetric(
-              vertical: 10,
+                vertical: 20,
+                horizontal: 20,
             ),
-            child: CustomTextField(
-              txtcontroller: paymentController,
-              txtsize: 16,
-              verticalpadding: 15,
-              horizontalpadding: 15,
-              textInputType: TextInputType.number,
-              hinttxt: "Payment Amount",
-            ),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          CustomButton(
-            verticalPadding: 10,
-            horizontalPadding: 0,
-            txt: "Clearance",
-            func: (){
+            children: [
+              TextFieldwithLabel(
+                label: "Level",
+                txtController: levelController,
+                inputType: TextInputType.text,
+              ),
+              SizedBox(height: 5),
+              TextFieldwithLabel(
+                label: "Cash-on Delivery",
+                txtController: cashController,
+                inputType: TextInputType.number,
+              ),
+              SizedBox(height: 5),
+              TextFieldwithLabel(
+                label: "MISC Usage",
+                txtController: miscController,
+                inputType: TextInputType.number,
+              ),
+              SizedBox(height: 5),
+              TextFieldwithLabel(
+                label: "Credit",
+                txtController: creditController,
+                inputType: TextInputType.number,
+              ),
+              SizedBox(height: 5),
+              TextFieldwithLabel(
+                label: "Total Clearance",
+                txtController: totalController,
+                inputType: TextInputType.number,
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              CameraWidget(
+                  gettoCamerafun: (){
+                    getCameraImage();
+                  },
+                  height: (deviceHeight / 100) * 30,
+                  isshowImage: isShowImage,
+                  iamgePath: newselectedImage,
+                  removephotofun: (){
+                    nullPhotoNew();
+                  }
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  vertical: 10,
+                ),
+                child: CustomTextField(
+                  txtcontroller: paymentController,
+                  txtsize: 16,
+                  verticalpadding: 15,
+                  horizontalpadding: 15,
+                  textInputType: TextInputType.number,
+                  hinttxt: "Payment Amount",
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              CustomButton(
+                verticalPadding: 10,
+                horizontalPadding: 0,
+                txt: "Clearance",
+                func: (){
 
-            },
-            txtClr: Colors.white,
-            bgClr: UIConstant.orange,
-            txtsize: 16,
-            rad: 10,
+                },
+                txtClr: Colors.white,
+                bgClr: UIConstant.orange,
+                txtsize: 16,
+                rad: 10,
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

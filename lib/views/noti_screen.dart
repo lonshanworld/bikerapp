@@ -10,11 +10,24 @@ class NotiScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final deviceWidth = MediaQuery.of(context).size.width;
+
     final NotiController notiController = Get.find<NotiController>();
 
     return Scaffold(
       appBar: AppBar(
         title: Text("Notification History"),
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios,
+            size: 28,
+          ),
+          onPressed: () {
+            // Get.offAllNamed("/home");
+            Get.back();
+          },
+        ),
       ),
       body: Obx((){
         return (notiController.notiList.isEmpty)
@@ -23,72 +36,77 @@ class NotiScreen extends StatelessWidget {
           child: Text("There is no Notifications"),
         )
             :
-        ListView.builder(
-          padding: EdgeInsets.symmetric(
-            vertical: 10,
-          ),
-          itemCount: notiController.notiList.length,
-          itemBuilder: (_, index) {
-            RandomNotiModel item = notiController.notiList[notiController.notiList.length - index -1];
-            return Container(
-              // decoration: BoxDecoration(
-              //   boxShadow: [
-              //     BoxShadow(
-              //       color: Colors.grey.shade300,
-              //       blurRadius: 4.0,
-              //       spreadRadius: 1.0,
-              //       offset: Offset(2.0, 2.0),
-              //     ),
-              //   ],
-              //   color: Colors.white,
-              //   borderRadius: BorderRadius.all(
-              //     Radius.circular(10),
-              //   ),
-              // ),
-              decoration: BoxDecoration(
-                  border: Border(
-                      bottom: BorderSide(
-                          width: 1,
-                          color: Colors.grey
-                      )
-                  )
-              ),
+        Center(
+          child: SizedBox(
+            width: deviceWidth > 500 ? deviceWidth * 0.85 : deviceWidth,
+            child: ListView.builder(
               padding: EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 15,
+                vertical: 10,
               ),
-              margin: EdgeInsets.symmetric(
-                horizontal: 20,
-              ),
+              itemCount: notiController.notiList.length,
+              itemBuilder: (_, index) {
+                RandomNotiModel item = notiController.notiList[notiController.notiList.length - index -1];
+                return Container(
+                  // decoration: BoxDecoration(
+                  //   boxShadow: [
+                  //     BoxShadow(
+                  //       color: Colors.grey.shade300,
+                  //       blurRadius: 4.0,
+                  //       spreadRadius: 1.0,
+                  //       offset: Offset(2.0, 2.0),
+                  //     ),
+                  //   ],
+                  //   color: Colors.white,
+                  //   borderRadius: BorderRadius.all(
+                  //     Radius.circular(10),
+                  //   ),
+                  // ),
+                  decoration: BoxDecoration(
+                      border: Border(
+                          bottom: BorderSide(
+                              width: 1,
+                              color: Colors.grey
+                          )
+                      )
+                  ),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 15,
+                  ),
+                  margin: EdgeInsets.symmetric(
+                    horizontal: 20,
+                  ),
 
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Expanded(
-                        child: Text(
-                          item.title,
-                          style: UIConstant.normal.copyWith(
-                            fontWeight: FontWeight.bold,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              item.title,
+                              style: UIConstant.normal.copyWith(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ),
-                        ),
+                          Text(
+                            item.date,
+                            style: UIConstant.small,
+                          ),
+                        ],
                       ),
                       Text(
-                        item.date,
+                        item.body,
                         style: UIConstant.small,
                       ),
                     ],
                   ),
-                  Text(
-                    item.body,
-                    style: UIConstant.small,
-                  ),
-                ],
-              ),
-            );
-          },
+                );
+              },
+            ),
+          ),
         );
       }),
     );

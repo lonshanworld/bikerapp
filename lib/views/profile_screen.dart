@@ -59,6 +59,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
 
+    final deviceWidth = MediaQuery.of(context).size.width;
+
     Text customText(String name, String txt){
       return Text(
         "$name : $txt",
@@ -69,132 +71,147 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Profile"),
-      ),
-      body: ListView(
-        padding: EdgeInsets.symmetric(
-          vertical: 20,
-          horizontal: 20,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios,
+            size: 28,
+          ),
+          onPressed: () {
+            // Get.offAllNamed("/home");
+            Get.back();
+          },
         ),
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+      ),
+      body: Center(
+        child: SizedBox(
+          width: deviceWidth > 500 ? deviceWidth * 0.8 : deviceWidth,
+          child: ListView(
+            padding: EdgeInsets.symmetric(
+              vertical: 20,
+              horizontal: 20,
+            ),
             children: [
-              Column(
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  if(!isShowImage)CircleAvatar(
-                    radius: 60,
-                    backgroundImage: NetworkImage(
-                      userAccountController.bikermodel[0].profileImage ?? 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgWv75KuTKR5tEa6fNHmINh0SrIAoWhlAYbvoxnG7poIN8dLV4Fxe5IErjDo2RG6grnyU&usqp=CAU',
-                    ),
+                  Column(
+                    children: [
+                      if(!isShowImage)CircleAvatar(
+                        radius: 60,
+                        backgroundImage: NetworkImage(
+                          userAccountController.bikermodel[0].profileImage ?? 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgWv75KuTKR5tEa6fNHmINh0SrIAoWhlAYbvoxnG7poIN8dLV4Fxe5IErjDo2RG6grnyU&usqp=CAU',
+                        ),
+                      ),
+                      if(isShowImage)CircleAvatar(
+                        radius: 60,
+                        backgroundImage: FileImage(
+                          newselectedImage!,
+                        ),
+                      ),
+                      CustomButton(
+                        verticalPadding: 5,
+                        horizontalPadding: 20,
+                        txt: "Upload",
+                        func: (){
+                          getCamera();
+                        },
+                        txtClr: Colors.white,
+                        bgClr: UIConstant.orange,
+                        txtsize: 12,
+                        rad: 5,
+                      ),
+                    ],
                   ),
-                  if(isShowImage)CircleAvatar(
-                    radius: 60,
-                    backgroundImage: FileImage(
-                      newselectedImage!,
-                    ),
-                  ),
-                  CustomButton(
-                    verticalPadding: 5,
-                    horizontalPadding: 20,
-                    txt: "Upload",
-                    func: (){
-                      getCamera();
-                    },
-                    txtClr: Colors.white,
-                    bgClr: UIConstant.orange,
-                    txtsize: 12,
-                    rad: 5,
+                  Column(
+                    children: [
+                      Text(
+                        userAccountController.bikermodel[0].fullName!,
+                        style: UIConstant.normal.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      customText("Phone", userAccountController.bikermodel[0].phone!),
+                      Text("================"),
+                      customText("Level", userAccountController.bikermodel[0].level!),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      customText("MISC", userAccountController.bikermodel[0].miscUsage.toString()),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      customText("Zone", userAccountController.bikermodel[0].zoneId.toString()),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      customText("Area", userAccountController.bikermodel[0].areaId.toString()),
+                      SizedBox(
+                        height: 10,
+                      ),
+                    ],
                   ),
                 ],
               ),
-              Column(
-                children: [
-                  Text(
-                    userAccountController.bikermodel[0].fullName!,
-                    style: UIConstant.normal.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  customText("Phone", userAccountController.bikermodel[0].phone!),
-                  Text("================"),
-                  customText("Level", userAccountController.bikermodel[0].level!),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  customText("MISC", userAccountController.bikermodel[0].miscUsage.toString()),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  customText("Zone", userAccountController.bikermodel[0].zoneId.toString()),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  customText("Area", userAccountController.bikermodel[0].areaId.toString()),
-                  SizedBox(
-                    height: 10,
-                  ),
-                ],
+              SizedBox(
+                height: 40,
+              ),
+              CustomTextField(
+                txtcontroller: nameController,
+                txtsize: 14,
+                verticalpadding: 10,
+                horizontalpadding: 15,
+                textInputType: TextInputType.text,
+                hinttxt: "Enter your name",
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              CustomTextField(
+                txtcontroller: nrcController,
+                txtsize: 14,
+                verticalpadding: 10,
+                horizontalpadding: 15,
+                textInputType: TextInputType.text,
+                hinttxt: "Enter your NRC",
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              CustomTextField(
+                txtcontroller: emailController,
+                txtsize: 14,
+                verticalpadding: 10,
+                horizontalpadding: 15,
+                textInputType: TextInputType.text,
+                hinttxt: "Enter your email",
+              ),
+              SizedBox(
+                height: 25,
+              ),
+              CustomButton(
+                verticalPadding: 15,
+                horizontalPadding: 0,
+                txt: "Update",
+                func: ()async{
+                  await userAccountController.bikerupdate(
+                    name: nameController.text,
+                    nrc: nrcController.text,
+                    email: emailController.text,
+                    profile: newselectedImage!,
+                  );
+                  Get.offAllNamed(RouteHelper.getHomePage());
+                },
+                txtClr: Colors.white,
+                bgClr: UIConstant.orange,
+                txtsize: 14,
+                rad: 10,
               ),
             ],
           ),
-          SizedBox(
-            height: 40,
-          ),
-          CustomTextField(
-            txtcontroller: nameController,
-            txtsize: 14,
-            verticalpadding: 10,
-            horizontalpadding: 15,
-            textInputType: TextInputType.text,
-            hinttxt: "Enter your name",
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          CustomTextField(
-            txtcontroller: nrcController,
-            txtsize: 14,
-            verticalpadding: 10,
-            horizontalpadding: 15,
-            textInputType: TextInputType.text,
-            hinttxt: "Enter your NRC",
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          CustomTextField(
-            txtcontroller: emailController,
-            txtsize: 14,
-            verticalpadding: 10,
-            horizontalpadding: 15,
-            textInputType: TextInputType.text,
-            hinttxt: "Enter your email",
-          ),
-          SizedBox(
-            height: 25,
-          ),
-          CustomButton(
-            verticalPadding: 15,
-            horizontalPadding: 0,
-            txt: "Update",
-            func: ()async{
-              await userAccountController.bikerupdate(
-                name: nameController.text,
-                nrc: nrcController.text,
-                email: emailController.text,
-                profile: newselectedImage!,
-              );
-              Get.offAllNamed(RouteHelper.getHomePage());
-            },
-            txtClr: Colors.white,
-            bgClr: UIConstant.orange,
-            txtsize: 14,
-            rad: 10,
-          ),
-        ],
+        ),
       ),
     );
   }

@@ -77,7 +77,8 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
         ),
         leading: IconButton(
           icon: Icon(
-            Icons.arrow_back,
+            Icons.arrow_back_ios,
+            size: 28,
           ),
           onPressed: (){
             if(widget.hasButton){
@@ -92,233 +93,238 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
           ?
         const LoadingWidget()
           :
-        Stack(
+      Stack(
         children: [
           Positioned(
             top: 0,
             left: 0,
             right: 0,
             bottom: 70,
-            child: ListView(
-              padding: EdgeInsets.only(
-                left: 20,
-                right: 20,
-                top: 10,
-                bottom: widget.hasButton ? 70 : 10,
-              ),
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: Center(
+              child: SizedBox(
+                width: deviceWidth > 500 ? deviceWidth * 0.8 : deviceWidth,
+                child: ListView(
+                  padding: EdgeInsets.only(
+                    left: 20,
+                    right: 20,
+                    top: 10,
+                    bottom: widget.hasButton ? 70 : 10,
+                  ),
                   children: [
-                    Text(
-                      "Ref-No: ${_orderDetailModel.refNo} ",
-                      style: UIConstant.minititle.copyWith(
-                        color: UIConstant.orange,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Ref-No: ${_orderDetailModel.refNo} ",
+                          style: UIConstant.minititle.copyWith(
+                            color: UIConstant.orange,
+                          ),
+                        ),
+                        CustomButton(
+                          verticalPadding: 5,
+                          horizontalPadding: 10,
+                          txt: "Transfer to Others",
+                          func: (){
+
+                          },
+                          txtClr: Colors.white,
+                          bgClr: UIConstant.orange,
+                          txtsize: 10,
+                          rad: 5,
+                        ),
+                      ],
+                    ),
+                    Container(
+                      height: deviceHeight / 17,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: NetworkImage(
+                              _orderDetailModel.image ?? "",
+                            ),
+                            fit: BoxFit.cover
+                        ),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
                       ),
                     ),
-                    CustomButton(
-                      verticalPadding: 5,
-                      horizontalPadding: 10,
-                      txt: "Transfer to Others",
-                      func: (){
-
-                      },
-                      txtClr: Colors.white,
-                      bgClr: UIConstant.orange,
-                      txtsize: 10,
-                      rad: 5,
-                    ),
-                  ],
-                ),
-                Container(
-                  height: deviceHeight / 17,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: NetworkImage(
-                          _orderDetailModel.image ?? "",
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          _orderDetailModel.shopName!,
+                          style: UIConstant.normal.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                        fit: BoxFit.cover
+                        CustomButton(
+                          verticalPadding: 5,
+                          horizontalPadding: 20,
+                          txt: "View Map",
+                          func: (){
+
+                            Get.to(() => MapScreen(
+                              shopLatLng: LatLng(_orderDetailModel.shoplat!.toDouble(),_orderDetailModel.shoplong!.toDouble()),
+                              cusLatLng: LatLng(_orderDetailModel.cuslat!.toDouble(),_orderDetailModel.cuslong!.toDouble()),
+                              shopaddress: _orderDetailModel.shopAddress!,
+                              cusAddress: _orderDetailModel.cusAddress!,
+                              isDropOff: false,
+                            ),
+                              transition: Transition.rightToLeftWithFade,
+                            );
+                          },
+                          txtClr: Colors.white,
+                          bgClr: Colors.grey,
+                          txtsize: 10,
+                          rad: 5,
+                        ),
+                      ],
                     ),
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(10),
+                    const SizedBox(
+                      height: 10,
                     ),
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
                     Text(
-                      _orderDetailModel.shopName!,
+                      "Customer Info",
                       style: UIConstant.normal.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    CustomButton(
-                      verticalPadding: 5,
-                      horizontalPadding: 20,
-                      txt: "View Map",
-                      func: (){
-
-                        Get.to(() => MapScreen(
-                          shopLatLng: LatLng(_orderDetailModel.shoplat!.toDouble(),_orderDetailModel.shoplong!.toDouble()),
-                          cusLatLng: LatLng(_orderDetailModel.cuslat!.toDouble(),_orderDetailModel.cuslong!.toDouble()),
-                          shopaddress: _orderDetailModel.shopAddress!,
-                          cusAddress: _orderDetailModel.cusAddress!,
-                          isDropOff: false,
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).brightness == Brightness.dark ? UIConstant.bgDark : UIConstant.bgWhite,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
                         ),
-                          transition: Transition.rightToLeftWithFade,
-                        );
-                      },
-                      txtClr: Colors.white,
-                      bgClr: Colors.grey,
-                      txtsize: 10,
-                      rad: 5,
+                      ),
+                      padding: EdgeInsets.all(15),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            _orderDetailModel.phone!,
+                            style: UIConstant.small.copyWith(
+                                fontWeight: FontWeight.bold
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            _orderDetailModel.cusName!,
+                            style: UIConstant.small,
+                          ),
+                          Text(
+                            "${_orderDetailModel.cusAddress} | Note: ${_orderDetailModel.addressNote}",
+                            style: UIConstant.tinytext,
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Text(
+                      "Order Detail",
+                      style: UIConstant.normal.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    // ListView.builder(
+                    //   itemCount: _orderDetailModel.orderItems.length,
+                    //   itemBuilder: (ctx,index){
+                    //     return OrderDetailWidget(orderItem: _orderDetailModel.orderItems[index]);
+                    //   },
+                    // ),
+                    Column(
+                      children: [
+                        if(orderItemShopnameList.isEmpty)for(OrderItem _orderItem in _orderDetailModel.orderItems!) OrderDetailWidget(
+                          orderItem: _orderItem,hasMoreShop: false,
+                        ),
+                        if(orderItemShopnameList.isNotEmpty)for(OrderItem _orderItem in _orderDetailModel.orderItems!) OrderDetailWidget(
+                          orderItem: _orderItem,hasMoreShop: true,
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Text(
+                      "Order Summary",
+                      style: UIConstant.minititle,
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(15),
+                      decoration: BoxDecoration(
+                        color : Theme.of(context).brightness == Brightness.dark ? UIConstant.bgDark : UIConstant.bgWhite,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                      ),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Order Total",
+                                style: UIConstant.small,
+                              ),
+                              Text(
+                                "${_orderDetailModel.totalOnlinePrice} MMK",
+                                style: UIConstant.small.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Delivery Charges",
+                                style: UIConstant.small,
+                              ),
+                              Text(
+                                "${_orderDetailModel.deliCharges} MMK",
+                                style: UIConstant.small.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Cash Collect",
+                                style: UIConstant.small,
+                              ),
+                              Text(
+                                "${_orderDetailModel.totalOnlinePrice! + _orderDetailModel.deliCharges!} MMK",
+                                style: UIConstant.small.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  "Customer Info",
-                  style: UIConstant.normal.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).brightness == Brightness.dark ? UIConstant.bgDark : UIConstant.bgWhite,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(10),
-                    ),
-                  ),
-                  padding: EdgeInsets.all(15),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        _orderDetailModel.phone!,
-                        style: UIConstant.small.copyWith(
-                          fontWeight: FontWeight.bold
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        _orderDetailModel.cusName!,
-                        style: UIConstant.small,
-                      ),
-                      Text(
-                        "${_orderDetailModel.cusAddress} | Note: ${_orderDetailModel.addressNote}",
-                        style: UIConstant.tinytext,
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                Text(
-                  "Order Detail",
-                  style: UIConstant.normal.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                // ListView.builder(
-                //   itemCount: _orderDetailModel.orderItems.length,
-                //   itemBuilder: (ctx,index){
-                //     return OrderDetailWidget(orderItem: _orderDetailModel.orderItems[index]);
-                //   },
-                // ),
-                Column(
-                  children: [
-                    if(orderItemShopnameList.isEmpty)for(OrderItem _orderItem in _orderDetailModel.orderItems!) OrderDetailWidget(
-                      orderItem: _orderItem,hasMoreShop: false,
-                    ),
-                    if(orderItemShopnameList.isNotEmpty)for(OrderItem _orderItem in _orderDetailModel.orderItems!) OrderDetailWidget(
-                      orderItem: _orderItem,hasMoreShop: true,
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                Text(
-                  "Order Summary",
-                  style: UIConstant.minititle,
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  padding: EdgeInsets.all(15),
-                  decoration: BoxDecoration(
-                    color : Theme.of(context).brightness == Brightness.dark ? UIConstant.bgDark : UIConstant.bgWhite,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(10),
-                    ),
-                  ),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Order Total",
-                            style: UIConstant.small,
-                          ),
-                          Text(
-                            "${_orderDetailModel.totalOnlinePrice} MMK",
-                            style: UIConstant.small.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Delivery Charges",
-                            style: UIConstant.small,
-                          ),
-                          Text(
-                            "${_orderDetailModel.deliCharges} MMK",
-                            style: UIConstant.small.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Cash Collect",
-                            style: UIConstant.small,
-                          ),
-                          Text(
-                            "${_orderDetailModel.totalOnlinePrice! + _orderDetailModel.deliCharges!} MMK",
-                            style: UIConstant.small.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+              ),
             ),
           ),
           if(widget.hasButton)Positioned(

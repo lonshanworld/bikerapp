@@ -68,8 +68,7 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
 
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double deviceHeight = MediaQuery.of(context).size.height;
-    final double oneUnitWidth = deviceWidth / 360;
-    final double oneUnitHeight = deviceHeight/772;
+
 
     final control = HandSignatureControl(
       threshold: 3.0,
@@ -79,7 +78,7 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
 
     final widgetPainter = HandSignature(
       control: control,
-      color: Colors.green,
+      color: UIConstant.orange,
       width: 3.0,
       maxWidth: 3.0,
       type: SignatureDrawType.shape,
@@ -92,6 +91,16 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
         title: Text(
           userAccountController.bikermodel[0].fullName!,
         ),
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios,
+            size: 28,
+          ),
+          onPressed: () {
+            // Get.offAllNamed("/home");
+            Get.back();
+          },
+        ),
       ),
       body: LoadingWidget(),
     )
@@ -101,157 +110,173 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
         title: Text(
           userAccountController.bikermodel[0].fullName!,
         ),
-      ),
-      body: ListView(
-        padding: EdgeInsets.only(
-          left: 20,
-          right: 20,
-          top: 20,
-          bottom: 100,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios,
+            size: 28,
+          ),
+          onPressed: () {
+            // Get.offAllNamed("/home");
+            Get.back();
+          },
         ),
-        children: [
-          Text(
-            "Drop-off Summary",
-            style: UIConstant.minititle,
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Text(
-            "Order Details",
-            style: UIConstant.normal.copyWith(
-              fontWeight: FontWeight.bold,
+      ),
+      body: Center(
+        child: SizedBox(
+          width: deviceWidth > 500 ? deviceWidth * 0.85 : deviceWidth,
+          height: deviceHeight,
+          child: ListView(
+            padding: EdgeInsets.only(
+              left: 20,
+              right: 20,
+              top: 20,
+              bottom: 100,
             ),
-          ),
-          Column(
             children: [
-              if(orderItemShopnameList.isEmpty)for(OrderItem _orderItem in _orderDetailModel!.orderItems!) OrderDetailWidget(
-                orderItem: _orderItem,hasMoreShop: false,
+              Text(
+                "Drop-off Summary",
+                style: UIConstant.minititle,
               ),
-              if(orderItemShopnameList.isNotEmpty)for(OrderItem _orderItem in _orderDetailModel!.orderItems!) OrderDetailWidget(
-                orderItem: _orderItem,hasMoreShop: true,
-              )
+              SizedBox(
+                height: 20,
+              ),
+              Text(
+                "Order Details",
+                style: UIConstant.normal.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Column(
+                children: [
+                  if(orderItemShopnameList.isEmpty)for(OrderItem _orderItem in _orderDetailModel!.orderItems!) OrderDetailWidget(
+                    orderItem: _orderItem,hasMoreShop: false,
+                  ),
+                  if(orderItemShopnameList.isNotEmpty)for(OrderItem _orderItem in _orderDetailModel!.orderItems!) OrderDetailWidget(
+                    orderItem: _orderItem,hasMoreShop: true,
+                  )
+                ],
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Text(
+                "Order Summary",
+                style: UIConstant.normal.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Container(
+                padding: EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).brightness == Brightness.dark ? UIConstant.bgDark : UIConstant.bgWhite,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10),
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Order Total",
+                          style: UIConstant.small,
+                        ),
+                        Text(
+                          "${_orderDetailModel!.totalOnlinePrice} MMK",
+                          style: UIConstant.small.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Delivery Charges",
+                          style: UIConstant.small,
+                        ),
+                        Text(
+                          "${_orderDetailModel!.deliCharges} MMK",
+                          style: UIConstant.small.copyWith(
+                            fontWeight: FontWeight.bold
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Cash Collect",
+                          style: UIConstant.small,
+                        ),
+                        Text(
+                          "${_orderDetailModel!.totalOnlinePrice! + _orderDetailModel!.deliCharges!} MMK",
+                          style: UIConstant.small.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Text(
+                "Payment Options",
+                style: UIConstant.normal.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).brightness == Brightness.dark ? UIConstant.bgDark : UIConstant.bgWhite,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10),
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    for(String item in radioValueList)RadioListTile(
+                      dense: true,
+                      value: item,
+                      title: Text(
+                        item,
+                        style: UIConstant.normal,
+                      ),
+                      groupValue: radioValue,
+                      activeColor: UIConstant.orange,
+                      onChanged: (value){
+                        setState(() {
+                          radioValue = value;
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
             ],
           ),
-          SizedBox(
-            height: 20,
-          ),
-          Text(
-            "Order Summary",
-            style: UIConstant.normal.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          SizedBox(
-            height: 5,
-          ),
-          Container(
-            padding: EdgeInsets.all(15),
-            decoration: BoxDecoration(
-              color: Theme.of(context).brightness == Brightness.dark ? UIConstant.bgDark : UIConstant.bgWhite,
-              borderRadius: BorderRadius.all(
-                Radius.circular(10),
-              ),
-            ),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Order Total",
-                      style: UIConstant.small,
-                    ),
-                    Text(
-                      "${_orderDetailModel!.totalOnlinePrice} MMK",
-                      style: UIConstant.small.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Delivery Charges",
-                      style: UIConstant.small,
-                    ),
-                    Text(
-                      "${_orderDetailModel!.deliCharges} MMK",
-                      style: UIConstant.small.copyWith(
-                        fontWeight: FontWeight.bold
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Cash Collect",
-                      style: UIConstant.small,
-                    ),
-                    Text(
-                      "${_orderDetailModel!.totalOnlinePrice! + _orderDetailModel!.deliCharges!} MMK",
-                      style: UIConstant.small.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Text(
-            "Payment Options",
-            style: UIConstant.normal.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          SizedBox(
-            height: 5,
-          ),
-          Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).brightness == Brightness.dark ? UIConstant.bgDark : UIConstant.bgWhite,
-              borderRadius: BorderRadius.all(
-                Radius.circular(10),
-              ),
-            ),
-            child: Column(
-              children: [
-                for(String item in radioValueList)RadioListTile(
-                  dense: true,
-                  value: item,
-                  title: Text(
-                    item,
-                    style: UIConstant.normal,
-                  ),
-                  groupValue: radioValue,
-                  activeColor: UIConstant.orange,
-                  onChanged: (value){
-                    setState(() {
-                      radioValue = value;
-                    });
-                  },
-                ),
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-        ],
+        ),
       ),
       bottomSheet: Container(
         padding: EdgeInsets.only(

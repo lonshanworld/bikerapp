@@ -1,6 +1,7 @@
 
 import 'package:delivery/models/clearance_history_model.dart';
 import 'package:flutter/material.dart';
+import "package:get/get.dart";
 
 
 class ClearanceHistoryDetails extends StatefulWidget {
@@ -35,16 +36,28 @@ class _ClearanceHistoryDetailsState extends State<ClearanceHistoryDetails> {
 
   @override
   Widget build(BuildContext context) {
+
+    final deviceWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Clerance Details"),
-
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios,
+            size: 28,
+          ),
+          onPressed: () {
+            // Get.offAllNamed("/home");
+            Get.back();
+          },
+        ),
       ),
       body: SingleChildScrollView(
-        child: Container(
-          margin: EdgeInsets.only(left: 10, right: 10, top: 0),
+        child: Center(
           child: Container(
             margin: EdgeInsets.only(left: 20, right: 10, top: 10, bottom: 5),
+            width: deviceWidth > 500 ? deviceWidth * 0.85 : deviceWidth,
             child: Column(
               children: [
                 Row(

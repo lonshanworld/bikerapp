@@ -93,9 +93,22 @@ class _QRscreenState extends State<QRscreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    final deviceWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(userAccountController.bikermodel[0].fullName!),
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios,
+            size: 28,
+          ),
+          onPressed: () {
+            // Get.offAllNamed("/home");
+            Get.back();
+          },
+        ),
       ),
       body: isloading
           ?
@@ -109,67 +122,72 @@ class _QRscreenState extends State<QRscreen> {
           });
         },
         color: UIConstant.orange,
-        child: ListView(
-          padding: EdgeInsets.only(
-            top: 20,
-            bottom: 120,
-            left: 20,
-            right: 20,
-          ),
-          children: [
-            Text(
-              "Order Pickup QR Scan",
-              style: UIConstant.minititle,
-            ),
-            Container(
-              alignment: Alignment.center,
-              margin: EdgeInsets.symmetric(
-                vertical: 10,
+        child: Center(
+          child: SizedBox(
+            width: deviceWidth > 500 ? deviceWidth * 0.85 : deviceWidth,
+            child: ListView(
+              padding: EdgeInsets.only(
+                top: 20,
+                bottom: 120,
+                left: 20,
+                right: 20,
               ),
-              child: QrImage(
-                data: widget.orderId,
-                version: QrVersions.auto,
-                size: 250,
-                embeddedImage: NetworkImage("https://media.istockphoto.com/id/1194465593/photo/young-japanese-woman-looking-confident.jpg?s=1024x1024&w=is&k=20&c=4hVpkslRGJNtl2cMKlrBul-h3gcSXncwkGYAg3LGqlg="),
-                embeddedImageStyle: QrEmbeddedImageStyle(
-                  size: Size(80, 80),
+              children: [
+                Text(
+                  "Order Pickup QR Scan",
+                  style: UIConstant.minititle,
                 ),
-                foregroundColor: Theme.of(context).primaryColor,
-                backgroundColor: Theme.of(context).brightness == Brightness.dark ? UIConstant.bgDark : UIConstant.bgWhite,
-                errorStateBuilder: (cxt, err) {
-                  return const Center(
-                    child: Text(
-                      "Uh oh! Something went wrong...",
-                      textAlign: TextAlign.center,
+                Container(
+                  alignment: Alignment.center,
+                  margin: EdgeInsets.symmetric(
+                    vertical: 10,
+                  ),
+                  child: QrImage(
+                    data: widget.orderId,
+                    version: QrVersions.auto,
+                    size: 250,
+                    embeddedImage: NetworkImage("https://media.istockphoto.com/id/1194465593/photo/young-japanese-woman-looking-confident.jpg?s=1024x1024&w=is&k=20&c=4hVpkslRGJNtl2cMKlrBul-h3gcSXncwkGYAg3LGqlg="),
+                    embeddedImageStyle: QrEmbeddedImageStyle(
+                      size: Size(80, 80),
                     ),
-                  );
-                },
-              ),
-            ),
-            Text(
-              "Shops",
-              style: UIConstant.normal.copyWith(
-                color: Colors.grey,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            if(orderItemShopnameList.isNotEmpty)Column(
-              children: List.generate(
-                orderDetailModel!.orderItems!.length,
-                    (index) => QrShopWidget(
-                  name: orderDetailModel!.orderItems![index].itemName!,
-                  pickUp: orderDetailModel!.orderItems![index].pickupFlag!,
+                    foregroundColor: Theme.of(context).primaryColor,
+                    backgroundColor: Theme.of(context).brightness == Brightness.dark ? UIConstant.bgDark : UIConstant.bgWhite,
+                    errorStateBuilder: (cxt, err) {
+                      return const Center(
+                        child: Text(
+                          "Uh oh! Something went wrong...",
+                          textAlign: TextAlign.center,
+                        ),
+                      );
+                    },
+                  ),
                 ),
-              ),
+                Text(
+                  "Shops",
+                  style: UIConstant.normal.copyWith(
+                    color: Colors.grey,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                if(orderItemShopnameList.isNotEmpty)Column(
+                  children: List.generate(
+                    orderDetailModel!.orderItems!.length,
+                        (index) => QrShopWidget(
+                      name: orderDetailModel!.orderItems![index].itemName!,
+                      pickUp: orderDetailModel!.orderItems![index].pickupFlag!,
+                    ),
+                  ),
+                ),
+                if(orderItemShopnameList.isEmpty)QrShopWidget(
+                    name: orderDetailModel!.shopName!,
+                    pickUp: orderDetailModel!.orderItems![0].pickupFlag!
+                ),
+              ],
             ),
-            if(orderItemShopnameList.isEmpty)QrShopWidget(
-                name: orderDetailModel!.shopName!,
-                pickUp: orderDetailModel!.orderItems![0].pickupFlag!
-            ),
-          ],
+          ),
         ),
       ),
       bottomSheet: Container(
