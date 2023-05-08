@@ -33,7 +33,10 @@ class SignalRController extends GetxController{
   Future startSignalR()async{
     await hubConnection.start()?.then((_){
       print("This is success in signalR");
-    },onError: (Object) =>print("This is error in signalR ${Object.toString()}"));
+    },onError: (Object) async{
+      print("This is error in signalR ${Object.toString()}");
+      await hubConnection.start();
+    });
 
     if(hubConnection.connectionId == null){
       throw errorHandler.handleNullError("Notification Server is not connected");
