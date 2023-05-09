@@ -130,7 +130,7 @@ class DrawerPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     CircleAvatar(
-                      radius: deviceWidth > 500 ? 50 : 80,
+                      radius: deviceWidth > 500 ? 50 : 40,
                       backgroundImage: NetworkImage(
                         userAccountController.bikermodel[0].profileImage ?? 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgWv75KuTKR5tEa6fNHmINh0SrIAoWhlAYbvoxnG7poIN8dLV4Fxe5IErjDo2RG6grnyU&usqp=CAU',
                       ),
@@ -270,7 +270,7 @@ class DrawerPage extends StatelessWidget {
                 Icons.rule,
                 "Rules",
                 () {
-
+                  Get.toNamed(RouteHelper.getRulePage());
                 },
               ),
               customListTile(

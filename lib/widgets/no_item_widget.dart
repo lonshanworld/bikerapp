@@ -24,7 +24,7 @@ class NoItemListWidget extends StatelessWidget {
       ),
       margin: EdgeInsets.symmetric(
         vertical:  10,
-        horizontal:  10,
+        horizontal:  20,
       ),
       decoration: BoxDecoration(
         boxShadow: [

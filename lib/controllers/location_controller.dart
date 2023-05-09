@@ -38,6 +38,9 @@ class LocationController extends GetxController{
   late LocationSettings _locationSettings;
   // var streamPosition = <Position>[].obs;
   final RxList<Position> streamPosition = List<Position>.empty().obs;
+  final RxList<LatLng> polypointStream = List<LatLng>.empty().obs;
+  final RxString bikerplaceName = "".obs;
+
   StreamSubscription<Position>? locationstream;
   // HubConnection hubConnection = HubConnectionBuilder().withUrl(TxtConstant.serverUrl).withAutomaticReconnect().build();
 
@@ -118,8 +121,16 @@ class LocationController extends GetxController{
 
 
   Future <GEO.Placemark> getplacemark(double lat, double long) async{
-    List<GEO.Placemark> _list = await GEO.placemarkFromCoordinates(lat, long);
-    return _list[0];
+    List<GEO.Placemark> list = await GEO.placemarkFromCoordinates(lat, long);
+    List<String> placeStringList = [];
+    print("This is in getplacemark");
+    list.forEach((element) {
+      String txt = "${element.thoroughfare}, ${element.subAdministrativeArea}, ${element.administrativeArea}";
+      print(txt);
+      placeStringList.add(txt);
+    });
+    bikerplaceName.value = placeStringList[0];
+    return list[0];
   }
 
 
@@ -174,6 +185,7 @@ class LocationController extends GetxController{
       for (var element in _result.points) {
         _listpoint.add(LatLng(element.latitude, element.longitude));
       }
+      polypointStream.assignAll(_listpoint.map((e) => e).toList());
       return _listpoint;
     }catch(err){
       rethrow;
@@ -181,7 +193,7 @@ class LocationController extends GetxController{
   }
 
 
-  Future<Uint8List> getmarkerIcon() async {
+  Future<Uint8List> getmarkerIcon(String imagekey) async {
 
     Uint8List resizeImage(Uint8List data, width, height) {
       Uint8List? resizedData = data;
@@ -191,49 +203,22 @@ class LocationController extends GetxController{
       return resizedData;
     }
 
-    final ByteData bytes = await rootBundle.load("assets/images/ic_launcher.png");
+    final ByteData bytes = await rootBundle.load(imagekey);
     final Uint8List list = bytes.buffer.asUint8List();
 
-    Uint8List _marker = resizeImage(list, 80, 80);
+    Uint8List _marker = resizeImage(list, 65, 75);
 
     return _marker;
   }
 
-  // forsignalr()async{
-  //   await hubConnection.start();
-  //   print(hubConnection.state);
-  //   print("Signal R function ...");
-  //   hubConnection.on("LocationRequest", (res){
-  //     print(res);
-  //     print(hubConnection.state);
-  //     if(hubConnection.state == HubConnectionState.Connected){
-  //       getPermission().then((permit) {
-  //         if(permit){
-  //           getcurLagLong().then((point)async{
-  //             print("This working ...");
-  //             await hubConnection.invoke("LocationSend", args: <Object>[
-  //               {"userid": box.read("id"),"lat" : point.latitude,"lng" : point.longitude},
-  //             ]).then((res){
-  //               print("heytyyyy");
-  //               print(res);
-  //             });
-  //           });
-  //         }
-  //       });
-  //     }else{
-  //       print("connection state == ${hubConnection.state}");
-  //     }
-  //   });
-  // }
 
-
-  void getLocationStream()async{
+  void getLocationStream(LatLng randomlatlng)async{
     // await hubConnection.start();
     if (defaultTargetPlatform == TargetPlatform.android) {
       _locationSettings = AndroidSettings(
           accuracy: LocationAccuracy.bestForNavigation,
           distanceFilter: 0,
-          intervalDuration: const Duration(seconds: 1),
+          intervalDuration: const Duration(seconds: 15),
       );
     } else if (defaultTargetPlatform == TargetPlatform.iOS || defaultTargetPlatform == TargetPlatform.macOS) {
       _locationSettings = AppleSettings(
@@ -251,17 +236,13 @@ class LocationController extends GetxController{
       );
     }
 
-    // print(hubConnection.state);
-    //
-    // hubConnection.on("LocationRequest", (res) {
-    //   print(res);
-    // });
-    //
     locationstream = Geolocator.getPositionStream(locationSettings: _locationSettings).listen((event) async{
       print("location stream");
       print(event);
       streamPosition.clear();
       streamPosition.add(event);
+      await getplacemark(event.latitude, event.longitude);
+      await getpolyPointList(LatLng(event.latitude, event.longitude), randomlatlng);
       // print("This is in controller");
     });
   }

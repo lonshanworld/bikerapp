@@ -170,7 +170,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                               cusAddress: _orderDetailModel.cusAddress!,
                               isDropOff: false,
                             ),
-                              transition: Transition.rightToLeftWithFade,
+                              transition: Transition.rightToLeft,
                             );
                           },
                           txtClr: Colors.white,

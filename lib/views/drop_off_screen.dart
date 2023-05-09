@@ -1,10 +1,15 @@
 
+import 'dart:async';
+import 'dart:typed_data';
+
 import 'package:delivery/controllers/order_controller.dart';
 import 'package:delivery/controllers/useraccount_controller.dart';
 import 'package:delivery/models/order_model.dart';
 import 'package:delivery/routehelper.dart';
 import 'package:delivery/widgets/loading_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import "package:get/get.dart";
@@ -31,10 +36,11 @@ class DropOffScreen extends StatefulWidget {
 
 class _DropOffScreenState extends State<DropOffScreen> {
 
-  GoogleMapController? _controller;
+  final Completer<GoogleMapController> _controller = Completer<GoogleMapController>();
+  GoogleMapController? mapController;
   late CameraPosition _initialcameraPosition;
   final OrderController orderController = Get.find<OrderController>();
-  final LocationController _locationController = Get.find<LocationController>();
+  final LocationController _locationController = Get.put(LocationController());
   final UserAccountController userAccountController = Get.find<UserAccountController>();
 
   bool isloading = true;
@@ -43,6 +49,8 @@ class _DropOffScreenState extends State<DropOffScreen> {
   String curplacename = "";
   late List<LatLng> polypoints = [];
   BitmapDescriptor custommarkerIcon = BitmapDescriptor.defaultMarker;
+  BitmapDescriptor bikermarkerIcon= BitmapDescriptor.defaultMarker;
+  BitmapDescriptor shopMarkerIcon = BitmapDescriptor.defaultMarker;
   OrderDetailModel? orderDetailModel;
 
 
@@ -54,71 +62,126 @@ class _DropOffScreenState extends State<DropOffScreen> {
     await launchUrl(launchUri);
   }
 
-  Future getCurrentLocation()async{
-    await _locationController.getPermission().then((value){
-      if(value){
+  Future<void> getCurrentLocation()async{
+    // await _locationController.getPermission().then((value){
+    //   if(value){
+    //     _locationController.getcurLagLong().then((_location){
+    //       _locationController.getplacemark(_location.latitude, _location.longitude).then((txtplace)async{
+    //         // setState(() {
+    //         //   curlat = _location.latitude;
+    //         //   curlong = _location.longitude;
+    //         //   curplacename = "${txtplace.thoroughfare}, ${txtplace.subAdministrativeArea}, ${txtplace.administrativeArea}";
+    //         //   _initialcameraPosition = CameraPosition(
+    //         //     target: LatLng(curlat, curlong),
+    //         //   );
+    //         // });
+    //         curlat = _location.latitude;
+    //         curlong = _location.longitude;
+    //         curplacename = "${txtplace.thoroughfare}, ${txtplace.subAdministrativeArea}, ${txtplace.administrativeArea}";
+    //         _initialcameraPosition = CameraPosition(
+    //           target: LatLng(curlat, curlong),
+    //           zoom: 16
+    //         );
+    //
+    //         getPolypoints();
+    //       });
+    //     });
+    //   }else{
+    //     Get.snackbar(
+    //       "Permission",
+    //       "Location Permission is denied",
+    //       borderRadius: 10,
+    //       backgroundColor: UIConstant.orange.withOpacity(0.2),
+    //       duration: const Duration(seconds: 5),
+    //     );
+    //   }
+    // });
 
-        _locationController.getcurLagLong().then((_location){
-          _locationController.getplacemark(_location.latitude, _location.longitude).then((txtplace){
-            setState(() {
-              curlat = _location.latitude;
-              curlong = _location.longitude;
-              curplacename = "${txtplace.thoroughfare}, ${txtplace.subAdministrativeArea}, ${txtplace.administrativeArea}";
-              _initialcameraPosition = CameraPosition(
-                target: LatLng(curlat, curlong),
-              );
-            });
-
-            getPolypoints();
-          });
-        });
-      }else{
-        Get.snackbar(
-          "Permission",
-          "Location Permission is denied",
-          borderRadius: 10,
-          backgroundColor: UIConstant.orange.withOpacity(0.2),
-          duration: const Duration(seconds: 5),
-        );
-      }
-    });
+    bool value = await _locationController.getPermission();
+    if(value){
+      Position _location = await _locationController.getcurLagLong();
+      Placemark txtplace = await _locationController.getplacemark(_location.latitude, _location.longitude);
+      curlat = _location.latitude;
+      curlong = _location.longitude;
+      curplacename = "${txtplace.thoroughfare}, ${txtplace.subAdministrativeArea}, ${txtplace.administrativeArea}";
+      _initialcameraPosition = CameraPosition(
+          target: LatLng(curlat, curlong),
+          zoom: 16
+      );
+      await getPolypoints();
+    }else{
+      Get.snackbar(
+        "Permission",
+        "Location Permission is denied",
+        borderRadius: 10,
+        backgroundColor: UIConstant.orange.withOpacity(0.2),
+        duration: const Duration(seconds: 5),
+      );
+    }
   }
 
-  void getPolypoints(){
-    _locationController.getpolyPointList(LatLng(curlat, curlong), LatLng(orderDetailModel!.cuslat!.toDouble(), orderDetailModel!.cuslong!.toDouble())).then((value){
-      print("This is from drop off screen............................");
-      print(LatLng(curlat, curlong));
-      print(value);
+  Future<void> getPolypoints()async{
+    // _locationController.getpolyPointList(LatLng(curlat, curlong), LatLng(orderDetailModel!.cuslat!.toDouble(), orderDetailModel!.cuslong!.toDouble())).then((value)async{
+    //   print("This is from drop off screen............................");
+    //   print(LatLng(curlat, curlong));
+    //   print(value);
+    //
+    //   polypoints = value;
+    //   if(mounted){
+    //     setState(() {
+    //       isloading = false;
+    //     });
+    //   }
+    // });
 
-      setState(() {
-        polypoints = value;
-
-        isloading = false;
-      });
-    });
+    polypoints = await _locationController.getpolyPointList(LatLng(curlat, curlong), LatLng(orderDetailModel!.cuslat!.toDouble(), orderDetailModel!.cuslong!.toDouble()));
   }
 
   Future getcustomMarker()async{
-    await _locationController.getmarkerIcon().then((icon){
-      setState(() {
-        custommarkerIcon = BitmapDescriptor.fromBytes(icon);
-      });
-    });
+    // await _locationController.getmarkerIcon().then((icon){
+    //   setState(() {
+    //     custommarkerIcon = BitmapDescriptor.fromBytes(icon);
+    //   });
+    // });
+
+    Uint8List cusicon = await _locationController.getmarkerIcon("assets/images/cus_icon.png");
+    Uint8List shopicon = await _locationController.getmarkerIcon("assets/images/shop_icon.png");
+    Uint8List bikericon = await _locationController.getmarkerIcon("assets/images/biker_icon.png");
+    custommarkerIcon = BitmapDescriptor.fromBytes(cusicon);
+    shopMarkerIcon = BitmapDescriptor.fromBytes(shopicon);
+    bikermarkerIcon = BitmapDescriptor.fromBytes(bikericon);
   }
 
-  Future assignOrder()async{
-    await orderController.getSingleOrderDetail(widget.orderId).then((value) async{
-      orderDetailModel = value;
-      await getcustomMarker();
-      await getCurrentLocation();
-    });
+  Future<void> assignOrder()async{
+    // await orderController.getSingleOrderDetail(widget.orderId).then((value) async{
+    //   orderDetailModel = value;
+    //   await getcustomMarker();
+    //   await getCurrentLocation();
+    // });
+
+    orderDetailModel = await orderController.getSingleOrderDetail(widget.orderId);
+    await getCurrentLocation();
+    await getcustomMarker();
 
   }
 
   @override
   void initState() {
     super.initState();
-    assignOrder();
+    assignOrder().then((_){
+      if(mounted){
+        setState(() {
+          isloading = false;
+        });
+      }
+    });
+  }
+
+
+  @override
+  void dispose() {
+    mapController?.dispose();
+    super.dispose();
   }
 
   @override
@@ -131,6 +194,7 @@ class _DropOffScreenState extends State<DropOffScreen> {
       markerId: MarkerId("1"),
       position: LatLng(curlat,curlong),
       draggable: false,
+      icon:bikermarkerIcon,
       infoWindow: InfoWindow(
         title: curplacename,
       ),
@@ -142,7 +206,7 @@ class _DropOffScreenState extends State<DropOffScreen> {
       infoWindow: InfoWindow(
         title: "${orderDetailModel!.shopName} ,${orderDetailModel!.shopAddress}",
       ),
-      icon: custommarkerIcon,
+      icon: shopMarkerIcon,
       zIndex: 10,
     );
 
@@ -158,9 +222,9 @@ class _DropOffScreenState extends State<DropOffScreen> {
 
     late Polyline _polyline = Polyline(
       polylineId: PolylineId("1"),
-      color: UIConstant.orange,
+      color: Colors.grey,
       points: polypoints,
-      width: 8,
+      width: 6,
       geodesic: true,
       endCap: Cap.roundCap,
       startCap: Cap.roundCap,
@@ -195,10 +259,12 @@ class _DropOffScreenState extends State<DropOffScreen> {
           ),
           leading: IconButton(
             icon: Icon(
-              Icons.arrow_back,
+              Icons.arrow_back_ios,
+              size: 28,
             ),
             onPressed: (){
-              Get.offAllNamed(RouteHelper.getHomePage());
+              // Get.offAllNamed(RouteHelper.getHomePage());
+              Get.back();
             },
           ),
         ),
@@ -255,11 +321,33 @@ class _DropOffScreenState extends State<DropOffScreen> {
                     child: GoogleMap(
                       initialCameraPosition: _initialcameraPosition,
                       zoomControlsEnabled: false,
-                      onMapCreated: (GoogleMapController controller){
-                        setState(() {
-                          _controller = controller;
-                        });
-                        _controller?.animateCamera(
+                      onMapCreated: (GoogleMapController controller)async{
+                        // setState(() {
+                        //   _controller = controller;
+                        // });
+                        // controller.animateCamera(
+                        //     CameraUpdate.newLatLngBounds(
+                        //       LatLngBounds(
+                        //           southwest: LatLng(
+                        //             curlat <= orderDetailModel!.cuslat!.toDouble() ? curlat : orderDetailModel!.cuslat!.toDouble(),
+                        //             curlong <= orderDetailModel!.cuslong!.toDouble() ? curlong : orderDetailModel!.cuslong!.toDouble(),
+                        //           ),
+                        //           northeast: LatLng(
+                        //             curlat >= orderDetailModel!.cuslat!.toDouble() ? curlat : orderDetailModel!.cuslat!.toDouble(),
+                        //             curlong >= orderDetailModel!.cuslong!.toDouble() ? curlong : orderDetailModel!.cuslong!.toDouble(),
+                        //           )
+                        //       ),
+                        //       80,
+                        //     )
+                        // );
+                        if(!_controller.isCompleted){
+                          _controller.complete(controller);
+                        }
+
+                        mapController = await _controller.future;
+                        print("Completer value ${_controller.isCompleted}");
+                        print(_controller.future);
+                        mapController!.animateCamera(
                             CameraUpdate.newLatLngBounds(
                               LatLngBounds(
                                   southwest: LatLng(
@@ -271,9 +359,10 @@ class _DropOffScreenState extends State<DropOffScreen> {
                                     curlong >= orderDetailModel!.cuslong!.toDouble() ? curlong : orderDetailModel!.cuslong!.toDouble(),
                                   )
                               ),
-                              80,
+                              50,
                             )
                         );
+
                       },
                       markers: <Marker>{
                         marker1,
@@ -301,6 +390,7 @@ class _DropOffScreenState extends State<DropOffScreen> {
                       horizontalPadding: 20,
                       txt: "View large map",
                       func: (){
+                        mapController?.dispose();
                         Get.to(() => MapScreen(
                             shopLatLng: LatLng(orderDetailModel!.shoplat!.toDouble(),orderDetailModel!.shoplong!.toDouble()),
                             cusLatLng: LatLng(orderDetailModel!.cuslat!.toDouble(),orderDetailModel!.cuslong!.toDouble()),

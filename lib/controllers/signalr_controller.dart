@@ -11,7 +11,7 @@ import 'location_controller.dart';
 
 class SignalRController extends GetxController{
 
-  final LocationController locationController = Get.find<LocationController>();
+  final LocationController locationController = Get.put(LocationController());
   final box = GetStorage();
   final ErrorHandler errorHandler = ErrorHandler();
   HubConnection hubConnection = HubConnectionBuilder().withUrl(TxtConstant.serverUrl,

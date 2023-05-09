@@ -22,7 +22,7 @@ class GlobalBindings extends Bindings{
     Get.isRegistered<OrderController>() ? Get.find<OrderController>() : Get.put(OrderController(),permanent: true);
 
     Get.isRegistered<CheckInOutController>() ? Get.find<CheckInOutController>() : Get.put(CheckInOutController(),permanent: true);
-    Get.isRegistered<LocationController>() ? Get.find<LocationController>() : Get.put(LocationController(),permanent: true);
+    // Get.isRegistered<LocationController>() ? Get.find<LocationController>() : Get.put(LocationController(),permanent: true);
     Get.isRegistered<SignalRController>() ? Get.find<SignalRController>() : Get.put(SignalRController(),permanent: true);
 
     Get.isRegistered<ClearanceController>() ? Get.find<ClearanceController>() : Get.put(ClearanceController(),permanent: true);
@@ -42,7 +42,7 @@ class LifeCycleController extends SuperController{
     Get.isRegistered<OrderController>() ? Get.find<OrderController>() : Get.put(OrderController(),permanent: true);
 
     Get.isRegistered<CheckInOutController>() ? Get.find<CheckInOutController>() : Get.put(CheckInOutController(),permanent: true);
-    Get.isRegistered<LocationController>() ? Get.find<LocationController>() : Get.put(LocationController(),permanent: true);
+    // Get.isRegistered<LocationController>() ? Get.find<LocationController>() : Get.put(LocationController(),permanent: true);
     Get.isRegistered<SignalRController>() ? Get.find<SignalRController>() : Get.put(SignalRController(),permanent: true);
 
     Get.isRegistered<ClearanceController>() ? Get.find<ClearanceController>() : Get.put(ClearanceController(),permanent: true);
@@ -59,7 +59,7 @@ class LifeCycleController extends SuperController{
     Get.isRegistered<OrderController>() ? Get.find<OrderController>() : Get.put(OrderController(),permanent: true);
 
     Get.isRegistered<CheckInOutController>() ? Get.find<CheckInOutController>() : Get.put(CheckInOutController(),permanent: true);
-    Get.isRegistered<LocationController>() ? Get.find<LocationController>() : Get.put(LocationController(),permanent: true);
+    // Get.isRegistered<LocationController>() ? Get.find<LocationController>() : Get.put(LocationController(),permanent: true);
     Get.isRegistered<SignalRController>() ? Get.find<SignalRController>() : Get.put(SignalRController(),permanent: true);
 
     Get.isRegistered<ClearanceController>() ? Get.find<ClearanceController>() : Get.put(ClearanceController(),permanent: true);
@@ -75,7 +75,7 @@ class LifeCycleController extends SuperController{
     Get.isRegistered<OrderController>() ? Get.find<OrderController>() : Get.put(OrderController(),permanent: true);
 
     Get.isRegistered<CheckInOutController>() ? Get.find<CheckInOutController>() : Get.put(CheckInOutController(),permanent: true);
-    Get.isRegistered<LocationController>() ? Get.find<LocationController>() : Get.put(LocationController(),permanent: true);
+    // Get.isRegistered<LocationController>() ? Get.find<LocationController>() : Get.put(LocationController(),permanent: true);
     Get.isRegistered<SignalRController>() ? Get.find<SignalRController>() : Get.put(SignalRController(),permanent: true);
 
     Get.isRegistered<ClearanceController>() ? Get.find<ClearanceController>() : Get.put(ClearanceController(),permanent: true);
@@ -91,7 +91,7 @@ class LifeCycleController extends SuperController{
     Get.isRegistered<OrderController>() ? Get.find<OrderController>() : Get.put(OrderController(),permanent: true);
 
     Get.isRegistered<CheckInOutController>() ? Get.find<CheckInOutController>() : Get.put(CheckInOutController(),permanent: true);
-    Get.isRegistered<LocationController>() ? Get.find<LocationController>() : Get.put(LocationController(),permanent: true);
+    // Get.isRegistered<LocationController>() ? Get.find<LocationController>() : Get.put(LocationController(),permanent: true);
     Get.isRegistered<SignalRController>() ? Get.find<SignalRController>() : Get.put(SignalRController(),permanent: true);
 
     Get.isRegistered<ClearanceController>() ? Get.find<ClearanceController>() : Get.put(ClearanceController(),permanent: true);

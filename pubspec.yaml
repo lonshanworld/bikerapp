@@ -58,6 +58,7 @@ dependencies:
   hand_signature: ^3.0.1
   flutter_launcher_icons: ^0.13.1
   path: ^1.8.2
+  flutter_widget_from_html: ^0.10.0
 
 dev_dependencies:
   flutter_test:

@@ -12,6 +12,7 @@ import "package:delivery/views/passcode_screen.dart";
 import "package:delivery/views/profile_screen.dart";
 import "package:delivery/views/punishments_screen.dart";
 import "package:delivery/views/qr_screen.dart";
+import "package:delivery/views/rules_screen.dart";
 import "package:delivery/views/schedule/schedule_tabbar.dart";
 import "package:delivery/views/splash_screen.dart";
 import "package:get/get.dart";
@@ -45,6 +46,7 @@ class RouteHelper{
   static const String SchedulePage = "/schedule";
   static const String ClearancePage = "/clearance";
   static const String ClearanceHistoryPage = "/clearanceHistory";
+  static const String RulePage = "/rule";
 
   //---------------
   // static const String ClearancePage = "/clearance";
@@ -71,6 +73,7 @@ class RouteHelper{
   static String getSchedulePage() => SchedulePage;
   static String getClearancePage() => ClearancePage;
   static String getClearanceHistoryPage() => ClearanceHistoryPage;
+  static String getRulePage() => RulePage;
 
   static List<GetPage> routes = [
     GetPage(
@@ -149,6 +152,10 @@ class RouteHelper{
     GetPage(
       name: ClearanceHistoryPage,
       page: () => const ClearanceHistory(),
+    ),
+    GetPage(
+      name: RulePage,
+      page: () => const RuleScreen(),
     ),
   ];
 }
