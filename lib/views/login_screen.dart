@@ -6,6 +6,7 @@ import "package:delivery/widgets/customButton_widget.dart";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import 'package:get/get.dart';
+import "package:intl/intl.dart";
 
 import "../widgets/snackBar_custom_widget.dart";
 import "loading_screen.dart";
@@ -20,6 +21,29 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController textEditingController = TextEditingController();
   final UserAccountController userAccountController = Get.find<UserAccountController>();
+  final FocusNode focusNode = FocusNode();
+  String labelstring = "Enter your phone number";
+
+  var formatter = new NumberFormat("#,###");
+
+  @override
+  void initState() {
+    super.initState();
+    focusNode.addListener(onFocusChange);
+  }
+
+  @override
+  void dispose() {
+    focusNode.dispose();
+    super.dispose();
+  }
+
+  void onFocusChange(){
+    labelstring = "Phone Number";
+    setState(() {
+
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,10 +101,18 @@ class _LoginScreenState extends State<LoginScreen> {
                 TextField(
                   style: UIConstant.minititle,
                   controller: textEditingController,
-                  maxLength: 11,
+                  focusNode: focusNode,
+                  maxLength: 9,
                   keyboardType: TextInputType.phone,
                   inputFormatters:<TextInputFormatter>[
-                    FilteringTextInputFormatter.digitsOnly
+                    FilteringTextInputFormatter.digitsOnly,
+                    // TextInputFormatter.withFunction((oldValue, newValue) {
+                    //   int oldInt = int.parse(oldValue.text);
+                    //   String newtext = formatter.format(oldInt);
+                    //   return newValue.copyWith(
+                    //     text: newtext,
+                    //   );
+                    // }),
                   ] ,
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.symmetric(
@@ -94,7 +126,22 @@ class _LoginScreenState extends State<LoginScreen> {
                         color: Colors.white,
                       ),
                     ),
-                    hintText: "Enter Your Phone Number",
+                    prefix: Padding(
+                      padding: EdgeInsets.only(
+                        right: 10,
+                      ),
+                      child: Text(
+                        "09",
+                        style: UIConstant.minititle,
+                      ),
+                    ),
+                    labelText: labelstring,
+                    labelStyle: UIConstant.minititle.copyWith(
+                      color: Colors.grey,
+                    ),
+                    floatingLabelStyle: UIConstant.normal.copyWith(
+                      color: Colors.grey
+                    ),
                     helperStyle:  UIConstant.tinytext,
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -116,7 +163,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   txt: "Login",
                   func: (){
                     print(textEditingController.text);
-                    if(textEditingController.text.isEmpty || textEditingController.text.length > 12){
+                    if(textEditingController.text.isEmpty || textEditingController.text.length > 9){
                       CustomGlobalSnackbar.show(
                         context: context,
                         title: "Input Invalid",
@@ -127,9 +174,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     }else{
                       // userAccountController.getUserLogin(textEditingController.text);
                       // Get.dialog(const LoadingScreen(), barrierDismissible: false);
+                      String phno = "09${textEditingController.text}";
                       Get.dialog(const LoadingScreen(), barrierDismissible: false);
-                      userAccountController.checkUser(textEditingController.text).then((_) async{
-                        userAccountController.phoneNumber.value = textEditingController.text;
+                      userAccountController.checkUser(phno).then((_) async{
+                        userAccountController.phoneNumber.value = phno;
 
                         // TODO: implement to send SMS
                         // await userAccountController.sendSMS();

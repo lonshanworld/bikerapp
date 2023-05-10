@@ -5,6 +5,7 @@ import 'package:delivery/routehelper.dart';
 import 'package:delivery/widgets/customButton_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pinput/pinput.dart';
 import '../constants/uiconstants.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 
@@ -66,7 +67,7 @@ class _PasscodeScreenState extends State<PasscodeScreen> {
     // final double oneUnitWidth = deviceWidth / 360;
     // final double oneUnitHeight = deviceHeight/772;
 
-    // final TextEditingController pinController = TextEditingController();
+    final TextEditingController pinController = TextEditingController();
 
     return SafeArea(
       child: Scaffold(
@@ -114,30 +115,53 @@ class _PasscodeScreenState extends State<PasscodeScreen> {
                   SizedBox(
                     height: 20,
                   ),
-                  OtpTextField(
-                    numberOfFields: 6,
-                    borderColor: Colors.grey,
-                    focusedBorderColor: UIConstant.orange,
-                    textStyle: UIConstant.title,
-                    showFieldAsBox: false,
-                    borderWidth: 4.0,
-                    //runs when every textfield is filled
-                    onSubmit: (String verificationCode) async{
-                      if(verificationCode == userAccountController.randomnum.value.toString()){
-                        Get.dialog(const LoadingScreen(), barrierDismissible: false);
-                        await userAccountController.verifiedUser();
-                        await userAccountController.getInfo();
-                        Get.offAllNamed(RouteHelper.getHomePage());
-                      }else{
-                        CustomGlobalSnackbar.show(
-                          context: context,
-                          title: "OTP code Wrong",
-                          txt: "Your OTP code is wrong. Please check SMS again",
-                          icon: Icons.error_outline,
-                          position: false,
-                        );
-                      }
-                    },
+                  // OtpTextField(
+                  //   numberOfFields: 6,
+                  //   borderColor: Colors.grey,
+                  //   focusedBorderColor: UIConstant.orange,
+                  //   textStyle: UIConstant.title,
+                  //   showFieldAsBox: false,
+                  //   borderWidth: 4.0,
+                  //   //runs when every textfield is filled
+                  //   onSubmit: (String verificationCode) async{
+                  //     if(verificationCode == userAccountController.randomnum.value.toString()){
+                  //       Get.dialog(const LoadingScreen(), barrierDismissible: false);
+                  //       await userAccountController.verifiedUser();
+                  //       await userAccountController.getInfo();
+                  //       Get.offAllNamed(RouteHelper.getHomePage());
+                  //     }else{
+                  //       CustomGlobalSnackbar.show(
+                  //         context: context,
+                  //         title: "OTP code Wrong",
+                  //         txt: "Your OTP code is wrong. Please check SMS again",
+                  //         icon: Icons.error_outline,
+                  //         position: false,
+                  //       );
+                  //     }
+                  //   },
+                  // ),
+                  Pinput(
+                    length: 6,
+                    controller: pinController,
+                    closeKeyboardWhenCompleted: true,
+                    keyboardType: TextInputType.number,
+                    hapticFeedbackType: HapticFeedbackType.vibrate,
+                    defaultPinTheme: PinTheme(
+                      width: 40,
+                      height: 50,
+                      margin: EdgeInsets.symmetric(
+                        horizontal: 5,
+                      ),
+                      textStyle: UIConstant.title,
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            color: Colors.grey,
+                            width: 3,
+                          )
+                        )
+                      ),
+                    ),
                   ),
                   SizedBox(
                     height: 40,
