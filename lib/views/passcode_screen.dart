@@ -66,6 +66,8 @@ class _PasscodeScreenState extends State<PasscodeScreen> {
     // final double oneUnitWidth = deviceWidth / 360;
     // final double oneUnitHeight = deviceHeight/772;
 
+    // final TextEditingController pinController = TextEditingController();
+
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
