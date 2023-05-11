@@ -86,9 +86,7 @@ class ScheduleWidget extends StatelessWidget {
                   Center(
                     child: Text(
                       startSchedule,
-                      style: UIConstant.normal.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: UIConstant.minititle,
                     ),
                   ),
                   Center(
@@ -100,9 +98,7 @@ class ScheduleWidget extends StatelessWidget {
                   Center(
                     child: Text(
                       endSchedule,
-                      style: UIConstant.normal.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: UIConstant.minititle,
                     ),
                   ),
                 ],

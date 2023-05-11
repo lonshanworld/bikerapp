@@ -118,16 +118,16 @@ class LifeCycleController extends SuperController{
   void onPaused() {
     // TODO: implement onPaused
     print("-----------------------------------------------on Paused-----------------------------------------------------------");
-    // Get.isRegistered<UserAccountController>() ? Get.find<UserAccountController>() : Get.put(UserAccountController(), permanent: true);
-    // Get.isRegistered<ScheduleController>() ? Get.find<ScheduleController>() : Get.put(ScheduleController(),permanent: true);
-    // Get.isRegistered<NotiController>() ? Get.find<NotiController>() : Get.put(NotiController(),permanent: true);
-    // Get.isRegistered<OrderController>() ? Get.find<OrderController>() : Get.put(OrderController(),permanent: true);
-    //
-    // Get.isRegistered<CheckInOutController>() ? Get.find<CheckInOutController>() : Get.put(CheckInOutController(),permanent: true);
-    // // Get.isRegistered<LocationController>() ? Get.find<LocationController>() : Get.put(LocationController(),permanent: true);
-    // Get.isRegistered<SignalRController>() ? Get.find<SignalRController>() : Get.put(SignalRController(),permanent: true);
-    //
-    // Get.isRegistered<ClearanceController>() ? Get.find<ClearanceController>() : Get.put(ClearanceController(),permanent: true);
+    Get.isRegistered<UserAccountController>() ? Get.find<UserAccountController>() : Get.put(UserAccountController(), permanent: true);
+    Get.isRegistered<ScheduleController>() ? Get.find<ScheduleController>() : Get.put(ScheduleController(),permanent: true);
+    Get.isRegistered<NotiController>() ? Get.find<NotiController>() : Get.put(NotiController(),permanent: true);
+    Get.isRegistered<OrderController>() ? Get.find<OrderController>() : Get.put(OrderController(),permanent: true);
+
+    Get.isRegistered<CheckInOutController>() ? Get.find<CheckInOutController>() : Get.put(CheckInOutController(),permanent: true);
+    // Get.isRegistered<LocationController>() ? Get.find<LocationController>() : Get.put(LocationController(),permanent: true);
+    Get.isRegistered<SignalRController>() ? Get.find<SignalRController>() : Get.put(SignalRController(),permanent: true);
+
+    Get.isRegistered<ClearanceController>() ? Get.find<ClearanceController>() : Get.put(ClearanceController(),permanent: true);
     // errorHandler.handleNoConnectionError(() {
     //   if(status == InternetConnectionStatus.connected){
     //     WidgetsBinding.instance.handleAppLifecycleStateChanged(AppLifecycleState.resumed);

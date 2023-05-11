@@ -222,37 +222,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) async{
     print("Inside life cycle check ${state}");
-
-    if(state == AppLifecycleState.paused){
-      // showDialog(context: Get.context!, builder: (BuildContext context){
-      //   return AlertDialog(
-      //     title: Text('App Paused'),
-      //     content: Text('The app is paused.'),
-      //     actions: [
-      //       TextButton(
-      //         onPressed: () => Navigator.pop(context),
-      //         child: Text('OK'),
-      //       ),
-      //     ],
-      //   );
-      // });
-      // Get.dialog(
-      //   AlertDialog(
-      //     title: Text('Paused'),
-      //     content: Text('The app is paused.'),
-      //     actions: [
-      //       Obx((){
-      //         return TextButton(
-      //           onPressed: isPaused.value ? (){
-      //             print("hi");
-      //           } : null,
-      //           child: Text('OK'),
-      //         );
-      //       }),
-      //     ],
-      //   ),
-      // );
-    }
   }
 
   @override
