@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:delivery/controllers/noti_controller.dart';
+import 'package:delivery/services/logout_service.dart';
 import 'package:delivery/services/noti_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -14,6 +15,7 @@ import 'forceexit_service.dart';
 
 class ErrorHandler{
   final NotiService notiService =NotiService();
+  final LogOutService logOutService = LogOutService();
   final box = GetStorage();
 
   handleError(http.Response response){
@@ -27,12 +29,13 @@ class ErrorHandler{
             txt: "Please Click the button to Logout and Login again to continue.",
             btntxt: "Click to Logout",
             Func: (){
-              if(Theme.of(Get.context!).brightness == Brightness.dark){
-                ThemeService().switchTheme();
-              }
-              notiService.deleteAll();
-              box.erase();
-              Get.offAllNamed(RouteHelper.getLoginPage());
+              // if(Theme.of(Get.context!).brightness == Brightness.dark){
+              //   ThemeService().switchTheme();
+              // }
+              // notiService.deleteAll();
+              // box.erase();
+              // Get.offAllNamed(RouteHelper.getLoginPage());
+              logOutService.logout(Get.context!);
             },
           );
         },

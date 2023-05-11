@@ -70,6 +70,7 @@ class CheckInOutController extends GetxController{
   }
 
   Future<void> checkOut()async{
+    print("Inside checkout");
     http.Response respones = await service.checkOut();
     if(respones.statusCode < 299){
       box.remove(TxtConstant.checkIn);

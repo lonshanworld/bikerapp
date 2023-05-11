@@ -136,16 +136,16 @@ class UserAccountController extends GetxController{
 
 
   
-  Logout(){
-    box.remove(TxtConstant.language);
-    box.remove(TxtConstant.theme);
-    box.remove(TxtConstant.accesstoken);
-    box.remove(TxtConstant.refreshtoken);
-    box.remove(TxtConstant.user_id);
-    box.remove(TxtConstant.user_userName);
-    box.remove(TxtConstant.user_email);
-    box.remove(TxtConstant.user_phNo);
-    box.remove(TxtConstant.user_fullName);
-    box.remove(TxtConstant.user_role);
-  }
+  // Logout(){
+  //   box.remove(TxtConstant.language);
+  //   box.remove(TxtConstant.theme);
+  //   box.remove(TxtConstant.accesstoken);
+  //   box.remove(TxtConstant.refreshtoken);
+  //   box.remove(TxtConstant.user_id);
+  //   box.remove(TxtConstant.user_userName);
+  //   box.remove(TxtConstant.user_email);
+  //   box.remove(TxtConstant.user_phNo);
+  //   box.remove(TxtConstant.user_fullName);
+  //   box.remove(TxtConstant.user_role);
+  // }
 }

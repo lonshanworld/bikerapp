@@ -196,7 +196,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
                     color: UIConstant.orange,
                   )
               ),
-              backgroundColor: Theme.of(context).brightness == Brightness.dark ? UIConstant.bgDark : UIConstant.bgWhite,
+              backgroundColor: Theme.of(Get.context!).brightness == Brightness.dark ? UIConstant.bgDark : UIConstant.bgWhite,
             ),
           );
 

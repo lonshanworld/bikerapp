@@ -1,7 +1,9 @@
 import "package:delivery/constants/uiconstants.dart";
+import "package:delivery/controllers/check_in_out_controller.dart";
 import "package:delivery/controllers/noti_controller.dart";
 import "package:delivery/controllers/useraccount_controller.dart";
 import "package:delivery/routehelper.dart";
+import "package:delivery/services/logout_service.dart";
 import "package:delivery/services/theme_service.dart";
 import "package:delivery/views/setting_screen.dart";
 import "package:flutter/material.dart";
@@ -10,6 +12,7 @@ import "package:get_storage/get_storage.dart";
 
 import "../constants/txtconstants.dart";
 import "../widgets/alertDialog_widget.dart";
+import "loading_screen.dart";
 
 class DrawerPage extends StatelessWidget {
   const DrawerPage({Key? key}) : super(key: key);
@@ -19,13 +22,15 @@ class DrawerPage extends StatelessWidget {
     //
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double deviceHeight = MediaQuery.of(context).size.height;
-    final double oneUnitWidth = deviceWidth / 360;
-    final double oneUnitHeight = deviceHeight/772;
+    // final double oneUnitWidth = deviceWidth / 360;
+    // final double oneUnitHeight = deviceHeight/772;
 
     final double drawerWidth = deviceWidth > 500 ? 350 : (deviceWidth / 4) * 3;
 
     final UserAccountController userAccountController = Get.find<UserAccountController>();
-    final NotiController notiController = Get.find<NotiController>();
+    // final NotiController notiController = Get.find<NotiController>();
+    final CheckInOutController checkInOutController = Get.find<CheckInOutController>();
+    final LogOutService logOutService = LogOutService();
 
     GetStorage box = GetStorage();
 
@@ -57,12 +62,17 @@ class DrawerPage extends StatelessWidget {
                 Navigator.of(context).pop();
               },
               acceptfunc: ()async{
-                if(Theme.of(context).brightness == Brightness.dark){
-                  ThemeService().switchTheme();
-                }
-                notiController.deleteAll();
-                box.erase();
-                Get.offAllNamed(RouteHelper.getLoginPage());
+                Get.dialog(const LoadingScreen(), barrierDismissible: false);
+                await checkInOutController.checkOut();
+                logOutService.logout(context);
+                // Future.delayed(Duration(seconds: 2),(){
+                //   if(Theme.of(context).brightness == Brightness.dark){
+                //     ThemeService().switchTheme();
+                //   }
+                //   notiController.deleteAll();
+                //   box.erase();
+                //   Get.offAllNamed(RouteHelper.getLoginPage());
+                // });
               }
           )
       );
@@ -101,12 +111,16 @@ class DrawerPage extends StatelessWidget {
                 if(value == true){
                   CheckOutAlert(context);
                 }else{
-                  if(Theme.of(context).brightness == Brightness.dark){
-                    ThemeService().switchTheme();
-                  }
-                  notiController.deleteAll();
-                  box.erase();
-                  Get.offAllNamed(RouteHelper.getLoginPage());
+                  Get.dialog(const LoadingScreen(), barrierDismissible: false);
+                  logOutService.logout(context);
+                  // Future.delayed(Duration(seconds: 2),(){
+                  //   if(Theme.of(context).brightness == Brightness.dark){
+                  //     ThemeService().switchTheme();
+                  //   }
+                  //   notiController.deleteAll();
+                  //   box.erase();
+                  //   Get.offAllNamed(RouteHelper.getLoginPage());
+                  // });
                 }
               }
           )
