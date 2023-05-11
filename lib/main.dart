@@ -187,7 +187,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
                 style: UIConstant.title,
               ),
               content: Text(
-                'There is no internet connectio.  Please check your internet connection and try again.',
+                'Please check your internet connection and try again.',
                 style:  UIConstant.normal ,
               ),
               shape: RoundedRectangleBorder(

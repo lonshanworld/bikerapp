@@ -131,7 +131,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                     icon: Icon(
                       Icons.menu_open,
-                      size: 28,
+                      size: 24,
                     ),
                   );
                 }

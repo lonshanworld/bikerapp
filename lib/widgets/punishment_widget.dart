@@ -121,7 +121,7 @@ class PunishmentWidget extends StatelessWidget {
             children: [
               Icon(
                 Icons.info_outline,
-                size: 28,
+                size: 24,
                 color: isSatisfied ? Colors.grey : UIConstant.orange,
               ),
               SizedBox(

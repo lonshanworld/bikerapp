@@ -48,7 +48,7 @@ class _PunishmentScreenState extends State<PunishmentScreen> {
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios,
-            size: 28,
+            size: 24,
           ),
           onPressed: () {
             // Get.offAllNamed("/home");

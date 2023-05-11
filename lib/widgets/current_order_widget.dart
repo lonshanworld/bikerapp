@@ -98,7 +98,7 @@ class _CurrentOrderWidgetState extends State<CurrentOrderWidget> {
                     },
                     child: Icon(
                       Icons.phone,
-                      size: 28,
+                      size: 24,
                       color: UIConstant.orange,
                     ),
                   ),

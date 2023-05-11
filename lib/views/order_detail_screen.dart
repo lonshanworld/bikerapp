@@ -78,7 +78,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios,
-            size: 28,
+            size: 24,
           ),
           onPressed: (){
             if(widget.hasButton){
