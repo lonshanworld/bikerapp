@@ -38,7 +38,7 @@ class _CurrentOrderWidgetState extends State<CurrentOrderWidget> {
   Widget build(BuildContext context) {
 
     // final double deviceWidth = MediaQuery.of(context).size.width;
-    // final double deviceHeight = MediaQuery.of(context).size.height;
+    final double deviceHeight = MediaQuery.of(context).size.height;
     // final double oneUnitWidth = deviceWidth / 360;
     // final double oneUnitHeight = deviceHeight/772;
 
@@ -165,7 +165,7 @@ class _CurrentOrderWidgetState extends State<CurrentOrderWidget> {
                           fit: BoxFit.cover
                       ),
                     ),
-                    height: 100,
+                    height: deviceHeight / 12,
                   ),
                   SizedBox(
                     height: 10,

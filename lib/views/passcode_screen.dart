@@ -4,10 +4,10 @@ import 'package:delivery/controllers/useraccount_controller.dart';
 import 'package:delivery/routehelper.dart';
 import 'package:delivery/widgets/customButton_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:pinput/pinput.dart';
 import '../constants/uiconstants.dart';
-import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 
 import '../widgets/snackBar_custom_widget.dart';
 import 'loading_screen.dart';
@@ -25,10 +25,27 @@ class PasscodeScreen extends StatefulWidget {
 class _PasscodeScreenState extends State<PasscodeScreen> {
 
   final UserAccountController userAccountController = Get.find<UserAccountController>();
+  final TextEditingController pinController = TextEditingController();
   int time = 120;
   bool showresendBtn = false;
   late Timer newtimer;
 
+  PinTheme customPinTheme = PinTheme(
+    width: 30,
+    height: 40,
+    margin: EdgeInsets.symmetric(
+      horizontal: 3,
+    ),
+    textStyle: UIConstant.title,
+    decoration: BoxDecoration(
+        border: Border(
+            bottom: BorderSide(
+              color: Colors.grey,
+              width: 3,
+            )
+        )
+    ),
+  );
 
   void resendCode(){
     time = 120;
@@ -56,6 +73,7 @@ class _PasscodeScreenState extends State<PasscodeScreen> {
   @override
   void dispose() {
     newtimer.cancel();
+    pinController.dispose();
     super.dispose();
   }
 
@@ -67,7 +85,7 @@ class _PasscodeScreenState extends State<PasscodeScreen> {
     // final double oneUnitWidth = deviceWidth / 360;
     // final double oneUnitHeight = deviceHeight/772;
 
-    final TextEditingController pinController = TextEditingController();
+
 
     return SafeArea(
       child: Scaffold(
@@ -145,23 +163,43 @@ class _PasscodeScreenState extends State<PasscodeScreen> {
                     controller: pinController,
                     closeKeyboardWhenCompleted: true,
                     keyboardType: TextInputType.number,
-                    hapticFeedbackType: HapticFeedbackType.vibrate,
-                    defaultPinTheme: PinTheme(
-                      width: 40,
-                      height: 50,
-                      margin: EdgeInsets.symmetric(
-                        horizontal: 5,
-                      ),
-                      textStyle: UIConstant.title,
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            color: Colors.grey,
-                            width: 3,
-                          )
+                    defaultPinTheme: customPinTheme,
+                    androidSmsAutofillMethod: AndroidSmsAutofillMethod.smsUserConsentApi,
+                    focusedPinTheme: customPinTheme.copyDecorationWith(
+                      border: Border(
+                        bottom: BorderSide(
+                          color: UIConstant.orange,
+                          width: 3,
                         )
                       ),
                     ),
+                    submittedPinTheme: customPinTheme.copyDecorationWith(
+                      border: Border(
+                          bottom: BorderSide(
+                            color: Colors.green,
+                            width: 3,
+                          )
+                      ),
+                    ),
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.digitsOnly,
+                    ] ,
+                    onCompleted: (verificationCode)async{
+                      if(verificationCode == userAccountController.randomnum.value.toString()){
+                        Get.dialog(const LoadingScreen(), barrierDismissible: false);
+                        await userAccountController.verifiedUser();
+                        await userAccountController.getInfo();
+                        Get.offAllNamed(RouteHelper.getHomePage());
+                      }else{
+                        CustomGlobalSnackbar.show(
+                          context: context,
+                          title: "OTP code Wrong",
+                          txt: "Your OTP code is wrong. Please check SMS again",
+                          icon: Icons.error_outline,
+                          position: false,
+                        );
+                      }
+                    },
                   ),
                   SizedBox(
                     height: 40,

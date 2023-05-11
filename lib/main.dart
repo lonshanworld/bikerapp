@@ -1,9 +1,13 @@
+import 'dart:async';
+
 import 'package:delivery/constants/txtconstants.dart';
 import 'package:delivery/controllers/location_controller.dart';
 import 'package:delivery/controllers/noti_controller.dart';
 import 'package:delivery/controllers/schedule_controller.dart';
 import 'package:delivery/controllers/signalr_controller.dart';
 import 'package:delivery/db/db_service.dart';
+import 'package:delivery/error_handlers/error_handlers.dart';
+
 import 'package:delivery/routehelper.dart';
 
 import 'package:delivery/services/theme_service.dart';
@@ -11,11 +15,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
 import "package:get/get.dart";
 import 'package:get_storage/get_storage.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:intl/intl.dart';
-import 'package:sqflite/sqflite.dart';
+
 
 import 'constants/uiconstants.dart';
 import 'dependencies.dart';
@@ -139,37 +144,134 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
   // This widget is the root of your application.
   final NotiController notiController = Get.find<NotiController>();
   final SignalRController signalRController = Get.find<SignalRController>();
 
+
+  late StreamSubscription<InternetConnectionStatus> listener;
+
   initFuncs()async{
     // await notiController.initController();
+
     await notiController.requestNotiPermission();
     await notiController.initialize();
 
     await signalRController.startSignalR();
+
+
+    // close listener after 30 seconds, so the program doesn't run forever
+    // await Future.delayed(Duration(seconds: 5));
+    // await listener.cancel();
+    // print("Listener cancelled");
   }
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    listener = InternetConnectionChecker().onStatusChange.listen((status) {
+      switch (status) {
+        case InternetConnectionStatus.connected:
+          Get.back();
+          print('Data connection is available.');
+          WidgetsBinding.instance.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
+          break;
+        case InternetConnectionStatus.disconnected:
+          print('You are disconnected from the internet.');
+          Get.dialog(
+            AlertDialog(
+              title: Text(
+                'Paused',
+                style: UIConstant.title,
+              ),
+              content: Text(
+                'The app is paused.',
+                style:  UIConstant.normal ,
+              ),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  side: BorderSide(
+                    color: UIConstant.orange,
+                  )
+              ),
+              backgroundColor: Theme.of(context).brightness == Brightness.dark ? UIConstant.bgDark : UIConstant.bgWhite,
+            ),
+          );
+
+          Future.delayed(Duration(seconds: 3),(){
+            WidgetsBinding.instance.handleAppLifecycleStateChanged(AppLifecycleState.paused);
+          });
+          break;
+      }
+    });
     initFuncs();
+  }
+
+
+  @override
+  void dispose() {
+    listener.cancel();
+    print("listener cancelled");
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async{
+    print("Inside life cycle check ${state}");
+
+    if(state == AppLifecycleState.paused){
+      // showDialog(context: Get.context!, builder: (BuildContext context){
+      //   return AlertDialog(
+      //     title: Text('App Paused'),
+      //     content: Text('The app is paused.'),
+      //     actions: [
+      //       TextButton(
+      //         onPressed: () => Navigator.pop(context),
+      //         child: Text('OK'),
+      //       ),
+      //     ],
+      //   );
+      // });
+      // Get.dialog(
+      //   AlertDialog(
+      //     title: Text('Paused'),
+      //     content: Text('The app is paused.'),
+      //     actions: [
+      //       Obx((){
+      //         return TextButton(
+      //           onPressed: isPaused.value ? (){
+      //             print("hi");
+      //           } : null,
+      //           child: Text('OK'),
+      //         );
+      //       }),
+      //     ],
+      //   ),
+      // );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Quickfood BikerMobile',
-      theme: UIConstant.lightTheme,
-      darkTheme: UIConstant.darkTheme,
-      themeMode: ThemeService().theme,
-      // locale: LanguageService().locale,
-      // translations: LanguageKeyStrings(),
-      initialRoute: RouteHelper.getSplashPage(),
-      getPages: RouteHelper.routes,
+    return WillPopScope(
+      onWillPop: () async{
+        return false;
+      },
+      child: GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Quickfood BikerMobile',
+        theme: UIConstant.lightTheme,
+        darkTheme: UIConstant.darkTheme,
+        themeMode: ThemeService().theme,
+        // locale: LanguageService().locale,
+        // translations: LanguageKeyStrings(),
+        initialRoute: RouteHelper.getSplashPage(),
+        getPages: RouteHelper.routes,
+      ),
     );
   }
 

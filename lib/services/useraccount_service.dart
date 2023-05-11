@@ -43,7 +43,7 @@ class UserAccountService{
       http.Response response = await http.post(Uri.parse(uri),body: {
         'To': phNum,
         'Message':
-        "Your OTP Code is $randomnum. Please use this for your Biker account",
+        "Your OTP Code is $randomnum. Please enter this code for your Biker account",
       });
       print("in sendSMSservice || ${response.statusCode}");
       print(response.body);

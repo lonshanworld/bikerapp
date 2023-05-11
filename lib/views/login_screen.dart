@@ -35,6 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void dispose() {
     focusNode.dispose();
+    textEditingController.dispose();
     super.dispose();
   }
 
