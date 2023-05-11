@@ -183,11 +183,11 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
           Get.dialog(
             AlertDialog(
               title: Text(
-                'Paused',
+                'No Internet Connection',
                 style: UIConstant.title,
               ),
               content: Text(
-                'The app is paused.',
+                'There is no internet connectio.  Please check your internet connection and try again.',
                 style:  UIConstant.normal ,
               ),
               shape: RoundedRectangleBorder(
