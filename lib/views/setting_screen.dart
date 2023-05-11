@@ -71,7 +71,7 @@ class _SettingScreenState extends State<SettingScreen> {
             func: (){
               Navigator.of(context).pop();
             },
-            txtClr:  Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
+            txtClr: Colors.white,
             bgClr: UIConstant.orange,
             txtsize: oneUnitHeight * 14,
             rad: oneUnitHeight * 5,
