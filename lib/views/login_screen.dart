@@ -1,3 +1,4 @@
+import "package:delivery/constants/txtconstants.dart";
 import "package:delivery/constants/uiconstants.dart";
 import "package:delivery/controllers/useraccount_controller.dart";
 import "package:delivery/routehelper.dart";
@@ -66,6 +67,9 @@ class _LoginScreenState extends State<LoginScreen> {
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
               children: [
+                Text(
+                  TxtConstant.mainUrl,
+                ),
                 Row(
                   children: [
                     Container(
@@ -87,7 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                 ),
                 SizedBox(
-                  height: 20,
+                  height: 10,
                 ),
                 Align(
                   alignment: Alignment.centerLeft,
@@ -97,7 +101,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 SizedBox(
-                  height: 15,
+                  height: 30,
                 ),
                 TextField(
                   style: UIConstant.minititle,

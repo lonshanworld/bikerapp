@@ -67,8 +67,6 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
 
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double deviceHeight = MediaQuery.of(context).size.height;
-    final double oneUnitWidth = deviceWidth / 360;
-    final double oneUnitHeight = deviceHeight/772;
 
     return Scaffold(
       appBar: AppBar(
@@ -135,7 +133,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                       ],
                     ),
                     Container(
-                      height: deviceHeight / 17,
+                      height: deviceHeight * 0.22,
                       decoration: BoxDecoration(
                         image: DecorationImage(
                             image: NetworkImage(

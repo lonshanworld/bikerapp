@@ -40,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final CheckInOutController checkInOutController = Get.find<CheckInOutController>();
   final ScheduleController scheduleController = Get.find<ScheduleController>();
 
-  final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
+  // final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
   ScheduleModel? checkinModel;
   final box = GetStorage();
 
@@ -83,23 +83,27 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  firebaseNotiFunc(){
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
-      await notiController.showNotification(
-        remoteMessage: message
-      );
-
-    });
-    FirebaseMessaging.onBackgroundMessage(myBackgroundMessageHandler);
-
-  }
+  // firebaseNotiFunc()async{
+  //   await firebaseMessaging.getInitialMessage();
+  //   await firebaseMessaging.subscribeToTopic("android");
+  //
+  //   FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+  //     print("This is normal message listen...............................................");
+  //     print(firebaseMessaging.app);
+  //     await notiController.showNotification(
+  //       remoteMessage: message
+  //     );
+  //   });
+  //   FirebaseMessaging.onBackgroundMessage(myBackgroundMessageHandler);
+  //
+  // }
 
 
 
   @override
   void initState() {
     super.initState();
-    firebaseNotiFunc();
+
     loadData();
   }
 

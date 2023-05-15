@@ -16,7 +16,7 @@ import '../views/loading_screen.dart';
 import "dart:io";
 
 class UserAccountController extends GetxController{
-  final UserAccountService service = Get.put(UserAccountService());
+  final UserAccountService service = UserAccountService();
   final box = GetStorage();
 
   final RxList<BikerModel> bikermodel = List<BikerModel>.empty().obs;

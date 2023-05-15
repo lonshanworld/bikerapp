@@ -37,98 +37,99 @@ import 'models/noti_model.dart';
 //   print('Handling a background message ${message.messageId}');
 // }
 
-final NotiController notiController = Get.isRegistered<NotiController>() ? Get.find<NotiController>() : Get.put(NotiController(),permanent: true);
-final ScheduleController  scheduleController= Get.isRegistered<ScheduleController>() ? Get.find<ScheduleController>() : Get.put(ScheduleController(),permanent: true);
+final NotiController notiController = Get.isRegistered<NotiController>() ? Get.find<NotiController>() : Get.put(NotiController());
 
 @pragma('vm:entry-point')
 Future<dynamic> myBackgroundMessageHandler(RemoteMessage message)async{
+  print('This is background message listen ----------------------------------------------------------------------------');
+  await DBservices.initDB();
   print("backgroundMessage ${message.notification?.title}");
-  notiController.showNotificationforBackground(
+  notiController.showNotification(
     remoteMessage: message,
   );
 
-  await DBservices.initDB();
-  if(message.data.containsKey("type")){
-    print("This contain key");
-    if(message.data["type"].toLowerCase() == "orderpickedup"){
-      print("the type is orderpickedup");
-      NotiOrderModel notiData = NotiOrderModel();
-      notiData.title = message.notification?.title;
-
-      notiData.body = message.notification?.body;
-      notiData.notiBodyModel = NotiBodyModel(
-        orderTitle: notiData.title!,
-        orderId: message.data["orderId"].toString(),
-        refNo: message.data["refNo"].toString(),
-        earning: int.parse(message.data["earning"]),
-        shopName: message.data["shopName"].toString(),
-        lat: double.parse(message.data["lat"]),
-        long: double.parse(message.data["long"]),
-        photo: message.data["photo"],
-        distanceMeter: double.parse(message.data["distanceMeter"]),
-        type: message.data["type"].toString().toLowerCase(),
-      );
-      String _date = DateFormat("y-MMM-d").format(DateTime.now());
-      notiData.date = _date;
-      notiData.type =  message.data["type"];
-      print(notiData.notiBodyModel?.type);
-
-      notiController.updateshowFlag(notiData.notiBodyModel!.orderId!);
-    }else if(message.data["type"].toLowerCase() == "orderalert"){
-      print("the type is order alert");
-      NotiOrderModel notiData = NotiOrderModel();
-      notiData.title = message.notification?.title;
-      // var jsonbodydata = json.decode(_notificationInfo!.body);
-      notiData.body = message.notification?.body;
-      notiData.notiBodyModel = NotiBodyModel(
-        orderTitle: notiData.title!,
-        orderId: message.data["orderId"].toString(),
-        refNo: message.data["refNo"].toString(),
-        earning: int.parse(message.data["earning"]),
-        shopName: message.data["shopName"].toString(),
-        lat: double.parse(message.data["lat"]),
-        long: double.parse(message.data["long"]),
-        photo: message.data["photo"],
-        distanceMeter: double.parse(message.data["distanceMeter"]),
-        type: message.data["type"].toString().toLowerCase(),
-      );
-      String _date = DateFormat("y-MMM-d").format(DateTime.now());
-      notiData.date = _date;
-      notiData.type =  message.data["type"];
-      print(notiData.notiBodyModel?.type);
-
-      notiData.showFlag = "true";
-      print("This is in orderalert typpe");
-      print(notiData);
-      notiController.addNotiData(notiModel: notiData);
-      print(notiController.notiListByshowFlag.length);
-    }else{
-      print("has key but no type");
-      RandomNotiModel randomNotiModel = RandomNotiModel(
-        title: message.notification!.title!,
-        body: message.notification!.body!,
-        date: DateTime.now().toString(),
-      );
-      notiController.addRandomNoti(randomNotiModel);
-      await scheduleController.scheduleReload();
-    }
-  }else{
-    print("no key");
-    RandomNotiModel randomNotiModel = RandomNotiModel(
-      title: message.notification!.title!,
-      body: message.notification!.body!,
-      date:DateFormat("y-MMM-d").format(DateTime.now()),
-    );
-    notiController.addRandomNoti(randomNotiModel);
-    await scheduleController.scheduleReload();
-  }
+  // await DBservices.initDB();
+  // if(message.data.containsKey("type")){
+  //   print("This contain key");
+  //   if(message.data["type"].toLowerCase() == "orderpickedup"){
+  //     print("the type is orderpickedup");
+  //     NotiOrderModel notiData = NotiOrderModel();
+  //     notiData.title = message.notification?.title;
+  //
+  //     notiData.body = message.notification?.body;
+  //     notiData.notiBodyModel = NotiBodyModel(
+  //       orderTitle: notiData.title!,
+  //       orderId: message.data["orderId"].toString(),
+  //       refNo: message.data["refNo"].toString(),
+  //       earning: int.parse(message.data["earning"]),
+  //       shopName: message.data["shopName"].toString(),
+  //       lat: double.parse(message.data["lat"]),
+  //       long: double.parse(message.data["long"]),
+  //       photo: message.data["photo"],
+  //       distanceMeter: double.parse(message.data["distanceMeter"]),
+  //       type: message.data["type"].toString().toLowerCase(),
+  //     );
+  //     String _date = DateFormat("y-MMM-d").format(DateTime.now());
+  //     notiData.date = _date;
+  //     notiData.type =  message.data["type"];
+  //     print(notiData.notiBodyModel?.type);
+  //
+  //     notiController.updateshowFlag(notiData.notiBodyModel!.orderId!);
+  //   }else if(message.data["type"].toLowerCase() == "orderalert"){
+  //     print("the type is order alert");
+  //     NotiOrderModel notiData = NotiOrderModel();
+  //     notiData.title = message.notification?.title;
+  //     // var jsonbodydata = json.decode(_notificationInfo!.body);
+  //     notiData.body = message.notification?.body;
+  //     notiData.notiBodyModel = NotiBodyModel(
+  //       orderTitle: notiData.title!,
+  //       orderId: message.data["orderId"].toString(),
+  //       refNo: message.data["refNo"].toString(),
+  //       earning: int.parse(message.data["earning"]),
+  //       shopName: message.data["shopName"].toString(),
+  //       lat: double.parse(message.data["lat"]),
+  //       long: double.parse(message.data["long"]),
+  //       photo: message.data["photo"],
+  //       distanceMeter: double.parse(message.data["distanceMeter"]),
+  //       type: message.data["type"].toString().toLowerCase(),
+  //     );
+  //     String _date = DateFormat("y-MMM-d").format(DateTime.now());
+  //     notiData.date = _date;
+  //     notiData.type =  message.data["type"];
+  //     print(notiData.notiBodyModel?.type);
+  //
+  //     notiData.showFlag = "true";
+  //     print("This is in orderalert typpe");
+  //     print(notiData);
+  //     notiController.addNotiData(notiModel: notiData);
+  //     print(notiController.notiListByshowFlag.length);
+  //   }else{
+  //     print("has key but no type");
+  //     RandomNotiModel randomNotiModel = RandomNotiModel(
+  //       title: message.notification!.title!,
+  //       body: message.notification!.body!,
+  //       date: DateTime.now().toString(),
+  //     );
+  //     notiController.addRandomNoti(randomNotiModel);
+  //     await scheduleController.scheduleReload();
+  //   }
+  // }else{
+  //   print("no key");
+  //   RandomNotiModel randomNotiModel = RandomNotiModel(
+  //     title: message.notification!.title!,
+  //     body: message.notification!.body!,
+  //     date:DateFormat("y-MMM-d").format(DateTime.now()),
+  //   );
+  //   notiController.addRandomNoti(randomNotiModel);
+  //   await scheduleController.scheduleReload();
+  // }
 }
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-  Get.put(LifeCycleController());
+  // Get.put(LifeCycleController());
   await GetStorage.init();
   await DBservices.initDB();
   GlobalBindings().dependencies();
@@ -146,11 +147,12 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
   // This widget is the root of your application.
-  final NotiController notiController = Get.find<NotiController>();
+  final NotiController notiController = Get.isRegistered<NotiController>() ? Get.find<NotiController>() : Get.put(NotiController());
   final SignalRController signalRController = Get.find<SignalRController>();
 
 
   late StreamSubscription<InternetConnectionStatus> listener;
+  final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
 
   initFuncs()async{
     // await notiController.initController();
@@ -165,6 +167,21 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
     // await Future.delayed(Duration(seconds: 5));
     // await listener.cancel();
     // print("Listener cancelled");
+  }
+
+  firebaseNotiFunc()async{
+    await firebaseMessaging.getInitialMessage();
+    await firebaseMessaging.subscribeToTopic("android");
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+      print("This is normal message listen...............................................");
+      print(firebaseMessaging.app);
+      await notiController.showNotification(
+          remoteMessage: message
+      );
+    });
+    FirebaseMessaging.onBackgroundMessage(myBackgroundMessageHandler);
+
   }
 
   @override
@@ -184,7 +201,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
             AlertDialog(
               title: Text(
                 'No Internet Connection',
-                style: UIConstant.title,
+                style: UIConstant.title.copyWith(
+                  color: UIConstant.orange,
+                ),
               ),
               content: Text(
                 'Please check your internet connection and try again.',
@@ -207,6 +226,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
       }
     });
     initFuncs();
+    firebaseNotiFunc();
   }
 
 
@@ -226,21 +246,16 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async{
-        return false;
-      },
-      child: GetMaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Quickfood BikerMobile',
-        theme: UIConstant.lightTheme,
-        darkTheme: UIConstant.darkTheme,
-        themeMode: ThemeService().theme,
-        // locale: LanguageService().locale,
-        // translations: LanguageKeyStrings(),
-        initialRoute: RouteHelper.getSplashPage(),
-        getPages: RouteHelper.routes,
-      ),
+    return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Quickfood BikerMobile',
+      theme: UIConstant.lightTheme,
+      darkTheme: UIConstant.darkTheme,
+      themeMode: ThemeService().theme,
+      // locale: LanguageService().locale,
+      // translations: LanguageKeyStrings(),
+      initialRoute: RouteHelper.getSplashPage(),
+      getPages: RouteHelper.routes,
     );
   }
 

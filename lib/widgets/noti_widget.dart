@@ -200,7 +200,7 @@ class _NotiWidgetState extends State<NotiWidget> with SingleTickerProviderStateM
                         fit: BoxFit.cover
                     ),
                   ),
-                  height: deviceHeight / 12,
+                  height: deviceHeight * 0.15,
                 ),
                 SizedBox(
                   height: 10,

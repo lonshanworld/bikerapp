@@ -24,145 +24,165 @@ class GlobalBindings extends Bindings{
     // TODO: implement dependencies
     Get.isRegistered<UserAccountController>() ? Get.find<UserAccountController>() : Get.put(UserAccountController(), permanent: true);
     Get.isRegistered<ScheduleController>() ? Get.find<ScheduleController>() : Get.put(ScheduleController(),permanent: true);
-    Get.isRegistered<NotiController>() ? Get.find<NotiController>() : Get.put(NotiController(),permanent: true);
+    // Get.isRegistered<NotiController>() ? Get.find<NotiController>() :  Get.lazyPut<NotiController>(()=> NotiController());
     Get.isRegistered<OrderController>() ? Get.find<OrderController>() : Get.put(OrderController(),permanent: true);
 
     Get.isRegistered<CheckInOutController>() ? Get.find<CheckInOutController>() : Get.put(CheckInOutController(),permanent: true);
-    // Get.isRegistered<LocationController>() ? Get.find<LocationController>() : Get.put(LocationController(),permanent: true);
-    Get.isRegistered<SignalRController>() ? Get.find<SignalRController>() : Get.put(SignalRController(),permanent: true);
-
-    Get.isRegistered<ClearanceController>() ? Get.find<ClearanceController>() : Get.put(ClearanceController(),permanent: true);
-  }
-}
-
-
-
-class LifeCycleController extends SuperController{
-  //
-  // late StreamSubscription<InternetConnectionStatus> listener;
-  //
-  // @override
-  // void onInit() {
-  //   super.onInit();
-  //   WidgetsBinding.instance.addObserver(this);
-  //   listener = InternetConnectionChecker().onStatusChange.listen((status) {
-  //     switch (status) {
-  //       case InternetConnectionStatus.connected:
-  //         print('Data connection is available.');
-  //         print("The app is paused");
-  //         WidgetsBinding.instance.handleAppLifecycleStateChanged(AppLifecycleState.paused);
-  //         print("This is after paused");
-  //         break;
-  //       case InternetConnectionStatus.disconnected:
-  //         print('You are disconnected from the internet.');
-  //
-  //         break;
-  //     }
-  //   });
-  // }
-  //
-  // @override
-  // void dispose() {
-  //   WidgetsBinding.instance.removeObserver(this);
-  //   listener.cancel();
-  //   super.dispose();
-  // }
-  //
-  // @override
-  // void didChangeAppLifecycleState(AppLifecycleState state) {
-  //   if (state == AppLifecycleState.paused) {
-  //     // Show your dialog here.
-  //     Get.dialog(
-  //       AlertDialog(
-  //         title: Text('Dialog Title'),
-  //         content: Text('Dialog Content'),
-  //       ),
-  //     );
-  //   }
-  // }
-
-  @override
-  void onDetached() {
-    // TODO: implement onDetached
-    print("-----------------------------------------------on Detached-----------------------------------------------------------");
-    Get.isRegistered<UserAccountController>() ? Get.find<UserAccountController>() : Get.put(UserAccountController(), permanent: true);
-    Get.isRegistered<ScheduleController>() ? Get.find<ScheduleController>() : Get.put(ScheduleController(),permanent: true);
-    Get.isRegistered<NotiController>() ? Get.find<NotiController>() : Get.put(NotiController(),permanent: true);
-    Get.isRegistered<OrderController>() ? Get.find<OrderController>() : Get.put(OrderController(),permanent: true);
-
-    Get.isRegistered<CheckInOutController>() ? Get.find<CheckInOutController>() : Get.put(CheckInOutController(),permanent: true);
-    // Get.isRegistered<LocationController>() ? Get.find<LocationController>() : Get.put(LocationController(),permanent: true);
+    Get.isRegistered<LocationController>() ? Get.find<LocationController>() : Get.put(LocationController(),permanent: true);
     Get.isRegistered<SignalRController>() ? Get.find<SignalRController>() : Get.put(SignalRController(),permanent: true);
 
     Get.isRegistered<ClearanceController>() ? Get.find<ClearanceController>() : Get.put(ClearanceController(),permanent: true);
 
-  }
 
-  @override
-  void onInactive() {
-    // TODO: implement onInactive
-    print("-----------------------------------------------on Inactive-----------------------------------------------------------");
-    Get.isRegistered<UserAccountController>() ? Get.find<UserAccountController>() : Get.put(UserAccountController(), permanent: true);
-    Get.isRegistered<ScheduleController>() ? Get.find<ScheduleController>() : Get.put(ScheduleController(),permanent: true);
-    Get.isRegistered<NotiController>() ? Get.find<NotiController>() : Get.put(NotiController(),permanent: true);
-    Get.isRegistered<OrderController>() ? Get.find<OrderController>() : Get.put(OrderController(),permanent: true);
-
-    Get.isRegistered<CheckInOutController>() ? Get.find<CheckInOutController>() : Get.put(CheckInOutController(),permanent: true);
-    // Get.isRegistered<LocationController>() ? Get.find<LocationController>() : Get.put(LocationController(),permanent: true);
-    Get.isRegistered<SignalRController>() ? Get.find<SignalRController>() : Get.put(SignalRController(),permanent: true);
-
-    Get.isRegistered<ClearanceController>() ? Get.find<ClearanceController>() : Get.put(ClearanceController(),permanent: true);
-  }
-
-  @override
-  void onPaused() {
-    // TODO: implement onPaused
-    print("-----------------------------------------------on Paused-----------------------------------------------------------");
-    Get.isRegistered<UserAccountController>() ? Get.find<UserAccountController>() : Get.put(UserAccountController(), permanent: true);
-    Get.isRegistered<ScheduleController>() ? Get.find<ScheduleController>() : Get.put(ScheduleController(),permanent: true);
-    Get.isRegistered<NotiController>() ? Get.find<NotiController>() : Get.put(NotiController(),permanent: true);
-    Get.isRegistered<OrderController>() ? Get.find<OrderController>() : Get.put(OrderController(),permanent: true);
-
-    Get.isRegistered<CheckInOutController>() ? Get.find<CheckInOutController>() : Get.put(CheckInOutController(),permanent: true);
-    // Get.isRegistered<LocationController>() ? Get.find<LocationController>() : Get.put(LocationController(),permanent: true);
-    Get.isRegistered<SignalRController>() ? Get.find<SignalRController>() : Get.put(SignalRController(),permanent: true);
-
-    Get.isRegistered<ClearanceController>() ? Get.find<ClearanceController>() : Get.put(ClearanceController(),permanent: true);
-    // errorHandler.handleNoConnectionError(() {
-    //   if(status == InternetConnectionStatus.connected){
-    //     WidgetsBinding.instance.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
-    //   }else{
+    // // Get.lazyPut<UserAccountController>(()=> UserAccountController());
+    // Get.isRegistered<UserAccountController>() ? Get.find<UserAccountController>() : Get.put(UserAccountController(), permanent: true);
     //
-    //   }
-    // });
-    // Get.dialog(
-    //   AlertDialog(
-    //     title: Text('Paused'),
-    //     content: Text('The app is paused.'),
-    //     actions: [
-    //       TextButton(
-    //         onPressed: () => print("Hi"),
-    //         child: Text('OK'),
-    //       ),
-    //     ],
-    //   ),
-    // );
+    // Get.lazyPut<ScheduleController>(()=> ScheduleController());
+    //
+    // // Get.lazyPut<NotiController>(()=> NotiController());
+    //
+    // // Get.lazyPut<OrderController>(()=> OrderController());
+    // Get.isRegistered<OrderController>() ? Get.find<OrderController>() : Get.put(OrderController(),permanent: true);
+    //
+    // // Get.lazyPut<CheckInOutController>(()=> CheckInOutController());
+    // Get.isRegistered<CheckInOutController>() ? Get.find<CheckInOutController>() : Get.put(CheckInOutController(),permanent: true);
+    //
+    // Get.lazyPut<LocationController>(()=> LocationController());
+    //
+    // Get.lazyPut<SignalRController>(()=> SignalRController());
+    //
+    // Get.lazyPut<ClearanceController>(()=> ClearanceController());
   }
-
-  @override
-  void onResumed() {
-    // TODO: implement onResumed
-    print("-----------------------------------------------on Resumed-----------------------------------------------------------");
-    Get.isRegistered<UserAccountController>() ? Get.find<UserAccountController>() : Get.put(UserAccountController(), permanent: true);
-    Get.isRegistered<ScheduleController>() ? Get.find<ScheduleController>() : Get.put(ScheduleController(),permanent: true);
-    Get.isRegistered<NotiController>() ? Get.find<NotiController>() : Get.put(NotiController(),permanent: true);
-    Get.isRegistered<OrderController>() ? Get.find<OrderController>() : Get.put(OrderController(),permanent: true);
-
-    Get.isRegistered<CheckInOutController>() ? Get.find<CheckInOutController>() : Get.put(CheckInOutController(),permanent: true);
-    // Get.isRegistered<LocationController>() ? Get.find<LocationController>() : Get.put(LocationController(),permanent: true);
-    Get.isRegistered<SignalRController>() ? Get.find<SignalRController>() : Get.put(SignalRController(),permanent: true);
-
-    Get.isRegistered<ClearanceController>() ? Get.find<ClearanceController>() : Get.put(ClearanceController(),permanent: true);
-  }
-
 }
+
+
+
+// class LifeCycleController extends SuperController{
+//   //
+//   // late StreamSubscription<InternetConnectionStatus> listener;
+//   //
+//   // @override
+//   // void onInit() {
+//   //   super.onInit();
+//   //   WidgetsBinding.instance.addObserver(this);
+//   //   listener = InternetConnectionChecker().onStatusChange.listen((status) {
+//   //     switch (status) {
+//   //       case InternetConnectionStatus.connected:
+//   //         print('Data connection is available.');
+//   //         print("The app is paused");
+//   //         WidgetsBinding.instance.handleAppLifecycleStateChanged(AppLifecycleState.paused);
+//   //         print("This is after paused");
+//   //         break;
+//   //       case InternetConnectionStatus.disconnected:
+//   //         print('You are disconnected from the internet.');
+//   //
+//   //         break;
+//   //     }
+//   //   });
+//   // }
+//   //
+//   // @override
+//   // void dispose() {
+//   //   WidgetsBinding.instance.removeObserver(this);
+//   //   listener.cancel();
+//   //   super.dispose();
+//   // }
+//   //
+//   // @override
+//   // void didChangeAppLifecycleState(AppLifecycleState state) {
+//   //   if (state == AppLifecycleState.paused) {
+//   //     // Show your dialog here.
+//   //     Get.dialog(
+//   //       AlertDialog(
+//   //         title: Text('Dialog Title'),
+//   //         content: Text('Dialog Content'),
+//   //       ),
+//   //     );
+//   //   }
+//   // }
+//
+//   @override
+//   void onDetached() {
+//     // TODO: implement onDetached
+//     print("-----------------------------------------------on Detached-----------------------------------------------------------");
+//     Get.isRegistered<UserAccountController>() ? Get.find<UserAccountController>() : Get.put(UserAccountController(), permanent: true);
+//     Get.isRegistered<ScheduleController>() ? Get.find<ScheduleController>() : Get.put(ScheduleController(),permanent: true);
+//     Get.isRegistered<NotiController>() ? Get.find<NotiController>() : Get.put(NotiController(),permanent: true);
+//     Get.isRegistered<OrderController>() ? Get.find<OrderController>() : Get.put(OrderController(),permanent: true);
+//
+//     Get.isRegistered<CheckInOutController>() ? Get.find<CheckInOutController>() : Get.put(CheckInOutController(),permanent: true);
+//     // Get.isRegistered<LocationController>() ? Get.find<LocationController>() : Get.put(LocationController(),permanent: true);
+//     Get.isRegistered<SignalRController>() ? Get.find<SignalRController>() : Get.put(SignalRController(),permanent: true);
+//
+//     Get.isRegistered<ClearanceController>() ? Get.find<ClearanceController>() : Get.put(ClearanceController(),permanent: true);
+//
+//   }
+//
+//   @override
+//   void onInactive() {
+//     // TODO: implement onInactive
+//     print("-----------------------------------------------on Inactive-----------------------------------------------------------");
+//     Get.isRegistered<UserAccountController>() ? Get.find<UserAccountController>() : Get.put(UserAccountController(), permanent: true);
+//     Get.isRegistered<ScheduleController>() ? Get.find<ScheduleController>() : Get.put(ScheduleController(),permanent: true);
+//     Get.isRegistered<NotiController>() ? Get.find<NotiController>() : Get.put(NotiController(),permanent: true);
+//     Get.isRegistered<OrderController>() ? Get.find<OrderController>() : Get.put(OrderController(),permanent: true);
+//
+//     Get.isRegistered<CheckInOutController>() ? Get.find<CheckInOutController>() : Get.put(CheckInOutController(),permanent: true);
+//     // Get.isRegistered<LocationController>() ? Get.find<LocationController>() : Get.put(LocationController(),permanent: true);
+//     Get.isRegistered<SignalRController>() ? Get.find<SignalRController>() : Get.put(SignalRController(),permanent: true);
+//
+//     Get.isRegistered<ClearanceController>() ? Get.find<ClearanceController>() : Get.put(ClearanceController(),permanent: true);
+//   }
+//
+//   @override
+//   void onPaused() {
+//     // TODO: implement onPaused
+//     print("-----------------------------------------------on Paused-----------------------------------------------------------");
+//     Get.isRegistered<UserAccountController>() ? Get.find<UserAccountController>() : Get.put(UserAccountController(), permanent: true);
+//     Get.isRegistered<ScheduleController>() ? Get.find<ScheduleController>() : Get.put(ScheduleController(),permanent: true);
+//     Get.isRegistered<NotiController>() ? Get.find<NotiController>() : Get.put(NotiController(),permanent: true);
+//     Get.isRegistered<OrderController>() ? Get.find<OrderController>() : Get.put(OrderController(),permanent: true);
+//
+//     Get.isRegistered<CheckInOutController>() ? Get.find<CheckInOutController>() : Get.put(CheckInOutController(),permanent: true);
+//     // Get.isRegistered<LocationController>() ? Get.find<LocationController>() : Get.put(LocationController(),permanent: true);
+//     Get.isRegistered<SignalRController>() ? Get.find<SignalRController>() : Get.put(SignalRController(),permanent: true);
+//
+//     Get.isRegistered<ClearanceController>() ? Get.find<ClearanceController>() : Get.put(ClearanceController(),permanent: true);
+//     // errorHandler.handleNoConnectionError(() {
+//     //   if(status == InternetConnectionStatus.connected){
+//     //     WidgetsBinding.instance.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
+//     //   }else{
+//     //
+//     //   }
+//     // });
+//     // Get.dialog(
+//     //   AlertDialog(
+//     //     title: Text('Paused'),
+//     //     content: Text('The app is paused.'),
+//     //     actions: [
+//     //       TextButton(
+//     //         onPressed: () => print("Hi"),
+//     //         child: Text('OK'),
+//     //       ),
+//     //     ],
+//     //   ),
+//     // );
+//   }
+//
+//   @override
+//   void onResumed() {
+//     // TODO: implement onResumed
+//     print("-----------------------------------------------on Resumed-----------------------------------------------------------");
+//     Get.isRegistered<UserAccountController>() ? Get.find<UserAccountController>() : Get.put(UserAccountController(), permanent: true);
+//     Get.isRegistered<ScheduleController>() ? Get.find<ScheduleController>() : Get.put(ScheduleController(),permanent: true);
+//     Get.isRegistered<NotiController>() ? Get.find<NotiController>() : Get.put(NotiController(),permanent: true);
+//     Get.isRegistered<OrderController>() ? Get.find<OrderController>() : Get.put(OrderController(),permanent: true);
+//
+//     Get.isRegistered<CheckInOutController>() ? Get.find<CheckInOutController>() : Get.put(CheckInOutController(),permanent: true);
+//     // Get.isRegistered<LocationController>() ? Get.find<LocationController>() : Get.put(LocationController(),permanent: true);
+//     Get.isRegistered<SignalRController>() ? Get.find<SignalRController>() : Get.put(SignalRController(),permanent: true);
+//
+//     Get.isRegistered<ClearanceController>() ? Get.find<ClearanceController>() : Get.put(ClearanceController(),permanent: true);
+//   }
+//
+// }

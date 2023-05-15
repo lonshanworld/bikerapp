@@ -91,14 +91,17 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
     // final double deviceHeight = MediaQuery.of(context).size.height;
     // final double oneUnitWidth = deviceWidth / 360;
     // final double oneUnitHeight = deviceHeight/772;
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: ScaleTransition(
-        scale: animation,
-        child: Center(
-          child: Image.asset(
-            "assets/images/ic_launcher.png",
-            width: (deviceWidth /100) * 80,
+    return WillPopScope(
+      onWillPop: ()async => false,
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: ScaleTransition(
+          scale: animation,
+          child: Center(
+            child: Image.asset(
+              "assets/images/ic_launcher.png",
+              width: (deviceWidth /100) * 80,
+            ),
           ),
         ),
       ),

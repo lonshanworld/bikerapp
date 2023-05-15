@@ -31,9 +31,11 @@ class _PunishmentScreenState extends State<PunishmentScreen> {
     super.initState();
     userAccountController.getPunishment().then((value){
       punishmentList = value;
-      setState(() {
-        isloading = false;
-      });
+      if(mounted){
+        setState(() {
+          isloading = false;
+        });
+      }
     });
   }
 
