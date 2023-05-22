@@ -71,7 +71,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Order History"),
+        title: Text("${"order".tr} ${"history".tr}"),
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios,
@@ -97,7 +97,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
                 vertical: 10
               ),
               children: [
-                if(orderHistoryList.isEmpty)NoItemListWidget(txt: "There is no item in order history"),
+                if(orderHistoryList.isEmpty)NoItemListWidget(txt: "noorderhistory".tr),
                 if(orderHistoryList.isNotEmpty)for(OrderDetailModel _item in orderHistoryList)Padding(
                   padding: EdgeInsets.symmetric(
                     vertical: 10,
@@ -125,14 +125,15 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
                         borderRadius: BorderRadius.all(
                           Radius.circular(10),
                         ),
-                        boxShadow: [
-                          BoxShadow(
-                            color:Theme.of(context).brightness == Brightness.dark ? Colors.grey.shade800 : Colors.grey.shade300,
-                            blurRadius: 4.0,
-                            spreadRadius: 1.0,
-                            offset: Offset(2.0, 2.0),
-                          ),
-                        ],
+                        color: Theme.of(context).brightness == Brightness.dark ? UIConstant.bgDark : UIConstant.bgWhite,
+                        // boxShadow: [
+                        //   BoxShadow(
+                        //     color:Theme.of(context).brightness == Brightness.dark ? Colors.grey.shade800 : Colors.grey.shade300,
+                        //     blurRadius: 4.0,
+                        //     spreadRadius: 1.0,
+                        //     offset: Offset(2.0, 2.0),
+                        //   ),
+                        // ],
                       ),
                       padding: EdgeInsets.all(15),
 

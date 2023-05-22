@@ -113,7 +113,7 @@ class _CleranceState extends State<Clerance> {
               SizedBox(
                 height: 20,
               ),
-              NoItemListWidget(txt: "There is no Item in clearance"),
+              NoItemListWidget(txt: "noclearanceitem".tr),
             ],
           ),
         ),
@@ -129,31 +129,31 @@ class _CleranceState extends State<Clerance> {
             ),
             children: [
               TextFieldwithLabel(
-                label: "Level",
+                label: "level".tr,
                 txtController: levelController,
                 inputType: TextInputType.text,
               ),
               SizedBox(height: 5),
               TextFieldwithLabel(
-                label: "Cash-on Delivery",
+                label: "cashondelivery".tr,
                 txtController: cashController,
                 inputType: TextInputType.number,
               ),
               SizedBox(height: 5),
               TextFieldwithLabel(
-                label: "MISC Usage",
+                label: "${"misc".tr} ${"usage".tr}",
                 txtController: miscController,
                 inputType: TextInputType.number,
               ),
               SizedBox(height: 5),
               TextFieldwithLabel(
-                label: "Credit",
+                label: "credit".tr,
                 txtController: creditController,
                 inputType: TextInputType.number,
               ),
               SizedBox(height: 5),
               TextFieldwithLabel(
-                label: "Total Clearance",
+                label: "${"total".tr} ${"clearance".tr}",
                 txtController: totalController,
                 inputType: TextInputType.number,
               ),
@@ -181,7 +181,7 @@ class _CleranceState extends State<Clerance> {
                   verticalpadding: 15,
                   horizontalpadding: 15,
                   textInputType: TextInputType.number,
-                  hinttxt: "Payment Amount",
+                  hinttxt: "${"payment".tr} ${"amount".tr}",
                 ),
               ),
               SizedBox(
@@ -190,7 +190,7 @@ class _CleranceState extends State<Clerance> {
               CustomButton(
                 verticalPadding: 10,
                 horizontalPadding: 0,
-                txt: "Clearance",
+                txt: "clearance".tr,
                 func: (){
 
                 },

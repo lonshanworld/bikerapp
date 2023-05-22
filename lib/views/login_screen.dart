@@ -1,12 +1,14 @@
 import "package:delivery/constants/txtconstants.dart";
 import "package:delivery/constants/uiconstants.dart";
 import "package:delivery/controllers/useraccount_controller.dart";
+import "package:delivery/error_handlers/error_screen.dart";
 import "package:delivery/routehelper.dart";
 import "package:delivery/widgets/customButton_widget.dart";
 
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import 'package:get/get.dart';
+import "package:get_storage/get_storage.dart";
 import "package:intl/intl.dart";
 
 import "../widgets/snackBar_custom_widget.dart";
@@ -22,6 +24,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController textEditingController = TextEditingController();
   final UserAccountController userAccountController = Get.find<UserAccountController>();
+  final box = GetStorage();
   final FocusNode focusNode = FocusNode();
   String labelstring = "Enter your phone number";
 
@@ -156,6 +159,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       borderRadius: BorderRadius.all(Radius.circular(10)),
                       borderSide: BorderSide(color: Colors.grey, width: 2),
                     ),
+                    suffixIcon: Icon(
+                      Icons.phone_enabled,
+                      size: 26,
+                      color: UIConstant.orange,
+                    ),
                   ),
                   textInputAction: TextInputAction.done,
                 ),
@@ -171,8 +179,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     if(textEditingController.text.isEmpty || textEditingController.text.length > 9){
                       CustomGlobalSnackbar.show(
                         context: context,
-                        title: "Input Invalid",
-                        txt: "Please check Input value",
+                        title: "invalid".tr,
+                        txt: "checkinput".tr,
                         icon: Icons.error_outline,
                         position: false,
                       );
@@ -181,17 +189,37 @@ class _LoginScreenState extends State<LoginScreen> {
                       // Get.dialog(const LoadingScreen(), barrierDismissible: false);
                       String phno = "09${textEditingController.text}";
                       Get.dialog(const LoadingScreen(), barrierDismissible: false);
-                      userAccountController.checkUser(phno).then((_) async{
-                        userAccountController.phoneNumber.value = phno;
+                      userAccountController.checkUser(phno).then((value) async{
 
-                        // TODO: implement to send SMS
-                        // await userAccountController.sendSMS();
+                        if(value.toLowerCase().trim() == "biker"){
+                          userAccountController.phoneNumber.value = phno;
 
-                        // TODO: remove this for sendsms
-                        userAccountController.getrandomrum();
+                          // TODO: implement to send SMS
+                          // await userAccountController.sendSMS();
 
-                        Get.back();
-                        Get.toNamed(RouteHelper.getPasscodePage());
+                          // TODO: remove this for sendsms
+                          userAccountController.getrandomrum();
+
+                          Get.back();
+                          Get.toNamed(RouteHelper.getPasscodePage());
+                        }else{
+                          Get.back();
+                          showDialog(
+                            barrierDismissible: true,
+                            context: context,
+                            builder: (ctx){
+                              return ErrorScreen(
+                                title: "This is $value account",
+                                txt: "Only biker can log in this app.",
+                                btntxt: "OK",
+                                Func: (){
+                                  // box.erase();
+                                  Navigator.of(ctx).pop();
+                                },
+                              );
+                            },
+                          );
+                        }
                       });
 
                     }

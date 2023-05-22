@@ -2,6 +2,7 @@ import "dart:io";
 
 import "package:delivery/constants/uiconstants.dart";
 import "package:flutter/material.dart";
+import "package:get/get.dart";
 
 class CameraWidget extends StatelessWidget {
 
@@ -51,9 +52,12 @@ class CameraWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.camera_alt, color: Colors.orange),
+            Icon(Icons.camera_alt, color: UIConstant.orange),
             SizedBox(height: 10),
-            Text("Capture payment Document")
+            Text(
+              "capturepaymentdocument".tr,
+              style: UIConstant.normal,
+            )
           ],
         )
             :

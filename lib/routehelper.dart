@@ -1,3 +1,4 @@
+import "package:delivery/error_handlers/location_eror_screen.dart";
 import "package:delivery/views/check_in.dart";
 import "package:delivery/views/clerance.dart";
 import "package:delivery/views/clerance_history.dart";
@@ -47,6 +48,7 @@ class RouteHelper{
   static const String ClearancePage = "/clearance";
   static const String ClearanceHistoryPage = "/clearanceHistory";
   static const String RulePage = "/rule";
+  static const String LocationErrorPage = "/locationerror";
 
   //---------------
   // static const String ClearancePage = "/clearance";
@@ -74,6 +76,7 @@ class RouteHelper{
   static String getClearancePage() => ClearancePage;
   static String getClearanceHistoryPage() => ClearanceHistoryPage;
   static String getRulePage() => RulePage;
+  static String getLocationErrorPage({required bool turnOn}) => "$LocationErrorPage?turnOn=$turnOn";
 
   static List<GetPage> routes = [
     GetPage(
@@ -156,6 +159,13 @@ class RouteHelper{
     GetPage(
       name: RulePage,
       page: () => const RuleScreen(),
+    ),
+    GetPage(
+      name: LocationErrorPage,
+      page: (){
+        var turnOn = Get.parameters["turnOn"];
+        return LocationErrorScreen(turnOn: turnOn!.toBoolean());
+      },
     ),
   ];
 }

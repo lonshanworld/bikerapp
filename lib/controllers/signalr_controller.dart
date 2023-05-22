@@ -39,25 +39,34 @@ class SignalRController extends GetxController{
     });
 
     if(hubConnection.connectionId == null){
-      throw errorHandler.handleNullError("Notification Server is not connected");
+      throw errorHandler.handleNoSignalRerror("Notification Server is not connected");
     }
     print(hubConnection.state);
     hubConnection.on("LocationRequest", (res){
       print(res);
       print(hubConnection.state);
       if(hubConnection.state == HubConnectionState.Connected){
-        locationController.getPermission().then((permit) {
-          if(permit){
-            locationController.getcurLagLong().then((point)async{
-              print("This working ...");
-              await hubConnection.invoke("LocationSend", args: <Object>[
-                {"userid": box.read(TxtConstant.user_id),"lat" : point.latitude,"lng" : point.longitude},
-              ]).then((res){
-                print("heytyyyy");
-                print(res);
-              });
+        locationController.getPermission().then((_) {
+          // if(permit){
+          //   locationController.getcurLagLong().then((point)async{
+          //     print("This working ...");
+          //     await hubConnection.invoke("LocationSend", args: <Object>[
+          //       {"userid": box.read(TxtConstant.user_id),"lat" : point.latitude,"lng" : point.longitude},
+          //     ]).then((res){
+          //       print("heytyyyy");
+          //       print(res);
+          //     });
+          //   });
+          // }
+          locationController.getcurLagLong().then((point)async{
+            print("This working ...");
+            await hubConnection.invoke("LocationSend", args: <Object>[
+              {"userid": box.read(TxtConstant.user_id),"lat" : point.latitude,"lng" : point.longitude},
+            ]).then((res){
+              print("heytyyyy");
+              print(res);
             });
-          }
+          });
         });
       }else{
         print("connection state == ${hubConnection.state}");

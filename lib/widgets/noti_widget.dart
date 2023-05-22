@@ -4,6 +4,7 @@ import "package:delivery/controllers/order_controller.dart";
 import "package:delivery/routehelper.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
+import "package:http/http.dart" as http;
 
 import "../views/loading_screen.dart";
 import "customButton_widget.dart";
@@ -42,6 +43,24 @@ class _NotiWidgetState extends State<NotiWidget> with SingleTickerProviderStateM
   late Animation<double> _animation;
 
   bool showDetail = false;
+  String? imageurl;
+
+  Future<void>checkPhotoError()async{
+    if(widget.photo == null || widget.photo == "" || widget.photo == "null"){
+      return ;
+    }else{
+      http.Response response = await http.get(Uri.parse(widget.photo));
+      if(response == 200){
+        if(mounted){
+          setState(() {
+            imageurl = widget.photo;
+          });
+        }
+      }
+    }
+
+
+  }
 
   @override
   void initState(){
@@ -55,6 +74,7 @@ class _NotiWidgetState extends State<NotiWidget> with SingleTickerProviderStateM
         begin: 0,
         end: 0.5
     ).animate(_animationController);
+    checkPhotoError();
   }
 
   @override
@@ -120,18 +140,45 @@ class _NotiWidgetState extends State<NotiWidget> with SingleTickerProviderStateM
                             ),
                           ),
                           Text(
-                            "( ${widget.distance} m )",
+                            "${widget.distance} ${"m".tr}",
                             style: UIConstant.small.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                         ],
                       ),
-                      Text(
-                        "Earn : ${widget.earning} MMK ",
-                        style: UIConstant.small.copyWith(
-                          color: UIConstant.secondarytxtClr,
-                        ),
+                      Row(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                              vertical: 1,
+                              horizontal: 10,
+                            ),
+                            margin: EdgeInsets.symmetric(
+                              vertical: 5,
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.all(Radius.circular(5)),
+                              color: Theme.of(context).primaryColor,
+                            ),
+                            child: Text(
+                              "Ref : ${widget.orderNo}",
+                              style: UIConstant.small.copyWith(
+                                color: Theme.of(context).scaffoldBackgroundColor,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            "${"earn".tr} : ${widget.earning} ${"mmk".tr}",
+                            style: UIConstant.small.copyWith(
+                              color: UIConstant.secondarytxtClr,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -172,15 +219,18 @@ class _NotiWidgetState extends State<NotiWidget> with SingleTickerProviderStateM
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      widget.orderBody,
-                      style: UIConstant.small.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: UIConstant.orange,
+                    Expanded(
+                      child: Text(
+                        widget.orderBody,
+                        style: UIConstant.small.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: UIConstant.orange,
+                          overflow: TextOverflow.clip,
+                        ),
                       ),
                     ),
                     Text(
-                      "New Order",
+                      "neworder".tr,
                       style: UIConstant.normal,
                     ),
                   ],
@@ -188,16 +238,30 @@ class _NotiWidgetState extends State<NotiWidget> with SingleTickerProviderStateM
                 SizedBox(
                   height: 10,
                 ),
-                Container(
+                if(imageurl != null)Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(
                       Radius.circular(10),
                     ),
                     image: DecorationImage(
                         image: NetworkImage(
-                          widget.photo,
+                          imageurl!,
                         ),
                         fit: BoxFit.cover
+                    ),
+                  ),
+                  height: deviceHeight * 0.15,
+                ),
+                if(imageurl == null)Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                    image: DecorationImage(
+                        image: AssetImage(
+                          "assets/images/biker_icon.png",
+                        ),
+                        fit: BoxFit.contain
                     ),
                   ),
                   height: deviceHeight * 0.15,
@@ -226,7 +290,7 @@ class _NotiWidgetState extends State<NotiWidget> with SingleTickerProviderStateM
                 Align(
                   alignment: Alignment.center,
                   child: Text(
-                    "Your Earn : ${widget.earning} MMK",
+                    "${"youearn".tr} : ${widget.earning} ${"mmk".tr}",
                     style: UIConstant.normal.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -235,7 +299,7 @@ class _NotiWidgetState extends State<NotiWidget> with SingleTickerProviderStateM
                 CustomButton(
                   verticalPadding: 10,
                   horizontalPadding: 0,
-                  txt: "Accept",
+                  txt: "accept".tr,
                   func: ()async{
 
                     Get.dialog(const LoadingScreen(), barrierDismissible: false);

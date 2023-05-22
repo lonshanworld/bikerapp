@@ -18,6 +18,19 @@ class UserAccountService{
   final ErrorHandler errorHandler = ErrorHandler();
   final box = GetStorage();
 
+  Future usercheck(String mobileNo)async{
+    String uri = "${TxtConstant.mainUrl}auth/get-user?phone=$mobileNo";
+    try{
+      http.Response response = await http.get(Uri.parse(uri));
+      if(response.statusCode > 299){
+        throw errorHandler.handleError(response);
+      }
+      return response;
+    }on Exception catch(err){
+      throw errorHandler.handleUnknownError(err.toString());
+    }
+  }
+
   Future userLogin(String mobileNo)async{
     String uri = "${TxtConstant.mainUrl}auth/access-token";
     try{
@@ -99,7 +112,7 @@ class UserAccountService{
     }
   }
 
-  Future revokeUserToken()async{
+  Future refreshUserToken()async{
     String uri = "${TxtConstant.mainUrl}auth/refresh-token";
     try{
       http.Response response = await http.post(Uri.parse(uri),body: {

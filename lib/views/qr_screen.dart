@@ -1,4 +1,6 @@
 
+import "dart:async";
+
 import "package:delivery/constants/uiconstants.dart";
 import "package:delivery/controllers/noti_controller.dart";
 import "package:delivery/controllers/order_controller.dart";
@@ -37,6 +39,7 @@ class _QRscreenState extends State<QRscreen> {
   final OrderController orderController = Get.find<OrderController>();
   final NotiController notiController = Get.find<NotiController>();
   final UserAccountController userAccountController = Get.find<UserAccountController>();
+  late StreamSubscription<RemoteMessage> streamSubscription;
 
   bool isloading = true;
   OrderDetailModel? orderDetailModel;
@@ -70,15 +73,18 @@ class _QRscreenState extends State<QRscreen> {
   }
 
   notimsg(){
-    FirebaseMessaging.instance.getInitialMessage();
-    FirebaseMessaging.onMessage.listen((RemoteMessage message)async{
-      notiController.showNotification(
+    streamSubscription = FirebaseMessaging.onMessage.listen((RemoteMessage message)async{
+      notiController.showNotiwithoutFunc(
         remoteMessage: message,
       );
-      setState(() {
-        isloading = true;
-        assignOrderdetail();
-      });
+      print("This is noti from qr screen");
+      print(message.notification!.title);
+      if(mounted){
+        setState(() {
+          isloading = true;
+          assignOrderdetail();
+        });
+      }
     });
   }
 
@@ -87,9 +93,14 @@ class _QRscreenState extends State<QRscreen> {
     super.initState();
     notimsg();
     assignOrderdetail();
-  } // bool checkboolean = false;
+  }
 
 
+  @override
+  void dispose() {
+    streamSubscription.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -134,7 +145,7 @@ class _QRscreenState extends State<QRscreen> {
               ),
               children: [
                 Text(
-                  "Order Pickup QR Scan",
+                  "qrscan".tr,
                   style: UIConstant.minititle,
                 ),
                 Container(
@@ -143,13 +154,13 @@ class _QRscreenState extends State<QRscreen> {
                     vertical: 10,
                   ),
                   child: QrImage(
-                    data: widget.orderId,
+                    data: "${orderDetailModel!.orderId}|${orderDetailModel!.cusId}",
                     version: QrVersions.auto,
                     size: 250,
-                    embeddedImage: NetworkImage("https://media.istockphoto.com/id/1194465593/photo/young-japanese-woman-looking-confident.jpg?s=1024x1024&w=is&k=20&c=4hVpkslRGJNtl2cMKlrBul-h3gcSXncwkGYAg3LGqlg="),
-                    embeddedImageStyle: QrEmbeddedImageStyle(
-                      size: Size(80, 80),
-                    ),
+                    // embeddedImage: NetworkImage("https://media.istockphoto.com/id/1194465593/photo/young-japanese-woman-looking-confident.jpg?s=1024x1024&w=is&k=20&c=4hVpkslRGJNtl2cMKlrBul-h3gcSXncwkGYAg3LGqlg="),
+                    // embeddedImageStyle: QrEmbeddedImageStyle(
+                    //   size: Size(80, 80),
+                    // ),
                     foregroundColor: Theme.of(context).primaryColor,
                     backgroundColor: Theme.of(context).brightness == Brightness.dark ? UIConstant.bgDark : UIConstant.bgWhite,
                     errorStateBuilder: (cxt, err) {
@@ -163,7 +174,7 @@ class _QRscreenState extends State<QRscreen> {
                   ),
                 ),
                 Text(
-                  "Shops",
+                  "shops".tr,
                   style: UIConstant.normal.copyWith(
                     color: Colors.grey,
                     fontWeight: FontWeight.bold,
@@ -199,14 +210,15 @@ class _QRscreenState extends State<QRscreen> {
         ),
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: Theme.of(context).brightness == Brightness.dark ? Colors.grey.shade800 : Colors.grey.shade300,
-              blurRadius: 4.0,
-              spreadRadius: 1.0,
-              offset: Offset(0.0, 0.0),
-            ),
-          ],
+          color: UIConstant.bgWhite,
+          // boxShadow: [
+          //   BoxShadow(
+          //     color: Theme.of(context).brightness == Brightness.dark ? Colors.grey.shade800 : Colors.grey.shade300,
+          //     blurRadius: 4.0,
+          //     spreadRadius: 1.0,
+          //     offset: Offset(0.0, 0.0),
+          //   ),
+          // ],
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(20),
             topRight:  Radius.circular(20),
@@ -215,7 +227,7 @@ class _QRscreenState extends State<QRscreen> {
         child: CustomButton(
             verticalPadding: 10,
             horizontalPadding: 20,
-            txt: "Confirm",
+            txt: "confirm".tr,
             func: ()async{
               if(!pickupFlaglist.contains(false)){
                 Get.dialog(const LoadingScreen(), barrierDismissible: false);

@@ -6,6 +6,7 @@ import "package:delivery/widgets/customButton_widget.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
 import "package:url_launcher/url_launcher.dart";
+import "package:http/http.dart" as http;
 
 
 class CurrentOrderWidget extends StatefulWidget {
@@ -25,6 +26,8 @@ class _CurrentOrderWidgetState extends State<CurrentOrderWidget> {
 
   bool showDetail = false;
   // final GeneralController _generalController = Get.put(GeneralController());
+  // bool photoError = false;
+  String? imageurl;
 
   _makePhoneCall(String phoneNumber) async {
     final Uri launchUri = Uri(
@@ -32,6 +35,28 @@ class _CurrentOrderWidgetState extends State<CurrentOrderWidget> {
       path: phoneNumber,
     );
     await launchUrl(launchUri);
+  }
+
+  Future<void>checkPhotoError()async{
+    if(widget.currentOrderModel.image == null || widget.currentOrderModel.image == "" || widget.currentOrderModel.image == "null"){
+      return ;
+    }else{
+      http.Response response = await http.get(Uri.parse(widget.currentOrderModel.image!));
+      if(response == 200){
+        if(mounted){
+          setState(() {
+            imageurl = widget.currentOrderModel.image;
+          });
+        }
+      }
+    }
+  }
+
+
+  @override
+  void initState() {
+    super.initState();
+    checkPhotoError();
   }
 
   @override
@@ -66,6 +91,8 @@ class _CurrentOrderWidgetState extends State<CurrentOrderWidget> {
       ),
       child: InkWell(
         onTap: (){
+          // print('checking image in current order widget----------------');
+          // print(widget.currentOrderModel.image);
           setState(() {
             showDetail = !showDetail;
           });
@@ -115,11 +142,40 @@ class _CurrentOrderWidgetState extends State<CurrentOrderWidget> {
                             fontWeight: FontWeight.bold
                           ),
                         ),
-                        Text(
-                          widget.currentOrderModel.phone!,
-                          style: UIConstant.small.copyWith(
-                            color: UIConstant.secondarytxtClr,
-                          ),
+                        Row(
+                          children: [
+
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                vertical: 1,
+                                horizontal: 10,
+                              ),
+                              margin: EdgeInsets.symmetric(
+                                vertical: 5,
+                              ),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.all(Radius.circular(5)),
+                                color: Theme.of(context).primaryColor,
+                              ),
+                              child: Text(
+                                "Ref : ${widget.currentOrderModel.refNo}",
+                                style: UIConstant.small.copyWith(
+                                  color: Theme.of(context).scaffoldBackgroundColor,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Text(
+                              widget.currentOrderModel.phone!,
+                              style: UIConstant.small.copyWith(
+                                color: UIConstant.secondarytxtClr,
+                              ),
+                            ),
+
+                          ],
                         ),
                       ],
                     ),
@@ -133,12 +189,11 @@ class _CurrentOrderWidgetState extends State<CurrentOrderWidget> {
                     ),
                     padding: EdgeInsets.symmetric(
                       horizontal: 10,
-                      vertical: 5,
+                      vertical: 3,
                     ),
                     child: Text(
                       widget.currentOrderModel.orderStatus!,
-                      style: TextStyle(
-                        fontSize: 8,
+                      style: UIConstant.tinytext.copyWith(
                         color: Colors.white,
                       ),
                     ),
@@ -153,16 +208,30 @@ class _CurrentOrderWidgetState extends State<CurrentOrderWidget> {
                     color: Colors.grey,
                     height: 15,
                   ),
-                  Container(
+                  if(imageurl != null)Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(
                         Radius.circular(10),
                       ),
                       image: DecorationImage(
                           image: NetworkImage(
-                            widget.currentOrderModel.image ?? "",
+                            imageurl!,
                           ),
                           fit: BoxFit.cover
+                      ),
+                    ),
+                    height: deviceHeight * 0.15,
+                  ),
+                  if(imageurl == null)Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10),
+                      ),
+                      image: DecorationImage(
+                          image: AssetImage(
+                            "assets/images/biker_icon.png",
+                          ),
+                          fit: BoxFit.contain
                       ),
                     ),
                     height: deviceHeight * 0.15,
@@ -182,7 +251,7 @@ class _CurrentOrderWidgetState extends State<CurrentOrderWidget> {
                         ),
                       ),
                       Text(
-                        "${widget.currentOrderModel.distanceMeter} m",
+                        "${widget.currentOrderModel.distanceMeter} ${"m".tr}",
                         style: UIConstant.small,
                       ),
                     ],
@@ -193,7 +262,7 @@ class _CurrentOrderWidgetState extends State<CurrentOrderWidget> {
                   CustomButton(
                       verticalPadding: 10,
                       horizontalPadding: 0,
-                      txt: "Order Detail",
+                      txt: "${"order".tr}${"detail".tr}",
                       func: (){
                         // // _generalController.getCurrentOrder();
                         // _generalController.getOrderDetails(widget.currentOrderModel.orderId).then((value){

@@ -62,7 +62,7 @@ class _DropOffScreenState extends State<DropOffScreen> {
     await launchUrl(launchUri);
   }
 
-  Future<void> getCurrentLocation()async{
+  getCurrentLocation(){
     // await _locationController.getPermission().then((value){
     //   if(value){
     //     _locationController.getcurLagLong().then((_location){
@@ -97,8 +97,29 @@ class _DropOffScreenState extends State<DropOffScreen> {
     //   }
     // });
 
-    bool value = await _locationController.getPermission();
-    if(value){
+    // bool value = await _locationController.getPermission();
+    // if(value){
+    //   Position _location = await _locationController.getcurLagLong();
+    //   Placemark txtplace = await _locationController.getplacemark(_location.latitude, _location.longitude);
+    //   curlat = _location.latitude;
+    //   curlong = _location.longitude;
+    //   curplacename = "${txtplace.thoroughfare}, ${txtplace.subAdministrativeArea}, ${txtplace.administrativeArea}";
+    //   _initialcameraPosition = CameraPosition(
+    //       target: LatLng(curlat, curlong),
+    //       zoom: 16
+    //   );
+    //   await getPolypoints();
+    // }else{
+    //   Get.snackbar(
+    //     "Permission",
+    //     "Location Permission is denied",
+    //     borderRadius: 10,
+    //     backgroundColor: UIConstant.orange.withOpacity(0.2),
+    //     duration: const Duration(seconds: 5),
+    //   );
+    // }
+
+    _locationController.getPermission().then((_)async{
       Position _location = await _locationController.getcurLagLong();
       Placemark txtplace = await _locationController.getplacemark(_location.latitude, _location.longitude);
       curlat = _location.latitude;
@@ -109,15 +130,7 @@ class _DropOffScreenState extends State<DropOffScreen> {
           zoom: 16
       );
       await getPolypoints();
-    }else{
-      Get.snackbar(
-        "Permission",
-        "Location Permission is denied",
-        borderRadius: 10,
-        backgroundColor: UIConstant.orange.withOpacity(0.2),
-        duration: const Duration(seconds: 5),
-      );
-    }
+    });
   }
 
   Future<void> getPolypoints()async{
@@ -280,7 +293,7 @@ class _DropOffScreenState extends State<DropOffScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                        "Customer Map",
+                        "cusmap".tr,
                       style: UIConstant.normal.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -288,7 +301,7 @@ class _DropOffScreenState extends State<DropOffScreen> {
                     CustomButton(
                       verticalPadding: 5,
                       horizontalPadding: 20,
-                      txt: "Ask for Help",
+                      txt: "askhelp".tr,
                       func: (){
 
                       },
@@ -321,6 +334,11 @@ class _DropOffScreenState extends State<DropOffScreen> {
                     child: GoogleMap(
                       initialCameraPosition: _initialcameraPosition,
                       zoomControlsEnabled: false,
+                      compassEnabled: false,
+                      mapToolbarEnabled: false,
+                      rotateGesturesEnabled: false,
+                      scrollGesturesEnabled: false,
+                      zoomGesturesEnabled: false,
                       onMapCreated: (GoogleMapController controller)async{
                         // setState(() {
                         //   _controller = controller;
@@ -359,7 +377,7 @@ class _DropOffScreenState extends State<DropOffScreen> {
                                     curlong >= orderDetailModel!.cuslong!.toDouble() ? curlong : orderDetailModel!.cuslong!.toDouble(),
                                   )
                               ),
-                              50,
+                              80,
                             )
                         );
 
@@ -371,6 +389,16 @@ class _DropOffScreenState extends State<DropOffScreen> {
                       },
                       polylines: <Polyline>{
                         _polyline,
+                      },
+                      onLongPress: (_){
+                        mapController?.dispose();
+                        Get.to(() => MapScreen(
+                            shopLatLng: LatLng(orderDetailModel!.shoplat!.toDouble(),orderDetailModel!.shoplong!.toDouble()),
+                            cusLatLng: LatLng(orderDetailModel!.cuslat!.toDouble(),orderDetailModel!.cuslong!.toDouble()),
+                            cusAddress: orderDetailModel!.cusAddress!,
+                            shopaddress: orderDetailModel!.shopAddress!,
+                            isDropOff: true
+                        ));
                       },
                     ),
                   ),
@@ -388,7 +416,7 @@ class _DropOffScreenState extends State<DropOffScreen> {
                     CustomButton(
                       verticalPadding: 5,
                       horizontalPadding: 20,
-                      txt: "View large map",
+                      txt: "viewmap".tr,
                       func: (){
                         mapController?.dispose();
                         Get.to(() => MapScreen(
@@ -422,7 +450,7 @@ class _DropOffScreenState extends State<DropOffScreen> {
                 CustomButton(
                   verticalPadding: 5,
                   horizontalPadding: 0,
-                  txt: "Call",
+                  txt: "call".tr,
                   func: (){
                     _makePhoneCall(orderDetailModel!.phone!);
                   },
@@ -496,7 +524,7 @@ class _DropOffScreenState extends State<DropOffScreen> {
           child: CustomButton(
             verticalPadding: 10,
             horizontalPadding: 20,
-            txt: "Drop off",
+            txt: "dropoff".tr,
             func: (){
               Get.toNamed(RouteHelper.getOrderSummaryPage(orderId: widget.orderId));
             },

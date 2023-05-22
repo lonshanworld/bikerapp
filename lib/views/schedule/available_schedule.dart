@@ -42,7 +42,10 @@ class _AvailableScheduleState extends State<AvailableSchedule> {
               height: deviceHeight,
               width: deviceWidth > 500 ? deviceWidth * 0.8 : deviceWidth,
               child: ListView.builder(
-                  shrinkWrap: true,
+
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 10,
+                  ),
                   itemCount: scheduleController.availableScheduleList.length,
                   itemBuilder: (context, index) {
                     ScheduleModel item = scheduleController.availableScheduleList[index];

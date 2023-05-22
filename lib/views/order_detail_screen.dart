@@ -11,6 +11,7 @@ import "../routehelper.dart";
 import "../widgets/loading_widget.dart";
 import "../widgets/order_detail_widget.dart";
 import "map_screen.dart";
+import "package:http/http.dart" as http;
 
 class OrderDetailScreen extends StatefulWidget {
 
@@ -30,6 +31,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
 
   final OrderController orderController = Get.find<OrderController>();
   late OrderDetailModel _orderDetailModel;
+  String? imageurl;
 
   // bool _isloading = true;
   List<String> orderItemShopnameList = [];
@@ -55,11 +57,28 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
     });
   }
 
+  Future<void> checkPhotoError()async{
+    if(_orderDetailModel.image == null || _orderDetailModel.image == "" || _orderDetailModel.image == "null"){
+      return;
+    }else{
+      http.Response response = await http.get(Uri.parse(_orderDetailModel.image!));
+      if(response == 200){
+        if(mounted){
+          setState(() {
+            imageurl == _orderDetailModel.image;
+          });
+        }
+      }
+    }
+  }
+
 
   @override
   void initState() {
     super.initState();
-    assignvalue();
+    assignvalue().then((_){
+      checkPhotoError();
+    });
   }
 
   @override
@@ -71,7 +90,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Order Details",
+          "${"order".tr} ${"detail".tr}",
         ),
         leading: IconButton(
           icon: Icon(
@@ -121,7 +140,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                         CustomButton(
                           verticalPadding: 5,
                           horizontalPadding: 10,
-                          txt: "Transfer to Others",
+                          txt: "transfertoother".tr,
                           func: (){
 
                           },
@@ -132,14 +151,28 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                         ),
                       ],
                     ),
-                    Container(
+                    if(imageurl != null)Container(
                       height: deviceHeight * 0.22,
                       decoration: BoxDecoration(
                         image: DecorationImage(
                             image: NetworkImage(
-                              _orderDetailModel.image ?? "",
+                              imageurl ?? "",
                             ),
                             fit: BoxFit.cover
+                        ),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                      ),
+                    ),
+                    if(imageurl == null)Container(
+                      height: deviceHeight * 0.22,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage(
+                              "assets/images/biker_icon.png",
+                            ),
+                            fit: BoxFit.contain
                         ),
                         borderRadius: BorderRadius.all(
                           Radius.circular(10),
@@ -158,7 +191,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                         CustomButton(
                           verticalPadding: 5,
                           horizontalPadding: 20,
-                          txt: "View Map",
+                          txt: "viewmap".tr,
                           func: (){
 
                             Get.to(() => MapScreen(
@@ -182,7 +215,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                       height: 10,
                     ),
                     Text(
-                      "Customer Info",
+                      "cusinfo".tr,
                       style: UIConstant.normal.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -215,7 +248,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                             style: UIConstant.small,
                           ),
                           Text(
-                            "${_orderDetailModel.cusAddress} | Note: ${_orderDetailModel.addressNote}",
+                            "${_orderDetailModel.cusAddress} | ${"note".tr}: ${_orderDetailModel.addressNote}",
                             style: UIConstant.tinytext,
                           ),
                         ],
@@ -225,7 +258,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                       height: 15,
                     ),
                     Text(
-                      "Order Detail",
+                      "${"order".tr} ${"detail".tr}",
                       style: UIConstant.normal.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -250,7 +283,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                       height: 15,
                     ),
                     Text(
-                      "Order Summary",
+                      "ordersummary".tr,
                       style: UIConstant.minititle,
                     ),
                     SizedBox(
@@ -270,11 +303,11 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                "Order Total",
+                                "${"order".tr} ${"total".tr}",
                                 style: UIConstant.small,
                               ),
                               Text(
-                                "${_orderDetailModel.totalOnlinePrice} MMK",
+                                "${_orderDetailModel.totalOnlinePrice} ${"mmk".tr}",
                                 style: UIConstant.small.copyWith(
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -288,11 +321,11 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                "Delivery Charges",
+                                "deliverycharges".tr,
                                 style: UIConstant.small,
                               ),
                               Text(
-                                "${_orderDetailModel.deliCharges} MMK",
+                                "${_orderDetailModel.deliCharges} ${"mmk".tr}",
                                 style: UIConstant.small.copyWith(
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -306,11 +339,29 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                "Cash Collect",
+                                "cashcollected".tr,
                                 style: UIConstant.small,
                               ),
                               Text(
-                                "${_orderDetailModel.totalOnlinePrice! + _orderDetailModel.deliCharges!} MMK",
+                                "${_orderDetailModel.totalOnlinePrice! + _orderDetailModel.deliCharges!} ${"mmk".tr}",
+                                style: UIConstant.small.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "vat".tr,
+                                style: UIConstant.small,
+                              ),
+                              Text(
+                                "${_orderDetailModel.tax} ${"mmk".tr}",
                                 style: UIConstant.small.copyWith(
                                   fontWeight: FontWeight.bold,
                                 ),

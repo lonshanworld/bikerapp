@@ -13,9 +13,45 @@ import "package:get_storage/get_storage.dart";
 import "../constants/txtconstants.dart";
 import "../widgets/alertDialog_widget.dart";
 import "loading_screen.dart";
+import "package:http/http.dart" as http;
 
-class DrawerPage extends StatelessWidget {
+class DrawerPage extends StatefulWidget {
   const DrawerPage({Key? key}) : super(key: key);
+
+  @override
+  State<DrawerPage> createState() => _DrawerPageState();
+}
+
+class _DrawerPageState extends State<DrawerPage> {
+  final UserAccountController userAccountController = Get.find<UserAccountController>();
+  // final NotiController notiController = Get.find<NotiController>();
+  final CheckInOutController checkInOutController = Get.find<CheckInOutController>();
+  final LogOutService logOutService = LogOutService();
+
+  GetStorage box = GetStorage();
+
+
+  String imageurl = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgWv75KuTKR5tEa6fNHmINh0SrIAoWhlAYbvoxnG7poIN8dLV4Fxe5IErjDo2RG6grnyU&usqp=CAU';
+
+  Future<void> checkImageError()async{
+    if(userAccountController.bikermodel[0].profileImage != null){
+      http.Response response = await http.get(Uri.parse(userAccountController.bikermodel[0].profileImage!));
+      if(response.statusCode == 200){
+        if(mounted){
+          setState(() {
+            imageurl = userAccountController.bikermodel[0].profileImage!;
+          });
+        }
+      }
+    }
+  }
+
+
+  @override
+  void initState() {
+    super.initState();
+    checkImageError();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,12 +63,6 @@ class DrawerPage extends StatelessWidget {
 
     final double drawerWidth = deviceWidth > 500 ? 350 : (deviceWidth / 4) * 3;
 
-    final UserAccountController userAccountController = Get.find<UserAccountController>();
-    // final NotiController notiController = Get.find<NotiController>();
-    final CheckInOutController checkInOutController = Get.find<CheckInOutController>();
-    final LogOutService logOutService = LogOutService();
-
-    GetStorage box = GetStorage();
 
     ListTile customListTile(IconData icon, String title, VoidCallback Func ){
       return ListTile(
@@ -53,11 +83,12 @@ class DrawerPage extends StatelessWidget {
     CheckOutAlert(BuildContext context) {
       showDialog(
           context: context,
+          barrierDismissible: false,
           builder: (BuildContext context) => AlertDialogWidget(
-              title: "Check Out Schedule?",
-              bodytxt: "If you log out, Check-In Schedules will automatically check out.",
-              refusetxt: "No",
-              accepttxt: "Yes, Check out",
+              title: "${"checkout".tr} ${"schedule".tr}?",
+              bodytxt: "bothcheckoutandlogout".tr,
+              refusetxt: "no".tr,
+              accepttxt: "${"yes".tr}, ${"checkout".tr}",
               refusefunc: (){
                 Navigator.of(context).pop();
               },
@@ -81,11 +112,12 @@ class DrawerPage extends StatelessWidget {
     LogoutAlert(BuildContext context) {
       showDialog(
           context: context,
+          barrierDismissible: false,
           builder: (BuildContext context) => AlertDialogWidget(
-              title: "Logout",
-              bodytxt: "Are you sure want to Logout?",
-              refusetxt: "No",
-              accepttxt: "Yes, Logout",
+              title: "logout".tr,
+              bodytxt: "wanttologout".tr,
+              refusetxt: "no".tr,
+              accepttxt: "${"yes".tr}, ${"logout".tr}",
               refusefunc: (){
                 Navigator.of(context).pop();
               },
@@ -146,7 +178,7 @@ class DrawerPage extends StatelessWidget {
                     CircleAvatar(
                       radius: deviceWidth > 500 ? 50 : 40,
                       backgroundImage: NetworkImage(
-                        userAccountController.bikermodel[0].profileImage ?? 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgWv75KuTKR5tEa6fNHmINh0SrIAoWhlAYbvoxnG7poIN8dLV4Fxe5IErjDo2RG6grnyU&usqp=CAU',
+                        imageurl,
                       ),
                     ),
                     Container(
@@ -196,7 +228,7 @@ class DrawerPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Cash Collected : ",
+                      "${"cashcollected".tr} : ",
                       style: UIConstant.normal,
                     ),
                     Row(
@@ -208,7 +240,7 @@ class DrawerPage extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          "MMK",
+                          "mmk".tr,
                           style: UIConstant.normal,
                         ),
                       ],
@@ -223,12 +255,12 @@ class DrawerPage extends StatelessWidget {
                   size: 24,
                 ),
                 title: Text(
-                  "Profile",
+                  "profile".tr,
                   style: UIConstant.normal,
                 ),
 
                 subtitle: Text(
-                  "Credit ${userAccountController.bikermodel[0].creditAmt} MMK  ||  MISC ${userAccountController.bikermodel[0].miscUsage} MMK",
+                  "${"credit".tr} ${userAccountController.bikermodel[0].creditAmt ?? 0} ${"mmk".tr}  ||  ${"misc".tr} ${userAccountController.bikermodel[0].miscUsage ?? 0} ${"mmk".tr}",
                   style: UIConstant.tinytext.copyWith(
                     color: UIConstant.secondarytxtClr,
                   ),
@@ -240,56 +272,56 @@ class DrawerPage extends StatelessWidget {
               ),
               customListTile(
                 Icons.not_interested,
-                "Punishments",
+                "punishment".tr,
                 () {
                   Get.toNamed(RouteHelper.getPunishmentPage());
                 },
               ),
               customListTile(
                 Icons.schedule_send_outlined,
-                "Schedules",
+                "schedule".tr,
                 () {
                   Get.toNamed(RouteHelper.getSchedulePage());
                 },
               ),
               customListTile(
                 Icons.history,
-                "Order History",
+                "${"order".tr} ${"history".tr}",
                 () {
                   Get.toNamed(RouteHelper.getOrderHistoryPage());
                 },
               ),
               customListTile(
                 Icons.clear,
-                "Clearance",
+                "clearance".tr,
                 () {
                   Get.toNamed(RouteHelper.getClearancePage());
                 },
               ),
               customListTile(
                 Icons.work_history,
-                "Clearance History",
+                "${"clearance".tr} ${"history".tr}",
                 () {
                   Get.toNamed(RouteHelper.getClearanceHistoryPage());
                 },
               ),
               customListTile(
                 Icons.description_outlined,
-                "Statement History",
+                "${"statement".tr} ${"history".tr}",
                 () {
 
                 },
               ),
               customListTile(
                 Icons.rule,
-                "Rules",
+                "rules".tr,
                 () {
                   Get.toNamed(RouteHelper.getRulePage());
                 },
               ),
               customListTile(
                 Icons.shop_two_outlined,
-                "Promotion Shops",
+                "Promotion ${"shops".tr}",
                 () {
 
                 },
@@ -303,10 +335,11 @@ class DrawerPage extends StatelessWidget {
               ),
               customListTile(
                 Icons.settings,
-                "Settings",
+                "settings".tr,
                     () {
                   showDialog(
                     context: context,
+                    barrierDismissible: false,
                     builder: (ctx){
                       return const SettingScreen();
                     },
@@ -315,7 +348,7 @@ class DrawerPage extends StatelessWidget {
               ),
               customListTile(
                 Icons.logout_outlined,
-                "Log Out",
+                "logout".tr,
                 () {
                   var value = box.read(TxtConstant.checkOutBtn);
                   print(value);

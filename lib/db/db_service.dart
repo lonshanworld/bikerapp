@@ -37,6 +37,7 @@ class DBservices{
                     "orderId STRING,"
                     "notiBody STRING,"
                     "notiData TEXT,"
+                    "detailDate STRING,"
                     "Date STRING,"
                     "showFlag STRING,"
                     "NotiType STRING)"
@@ -54,14 +55,15 @@ class DBservices{
     String notiTitle = _notimodel.title!;
     String notiBody = _notimodel.body!;
     String notiData = json.encode(_notimodel.notiBodyModel);
-    String date = _notimodel.date.toString();
+    String detailDate = _notimodel.date.toString();
+    String date = DateFormat("y-MMM-d").format(DateTime.now());
     String type = _notimodel.type!;
     String showFlag = _notimodel.showFlag!;
     String orderId = _notimodel.notiBodyModel!.orderId!;
 
     return await _db!.rawInsert(
-        'INSERT INTO $_tablename (notiTitle, orderId, notiBody, notiData, Date, showFlag, NotiType) VALUES(?,?,?,?,?,?,?)',
-        [notiTitle, orderId,notiBody, notiData, date, showFlag, type]
+        'INSERT INTO $_tablename (notiTitle, orderId, notiBody, notiData ,detailDate , Date, showFlag, NotiType) VALUES(?,?,?,?,?,?,?,?)',
+        [notiTitle, orderId,notiBody, notiData, detailDate ,date, showFlag, type]
     );
   }
 
@@ -90,7 +92,7 @@ class DBservices{
 
   @pragma('vm:entry-point')
   static insertRandomNoti(RandomNotiModel randomNotiModel) async{
-    return await _db!.rawInsert("INSERT INTO $_tablename(notiTitle, notiBody, Date) VALUES(?,?,?)",[randomNotiModel.title, randomNotiModel.body, randomNotiModel.date]);
+    return await _db!.rawInsert("INSERT INTO $_tablename(notiTitle, notiBody, detailDate) VALUES(?,?,?)",[randomNotiModel.title, randomNotiModel.body, randomNotiModel.date]);
   }
 
   @pragma('vm:entry-point')

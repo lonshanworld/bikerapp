@@ -41,8 +41,9 @@ class TimeModel{
 
     int min = totalMinutes!.toInt() % 60;
     int hr = (totalMinutes!.toInt() / 60).floor();
-    String date = "$hr:$min";
-    String datetime = DateFormat.jm().format(DateFormat("hh:mm").parse(date));
+    String date = "$hr:$min" ;
+    String datetime = DateFormat.jm().format(DateFormat("H:mm").parse(date));
+    // String datetime = DateFormat("h:mma").parse(date).toString();
     return datetime;
   }
 }

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:delivery/constants/txtconstants.dart';
+import 'package:delivery/controllers/firebasenotiController.dart';
 import 'package:delivery/controllers/location_controller.dart';
 import 'package:delivery/controllers/noti_controller.dart';
 import 'package:delivery/controllers/schedule_controller.dart';
@@ -9,12 +10,14 @@ import 'package:delivery/db/db_service.dart';
 import 'package:delivery/error_handlers/error_handlers.dart';
 
 import 'package:delivery/routehelper.dart';
+import 'package:delivery/services/language_service.dart';
 
 import 'package:delivery/services/theme_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 import "package:get/get.dart";
 import 'package:get_storage/get_storage.dart';
@@ -127,6 +130,7 @@ Future<dynamic> myBackgroundMessageHandler(RemoteMessage message)async{
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
+  // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   // Get.put(LifeCycleController());
@@ -149,10 +153,11 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
   // This widget is the root of your application.
   final NotiController notiController = Get.isRegistered<NotiController>() ? Get.find<NotiController>() : Get.put(NotiController());
   final SignalRController signalRController = Get.find<SignalRController>();
+  final FirebaseNotiController firebaseNotiController = Get.put(FirebaseNotiController(),permanent: true);
 
 
   late StreamSubscription<InternetConnectionStatus> listener;
-  final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
+
 
   initFuncs()async{
     // await notiController.initController();
@@ -169,64 +174,76 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
     // print("Listener cancelled");
   }
 
-  firebaseNotiFunc()async{
-    await firebaseMessaging.getInitialMessage();
-    await firebaseMessaging.subscribeToTopic("android");
-
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
-      print("This is normal message listen...............................................");
-      print(firebaseMessaging.app);
-      await notiController.showNotification(
-          remoteMessage: message
-      );
-    });
-    FirebaseMessaging.onBackgroundMessage(myBackgroundMessageHandler);
-
-  }
+  // firebaseNotiFunc()async{
+  //   await firebaseMessaging.getInitialMessage();
+  //   await firebaseMessaging.subscribeToTopic("android");
+  //
+  //   FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+  //     print("This is normal message listen...............................................");
+  //     print(firebaseMessaging.app);
+  //     await notiController.showNotification(
+  //         remoteMessage: message
+  //     );
+  //   });
+  //   FirebaseMessaging.onBackgroundMessage(myBackgroundMessageHandler);
+  //
+  // }
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    listener = InternetConnectionChecker().onStatusChange.listen((status) {
-      switch (status) {
-        case InternetConnectionStatus.connected:
-          Get.back();
-          print('Data connection is available.');
-          WidgetsBinding.instance.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
-          break;
-        case InternetConnectionStatus.disconnected:
-          print('You are disconnected from the internet.');
-          Get.dialog(
-            AlertDialog(
-              title: Text(
-                'No Internet Connection',
-                style: UIConstant.title.copyWith(
-                  color: UIConstant.orange,
-                ),
-              ),
-              content: Text(
-                'Please check your internet connection and try again.',
-                style:  UIConstant.normal ,
-              ),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                  side: BorderSide(
-                    color: UIConstant.orange,
-                  )
-              ),
-              backgroundColor: Theme.of(Get.context!).brightness == Brightness.dark ? UIConstant.bgDark : UIConstant.bgWhite,
-            ),
-          );
-
-          Future.delayed(Duration(seconds: 3),(){
-            WidgetsBinding.instance.handleAppLifecycleStateChanged(AppLifecycleState.paused);
-          });
-          break;
-      }
-    });
+    // listener = InternetConnectionChecker().onStatusChange.listen((status) {
+    //   switch (status) {
+    //     case InternetConnectionStatus.connected:
+    //       Get.back();
+    //       print('Data connection is available.');
+    //       // WidgetsBinding.instance.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
+    //       break;
+    //     case InternetConnectionStatus.disconnected:
+    //       print('You are disconnected from the internet.');
+    //       Get.dialog(
+    //         AlertDialog(
+    //           title: Text(
+    //             'No Internet Connection',
+    //             style: UIConstant.title.copyWith(
+    //               color: UIConstant.orange,
+    //             ),
+    //             textAlign: TextAlign.center,
+    //           ),
+    //           content: Container(
+    //             width: Get.context!.width > 600 ? 400 : 250,
+    //             height: Get.context!.width > 600 ? 400 : 250,
+    //             decoration: BoxDecoration(
+    //                 borderRadius: BorderRadius.all(Radius.circular(30)),
+    //                 image: DecorationImage(
+    //                   image: AssetImage(
+    //                     "assets/images/noconnection.gif",
+    //                   ),
+    //                   fit: BoxFit.cover,
+    //                 )
+    //             ),
+    //           ),
+    //           shape: RoundedRectangleBorder(
+    //               borderRadius: BorderRadius.circular(8.0),
+    //               side: BorderSide(
+    //                 color: UIConstant.orange,
+    //               )
+    //           ),
+    //           backgroundColor: Theme.of(Get.context!).brightness == Brightness.dark ? UIConstant.bgDark : UIConstant.bgWhite,
+    //         ),
+    //         barrierDismissible: false,
+    //       );
+    //
+    //       // Future.delayed(Duration(seconds: 3),(){
+    //       //   WidgetsBinding.instance.handleAppLifecycleStateChanged(AppLifecycleState.paused);
+    //       // });
+    //       break;
+    //   }
+    // });
     initFuncs();
-    firebaseNotiFunc();
+    // firebaseNotiFunc();
+    firebaseNotiController.firebaseNotiInit();
   }
 
 
@@ -246,14 +263,68 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
 
   @override
   Widget build(BuildContext context) {
+
+    // final deviceWidth = MediaQuery.of(context).size.width;
+
+    listener = InternetConnectionChecker().onStatusChange.listen((status) {
+      switch (status) {
+        case InternetConnectionStatus.connected:
+          Get.back();
+          print('Data connection is available.');
+          // WidgetsBinding.instance.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
+          break;
+        case InternetConnectionStatus.disconnected:
+          print('You are disconnected from the internet.');
+          showDialog(barrierDismissible: false,context: Get.context!, builder: (ctx){
+            return WillPopScope(
+              onWillPop: ()async=> false,
+              child: AlertDialog(
+                title: Text(
+                  'No Internet Connection',
+                  style: UIConstant.title.copyWith(
+                    color: UIConstant.orange,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                content: Container(
+                  width: Get.context!.width > 600 ? 400 : 250,
+                  height: Get.context!.width > 600 ? 400 : 250,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(30)),
+                      image: DecorationImage(
+                        image: AssetImage(
+                          "assets/images/noconnection.gif",
+                        ),
+                        fit: BoxFit.cover,
+                      )
+                  ),
+                ),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    side: BorderSide(
+                      color: UIConstant.orange,
+                    )
+                ),
+                backgroundColor: Theme.of(Get.context!).brightness == Brightness.dark ? UIConstant.bgDark : UIConstant.bgWhite,
+              ),
+            );
+          });
+
+          // Future.delayed(Duration(seconds: 3),(){
+          //   WidgetsBinding.instance.handleAppLifecycleStateChanged(AppLifecycleState.paused);
+          // });
+          break;
+      }
+    });
+
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Quickfood BikerMobile',
       theme: UIConstant.lightTheme,
       darkTheme: UIConstant.darkTheme,
       themeMode: ThemeService().theme,
-      // locale: LanguageService().locale,
-      // translations: LanguageKeyStrings(),
+      locale: LanguageService().locale,
+      translations: LanguageKeyStrings(),
       initialRoute: RouteHelper.getSplashPage(),
       getPages: RouteHelper.routes,
     );

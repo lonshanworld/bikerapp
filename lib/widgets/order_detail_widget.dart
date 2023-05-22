@@ -1,6 +1,7 @@
 
 import "package:delivery/constants/uiconstants.dart";
 import "package:flutter/material.dart";
+import "package:get/get.dart";
 
 import "../models/order_model.dart";
 
@@ -51,7 +52,7 @@ class OrderDetailWidget extends StatelessWidget {
                 ),
               ),
               Text(
-                "${orderItem.onlinePrice} MMK",
+                "${orderItem.onlinePrice} ${"mmk".tr}",
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.bold,

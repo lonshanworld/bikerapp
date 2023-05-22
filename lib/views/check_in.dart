@@ -68,7 +68,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Check In",
+          "checkin".tr,
         ),
         leading: IconButton(
           icon: Icon(
@@ -108,7 +108,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
               CustomButton(
                 verticalPadding: 10,
                 horizontalPadding: 0,
-                txt: "Check In",
+                txt: "checkin".tr,
                 func: ()async{
                   // if(!hideBtn) {newselectedImage!.path == "" || newselectedImage == null
                   //       ?
@@ -141,8 +141,8 @@ class _CheckInScreenState extends State<CheckInScreen> {
                     if(newselectedImage!.path == "" || newselectedImage == null){
                       CustomGlobalSnackbar.show(
                         context: context,
-                        title: "Require Image",
-                        txt: "Image is required to proceed.",
+                        title: "image".tr,
+                        txt: "imagerequireprocess".tr,
                         icon: Icons.info_outline,
                         position: true,
                       );

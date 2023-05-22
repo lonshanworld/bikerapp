@@ -1,10 +1,12 @@
 import "package:delivery/constants/uiconstants.dart";
 import "package:delivery/widgets/customButton_widget.dart";
 import"package:flutter/material.dart";
+import "package:get/get.dart";
 import "package:get_storage/get_storage.dart";
 
 
 import "../constants/txtconstants.dart";
+import "../services/language_service.dart";
 import "../services/theme_service.dart";
 
 class SettingScreen extends StatefulWidget {
@@ -43,7 +45,7 @@ class _SettingScreenState extends State<SettingScreen> {
           children: [
             Expanded(
               child: Text(
-                "Change to Dark Mode",
+                "changetodarkmode".tr,
                 style: UIConstant.normal,
               ),
             ),
@@ -56,6 +58,31 @@ class _SettingScreenState extends State<SettingScreen> {
                 onChanged: (_){
                   setState(() {
                     ThemeService().switchTheme();
+                  });
+                },
+              ),
+            ),
+          ],
+        ),
+        Row(
+          children: [
+            Expanded(
+              child: Text(
+                "changetomyanmarlanguage".tr,
+                style: UIConstant.normal,
+              ),
+            ),
+            Transform.scale(
+              scale: 0.7,
+              child: Switch(
+                activeColor: Colors.green,
+                activeTrackColor: Colors.green.shade200,
+                value: box.read(TxtConstant.language) ?? false,
+                onChanged: (_){
+                  print("Before change to myanmar == ${box.read(TxtConstant.language)}");
+                  setState(() {
+                    LanguageService().changeLanguage();
+                    print("after change to myanmar == ${box.read(TxtConstant.language)}");
                   });
                 },
               ),

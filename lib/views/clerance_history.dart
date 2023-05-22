@@ -47,7 +47,7 @@ class _ClearanceHistoryState extends State<ClearanceHistory> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Clerance History"),
+        title: Text("${"clearance".tr} ${"history".tr}"),
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios,
@@ -81,7 +81,7 @@ class _ClearanceHistoryState extends State<ClearanceHistory> {
                       Row(
                         children: [
                           Text(
-                            "Payment Date : ${data.date}",
+                            "${"payment".tr} ${"date".tr} : ${data.date}",
                             style: UIConstant.minititle,
                           ),
                         ],
@@ -90,7 +90,7 @@ class _ClearanceHistoryState extends State<ClearanceHistory> {
                       Row(
                         children: [
                           Text(
-                            "Zone : ${data.zoneName}",
+                            "${"zone".tr}: ${data.zoneName}",
                             style: UIConstant.normal.copyWith(
                                 fontWeight: FontWeight.bold
                             ),
@@ -102,7 +102,7 @@ class _ClearanceHistoryState extends State<ClearanceHistory> {
                         children: [
                           Expanded(
                             child: Text(
-                              "Total Qrder Qty ",
+                              "totalorderqty".tr,
                               style: UIConstant.small.copyWith(
                                 fontWeight: FontWeight.bold,
                               ),
@@ -110,7 +110,7 @@ class _ClearanceHistoryState extends State<ClearanceHistory> {
                           ),
                           Expanded(
                             child: Text(
-                              "Total Distance ",
+                              "totaldistance".tr,
                               style: UIConstant.small.copyWith(
                                 fontWeight: FontWeight.bold,
                               ),
@@ -118,7 +118,7 @@ class _ClearanceHistoryState extends State<ClearanceHistory> {
                           ),
                           Expanded(
                             child: Text(
-                              "Total Cash Collect ",
+                              "${"total".tr} ${"cashcollected".tr}",
                               style: UIConstant.small.copyWith(
                                 fontWeight: FontWeight.bold,
                               ),
@@ -161,7 +161,7 @@ class _ClearanceHistoryState extends State<ClearanceHistory> {
                             child: CustomButton(
                               verticalPadding: 10,
                               horizontalPadding: 0,
-                              txt: "Clearance Detail",
+                              txt: "${"clearance".tr} ${"detail".tr}",
                               func: (){
                                 Get.to(() => ClearanceHistoryDetails(data: data));
                               },

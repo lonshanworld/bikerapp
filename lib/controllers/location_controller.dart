@@ -5,6 +5,7 @@ import 'dart:typed_data';
 
 
 import 'package:delivery/constants/txtconstants.dart';
+import 'package:delivery/routehelper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -25,6 +26,7 @@ import '../models/listofplaces_model.dart';
 
 
 class LocationController extends GetxController{
+
 
   // @override
   // void onReady(){
@@ -56,53 +58,61 @@ class LocationController extends GetxController{
   // }
 
 
-  Future<bool> getPermission() async{
+  Future<void> getPermission() async{
     bool _serviceEnabled;
     LocationPermission _permission;
 
-    // _serviceEnabled = await location.serviceEnabled();
-    // if (!_serviceEnabled) {
-    //   _serviceEnabled = await location.requestService();
-    //   if (!_serviceEnabled) {
-    //     return false;
-    //   }
-    // }
-    //
-    // _permission = await location.hasPermission();
-    // if (_permission == PermissionStatus.denied) {
-    //   _permission = await location.requestPermission();
-    //   if (_permission == PermissionStatus.granted || _permission == PermissionStatus.grantedLimited) {
-    //     return true;
-    //   }else{
-    //     return false;
-    //   }
-    // }
     _serviceEnabled = await Geolocator.isLocationServiceEnabled();
     print("In permission controller");
     print(_serviceEnabled);
 
     if (!_serviceEnabled) {
-      throw showDialog(context: Get.context!, builder:(ctx){
-        return ErrorScreen(
-          title: "Location Permission",
-          txt: "Location Permission is required. Please enable GPS and allow Location Permission.",
-          btntxt: 'Go to location Setting',
-          Func: () async{
-            await Geolocator.openLocationSettings();
-          },
-        );
-      } );
+      Get.toNamed(RouteHelper.getLocationErrorPage(turnOn: false));
+      throw Exception("Location is not turned on.");
     }
     _permission = await Geolocator.checkPermission();
     print(_permission);
-    if (_permission == LocationPermission.denied || _permission == LocationPermission.deniedForever || _permission == LocationPermission.unableToDetermine) {
-      _permission = await Geolocator.requestPermission();
-      if (_permission == LocationPermission.denied || _permission == LocationPermission.deniedForever || _permission == LocationPermission.unableToDetermine) {
-        return false;
-      }
+    if (_permission != LocationPermission.always) {
+      Get.toNamed(RouteHelper.getLocationErrorPage(turnOn: true));
+      throw Exception("Location Permission must be always allowed.");
     }
+    // else if(_permission == LocationPermission.whileInUse){
+    //   late bool openappvalue;
+    //   await showDialog(barrierDismissible: false,context: Get.context!, builder:(ctx){
+    //     return ErrorScreen(
+    //       title: "Location Permission",
+    //       txt: "Location Permission should be allowed all the time. Please go to app setting",
+    //       btntxt: 'Go to app setting',
+    //       Func: ()async{
+    //         await Geolocator.openAppSettings();
+    //
+    //         if(_permission == LocationPermission.always){
+    //           openappvalue = true;
+    //         }else{
+    //           openappvalue = false;
+    //         }
+    //       },
+    //     );
+    //   } );
+    //   return openappvalue;
+    // }else{
+    //   return true;
+    // }
 
-    return true;
+    // return true;
+
+    // bool serviceenabled = await Geolocator.isLocationServiceEnabled();
+    // if(!serviceenabled){
+    //   await showDialog(barrierDismissible: false,context: Get.context!, builder: (ctx){
+    //     return ErrorScreen(
+    //       title: "Location Error",
+    //       txt: txt,
+    //       btntxt: btntxt,
+    //       Func: Func,
+    //     );
+    //   },);
+    // }
+
   }
 
 

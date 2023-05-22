@@ -31,7 +31,7 @@ class NotiController extends GetxController{
       RandomNotiModel randomNotiModel = new RandomNotiModel(
         title: e["notiTitle"],
         body: e["notiBody"],
-        date: e["Date"],
+        date: e["detailDate"],
       );
       return randomNotiModel;
     }).toList());
@@ -70,7 +70,7 @@ class NotiController extends GetxController{
       NotiOrderModel _notimodel = new NotiOrderModel();
       _notimodel.title = e["notiTitle"];
       _notimodel.body = e["notiBody"];
-      _notimodel.date = e["Date"];
+      _notimodel.date = e["detailDate"];
       _notimodel.type = e["NotiType"];
       _notimodel.showFlag = e["showFlag"];
       var data = json.decode(e["notiData"]);
@@ -97,7 +97,7 @@ class NotiController extends GetxController{
       NotiOrderModel _notimodel = new NotiOrderModel();
       _notimodel.title = e["notiTitle"];
       _notimodel.body = e["notiBody"];
-      _notimodel.date = e["Date"];
+      _notimodel.date = e["detailDate"];
       _notimodel.type = e["NotiType"];
       _notimodel.showFlag = e["showFlag"];
       var data = json.decode(e["notiData"]);
@@ -199,33 +199,43 @@ class NotiController extends GetxController{
     );
     print(Get.find<NotiController>().obs.value);
     await flutterLocalNotificationsPlugin.show(0, remoteMessage.notification!.title, remoteMessage.notification!.body, notidetails);
+
     if(remoteMessage.data.containsKey("type")){
       print("This contain key");
-      if(remoteMessage.data["type"].toLowerCase() == "orderpickedup"){
-        print("the type is orderpickedup");
-        NotiOrderModel notiData = NotiOrderModel();
-        notiData.title = remoteMessage.notification?.title;
-        // var jsonbodydata = json.decode(_notificationInfo!.body);
-        notiData.body = remoteMessage.notification?.body;
-        notiData.notiBodyModel = NotiBodyModel(
-          orderTitle: notiData.title!,
-          orderId: remoteMessage.data["orderId"].toString(),
-          refNo: remoteMessage.data["refNo"].toString(),
-          earning: int.parse(remoteMessage.data["earning"]),
-          shopName: remoteMessage.data["shopName"].toString(),
-          lat: double.parse(remoteMessage.data["lat"]),
-          long: double.parse(remoteMessage.data["long"]),
-          photo: remoteMessage.data["photo"],
-          distanceMeter: double.parse(remoteMessage.data["distanceMeter"]),
-          type: remoteMessage.data["type"].toString().toLowerCase(),
-        );
-        String _date = DateFormat("y-MMM-d").format(DateTime.now());
-        notiData.date = _date;
-        notiData.type =  remoteMessage.data["type"];
-        print(notiData.notiBodyModel?.type);
+      if(remoteMessage.data["type"].toString().toLowerCase().trim() == "orderpickedup"){
+        // print("the type is orderpickedup");
+        // NotiOrderModel notiData = NotiOrderModel();
+        // notiData.title = remoteMessage.notification?.title;
+        // // var jsonbodydata = json.decode(_notificationInfo!.body);
+        // notiData.body = remoteMessage.notification?.body;
+        // notiData.notiBodyModel = NotiBodyModel(
+        //   orderTitle: notiData.title!,
+        //   orderId: remoteMessage.data["orderId"].toString(),
+        //   refNo: remoteMessage.data["refNo"].toString(),
+        //   earning: int.parse(remoteMessage.data["earning"]),
+        //   shopName: remoteMessage.data["shopName"].toString(),
+        //   lat: double.parse(remoteMessage.data["lat"]),
+        //   long: double.parse(remoteMessage.data["long"]),
+        //   photo: remoteMessage.data["photo"],
+        //   distanceMeter: double.parse(remoteMessage.data["distanceMeter"]),
+        //   type: remoteMessage.data["type"].toString().toLowerCase(),
+        // );
+        // String _date = DateFormat("y-MMM-d").format(DateTime.now());
+        // notiData.date = _date;
+        // notiData.type =  remoteMessage.data["type"];
+        // print(notiData.notiBodyModel?.type);
+        //
+        // updateshowFlag(notiData.notiBodyModel!.orderId!);
 
-        updateshowFlag(notiData.notiBodyModel!.orderId!);
-      }else if(remoteMessage.data["type"].toLowerCase() == "orderalert"){
+        // RandomNotiModel randomNotiModel = RandomNotiModel(
+        //   title: remoteMessage.notification!.title!,
+        //   body: remoteMessage.notification!.body!,
+        //   date: DateFormat("y-MMM-d").format(DateTime.now()),
+        // );
+        print('This is order pick up noti ----- ${remoteMessage.data["type"].toString().trim()}');
+        updateshowFlag(remoteMessage.data["orderId"].toString().trim());
+
+      }else if(remoteMessage.data["type"].toString().toLowerCase().trim() == "orderalert"){
         print("the type is order alert");
         NotiOrderModel notiData = NotiOrderModel();
         notiData.title = remoteMessage.notification?.title;
@@ -243,25 +253,34 @@ class NotiController extends GetxController{
           distanceMeter: double.parse(remoteMessage.data["distanceMeter"]),
           type: remoteMessage.data["type"].toString().toLowerCase(),
         );
-        String _date = DateFormat("y-MMM-d").format(DateTime.now());
+        String _date = DateFormat("y-MMM-d H:mm a").format(DateTime.now());
         notiData.date = _date;
         notiData.type =  remoteMessage.data["type"];
         print(notiData.notiBodyModel?.type);
 
         notiData.showFlag = "true";
-        print("This is in orderalert typpe");
+        print("This is in orderalert type");
         print(notiData);
         addNotiData(notiModel: notiData);
         print(notiListByshowFlag.length);
+      }else if(remoteMessage.data["type"].toString().toLowerCase().trim() == "schedule"){
+        print("This is inside schedule");
+        RandomNotiModel randomNotiModel = RandomNotiModel(
+          title: remoteMessage.notification!.title!,
+          body: remoteMessage.notification!.body!,
+          date: DateFormat("y-MMM-d H:mm a").format(DateTime.now()),
+        );
+        addRandomNoti(randomNotiModel);
+        await scheduleController.scheduleReload();
       }else{
         print("has key but no type");
         RandomNotiModel randomNotiModel = RandomNotiModel(
           title: remoteMessage.notification!.title!,
           body: remoteMessage.notification!.body!,
-          date: DateTime.now().toString(),
+          date: DateFormat("y-MMM-d H:mm a").format(DateTime.now()),
         );
         addRandomNoti(randomNotiModel);
-        await scheduleController.scheduleReload();
+        // await scheduleController.scheduleReload();
       }
     }else{
       print("no key");
@@ -271,11 +290,38 @@ class NotiController extends GetxController{
         date: DateFormat("y-MMM-d").format(DateTime.now()),
       );
       addRandomNoti(randomNotiModel);
-      await scheduleController.scheduleReload();
+      // await scheduleController.scheduleReload();
     }
 
   }
 
+
+  Future<void> showNotiwithoutFunc({
+    required RemoteMessage remoteMessage,
+  })async{
+    AndroidNotificationDetails _androidNotificationDetails = AndroidNotificationDetails(
+      "Youcannameidwhatever",
+      "This is for channal name",
+      channelDescription: "This is channel description",
+      playSound : true,
+      importance: Importance.max,
+      priority: Priority.max,
+      enableVibration: true,
+    );
+
+    DarwinNotificationDetails _iOSNotificationDetail = DarwinNotificationDetails(
+      presentAlert: true,
+      presentBadge: true,
+      presentSound: true,
+    );
+
+    var notidetails = NotificationDetails(
+      android: _androidNotificationDetails,
+      iOS: _iOSNotificationDetail,
+    );
+
+    await flutterLocalNotificationsPlugin.show(0, remoteMessage.notification!.title, remoteMessage.notification!.body, notidetails);
+  }
   // @pragma('vm:entry-point')
   // Future<void> showNotificationforBackground({
   //   required RemoteMessage remoteMessage

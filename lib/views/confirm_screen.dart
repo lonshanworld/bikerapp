@@ -1,5 +1,6 @@
 import "package:delivery/widgets/customButton_widget.dart";
 import "package:flutter/material.dart";
+import "package:get/get.dart";
 
 
 import "../constants/uiconstants.dart";
@@ -49,7 +50,7 @@ class ConfirmAll_Screen extends StatelessWidget {
             CustomButton(
               verticalPadding: 10,
               horizontalPadding: 30,
-              txt: "Cancel",
+              txt: "cancel".tr,
               func: refuseFun,
               txtClr:  Colors.black,
               bgClr: UIConstant.pink,
@@ -59,7 +60,7 @@ class ConfirmAll_Screen extends StatelessWidget {
             CustomButton(
               verticalPadding: 10,
               horizontalPadding: 40,
-              txt: "Yes",
+              txt: "yes".tr,
               func: acceptFun,
               txtClr: Colors.white,
               bgClr: UIConstant.orange,

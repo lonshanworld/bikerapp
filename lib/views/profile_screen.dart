@@ -1,3 +1,5 @@
+import "dart:convert";
+
 import "package:delivery/constants/uiconstants.dart";
 import "package:delivery/controllers/cameraImage_controller.dart";
 import "package:delivery/controllers/useraccount_controller.dart";
@@ -7,6 +9,7 @@ import "package:flutter/material.dart";
 import"package:get/get.dart";
 import "package:image_picker/image_picker.dart";
 import "dart:io";
+import "package:http/http.dart" as http;
 
 
 import "../routehelper.dart";
@@ -29,6 +32,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   bool isShowImage = false;
   File? newselectedImage = File('');
+  String imageurl = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgWv75KuTKR5tEa6fNHmINh0SrIAoWhlAYbvoxnG7poIN8dLV4Fxe5IErjDo2RG6grnyU&usqp=CAU';
 
   getCamera(){
     cameraImageControlller.getCamera().then((file){
@@ -46,6 +50,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
   //     newselectedImage = null;
   //   });
   // }
+  //
+  // imageChangeFunc(Object object, StackTrace? stackTrace){
+  //   if(object.toString().split(",")[1].trim() == "statusCode: 404"){
+  //     setState(() {
+  //       imageurl = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgWv75KuTKR5tEa6fNHmINh0SrIAoWhlAYbvoxnG7poIN8dLV4Fxe5IErjDo2RG6grnyU&usqp=CAU';
+  //     });
+  //   }
+  // }
+
+  Future<void> checkImageError()async{
+    if(userAccountController.bikermodel[0].profileImage != null){
+      http.Response response = await http.get(Uri.parse(userAccountController.bikermodel[0].profileImage!));
+      if(response.statusCode == 200){
+        if(mounted){
+          setState(() {
+            imageurl = userAccountController.bikermodel[0].profileImage!;
+          });
+        }
+      }
+    }
+  }
 
 
   @override
@@ -54,6 +79,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     nameController.text = userAccountController.bikermodel[0].fullName ??  "";
     nrcController.text = userAccountController.bikermodel[0].nrc ?? "";
     emailController.text = userAccountController.bikermodel[0].email ?? "";
+    checkImageError();
   } // late String img64;
 
   @override
@@ -99,7 +125,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       if(!isShowImage)CircleAvatar(
                         radius: 60,
                         backgroundImage: NetworkImage(
-                          userAccountController.bikermodel[0].profileImage ?? 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgWv75KuTKR5tEa6fNHmINh0SrIAoWhlAYbvoxnG7poIN8dLV4Fxe5IErjDo2RG6grnyU&usqp=CAU',
+                          imageurl,
                         ),
                       ),
                       if(isShowImage)CircleAvatar(
@@ -111,7 +137,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       CustomButton(
                         verticalPadding: 5,
                         horizontalPadding: 20,
-                        txt: "Upload",
+                        txt: "upload".tr,
                         func: (){
                           getCamera();
                         },
@@ -133,21 +159,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       SizedBox(
                         height: 10,
                       ),
-                      customText("Phone", userAccountController.bikermodel[0].phone!),
+                      customText("phone".tr, userAccountController.bikermodel[0].phone!),
                       Text("================"),
-                      customText("Level", userAccountController.bikermodel[0].level!),
+                      customText("level".tr, userAccountController.bikermodel[0].level!),
                       SizedBox(
                         height: 10,
                       ),
-                      customText("MISC", userAccountController.bikermodel[0].miscUsage.toString()),
+                      customText("misc".tr, userAccountController.bikermodel[0].miscUsage.toString()),
                       SizedBox(
                         height: 10,
                       ),
-                      customText("Zone", userAccountController.bikermodel[0].zoneId.toString()),
+                      customText("zone".tr, userAccountController.bikermodel[0].zoneId.toString()),
                       SizedBox(
                         height: 10,
                       ),
-                      customText("Area", userAccountController.bikermodel[0].areaId.toString()),
+                      customText("area".tr, userAccountController.bikermodel[0].areaId.toString()),
                       SizedBox(
                         height: 10,
                       ),
@@ -164,7 +190,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 verticalpadding: 10,
                 horizontalpadding: 15,
                 textInputType: TextInputType.text,
-                hinttxt: "Enter your name",
+                hinttxt: "enteryourname".tr,
               ),
               SizedBox(
                 height: 10,
@@ -175,7 +201,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 verticalpadding: 10,
                 horizontalpadding: 15,
                 textInputType: TextInputType.text,
-                hinttxt: "Enter your NRC",
+                hinttxt: "enteryournrc".tr,
               ),
               SizedBox(
                 height: 10,
@@ -186,7 +212,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 verticalpadding: 10,
                 horizontalpadding: 15,
                 textInputType: TextInputType.text,
-                hinttxt: "Enter your email",
+                hinttxt: "enteryourgmail".tr,
               ),
               SizedBox(
                 height: 25,
@@ -194,7 +220,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               CustomButton(
                 verticalPadding: 15,
                 horizontalPadding: 0,
-                txt: "Update",
+                txt: "update".tr,
                 func: ()async{
                   await userAccountController.bikerupdate(
                     name: nameController.text,

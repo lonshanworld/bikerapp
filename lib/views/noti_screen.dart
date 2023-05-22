@@ -2,6 +2,7 @@ import "package:delivery/constants/uiconstants.dart";
 import "package:delivery/controllers/noti_controller.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
+import "package:intl/intl.dart";
 
 import "../models/noti_model.dart";
 
@@ -17,7 +18,7 @@ class NotiScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Notification History"),
+        title: Text("Notification ${"history".tr}"),
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios,
@@ -33,7 +34,7 @@ class NotiScreen extends StatelessWidget {
         return (notiController.notiList.isEmpty)
             ?
         Center(
-          child: Text("There is no Notifications"),
+          child: Text("nonoti".tr),
         )
             :
         Center(
@@ -88,12 +89,27 @@ class NotiScreen extends StatelessWidget {
                               item.title,
                               style: UIConstant.normal.copyWith(
                                 fontWeight: FontWeight.bold,
+                                color: UIConstant.orange,
                               ),
                             ),
                           ),
-                          Text(
-                            item.date,
-                            style: UIConstant.small,
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                item.date.split(" ")[0],
+                                style: UIConstant.small.copyWith(
+                                  color: UIConstant.secondarytxtClr,
+                                ),
+                              ),
+                              Text(
+                                "${item.date.split(" ")[1]} ${item.date.split(" ")[2]}",
+                                style: UIConstant.small.copyWith(
+                                  color: UIConstant.secondarytxtClr,
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),

@@ -42,8 +42,11 @@ class UserAccountController extends GetxController{
     Get.back();
   }
 
-  Future<void> checkUser(String number)async{
-    await service.userLogin(number);
+  Future<String> checkUser(String number)async{
+    // await service.userLogin(number);
+    http.Response response = await service.usercheck(number);
+    dynamic data = json.decode(response.body);
+    return data["data"]["user_role"];
   }
 
   getrandomrum(){
@@ -77,8 +80,8 @@ class UserAccountController extends GetxController{
     await getInfo();
   }
 
-  Future<void> revokeuserToken()async{
-    http.Response response = await service.revokeUserToken();
+  Future<void> refreshUserToken()async{
+    http.Response response = await service.refreshUserToken();
     await registerNotiToken();
     dynamic userdataRaw = json.decode(response.body);
     box.write(TxtConstant.accesstoken, userdataRaw["data"]["access_token"]);
@@ -105,7 +108,8 @@ class UserAccountController extends GetxController{
     if(response.statusCode < 299){
       CustomGlobalSnackbar.show(
         context: Get.context!,
-        title: "Update : ${response.statusCode}",
+        // title: "Update : ${response.statusCode}",
+        title: "Update",
         txt: "Biker Update Success.",
         icon: Icons.check,
         position: true,
@@ -114,7 +118,8 @@ class UserAccountController extends GetxController{
     }else{
       CustomGlobalSnackbar.show(
         context: Get.context!,
-        title: "Update Failed : ${response.statusCode}",
+        // title: "Update Failed : ${response.statusCode}",
+        title: "Update Failed",
         txt: "Biker Update Failed.",
         icon: Icons.check,
         position: true,

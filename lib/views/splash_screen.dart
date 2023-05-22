@@ -1,5 +1,6 @@
 import "dart:async";
 
+import "package:delivery/constants/uiconstants.dart";
 import "package:delivery/controllers/useraccount_controller.dart";
 import "package:delivery/routehelper.dart";
 import "package:flutter/material.dart";
@@ -7,7 +8,6 @@ import "package:geolocator/geolocator.dart";
 import "package:get_storage/get_storage.dart";
 
 import "../constants/txtconstants.dart";
-import "../constants/uiconstants.dart";
 import "package:get/get.dart";
 
 import "../controllers/location_controller.dart";
@@ -31,31 +31,40 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
   final box = GetStorage();
   late Timer timer;
 
-  Checkroute()async{
-    bool value = await locationController.getPermission();
-    if(value){
+  Checkroute(){
+    // bool value = await locationController.getPermission();
+    // if(value){
+    //   if(box.read(TxtConstant.accesstoken) == null){
+    //     return Get.offAllNamed(RouteHelper.getLoginPage());
+    //   }else{
+    //     Get.dialog(const LoadingScreen(), barrierDismissible: false);
+    //     await userAccountController.refreshUserToken();
+    //     await userAccountController.getInfo();
+    //     return Get.offAllNamed(RouteHelper.getHomePage());
+    //   }
+    // }else{
+    //   print("What");
+    //   await showDialog(context: Get.context!, builder:(ctx){
+    //     return ErrorScreen(
+    //       title: "This is in splash screen",
+    //       txt: "Location Permission must not be denied.",
+    //       btntxt: 'Allow permission',
+    //       Func: () async{
+    //         await Geolocator.openAppSettings();
+    //       },
+    //     );
+    //   } );
+    // }
+    locationController.getPermission().then((_) async{
       if(box.read(TxtConstant.accesstoken) == null){
         return Get.offAllNamed(RouteHelper.getLoginPage());
       }else{
         Get.dialog(const LoadingScreen(), barrierDismissible: false);
-        await userAccountController.revokeuserToken();
+        await userAccountController.refreshUserToken();
         await userAccountController.getInfo();
         return Get.offAllNamed(RouteHelper.getHomePage());
       }
-    }else{
-      print("What");
-      throw showDialog(context: Get.context!, builder:(ctx){
-        return ErrorScreen(
-          title: "Location Permission",
-          txt: "Location Permission must not be denied.",
-          btntxt: 'Allow permission',
-          Func: () async{
-            await Geolocator.openAppSettings();
-          },
-        );
-      } );
-    }
-
+    });
   }
 
   @override
@@ -94,7 +103,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
     return WillPopScope(
       onWillPop: ()async => false,
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: UIConstant.pink,
         body: ScaleTransition(
           scale: animation,
           child: Center(

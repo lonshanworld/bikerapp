@@ -88,7 +88,6 @@ class OrderService{
       },body: json.encode(forbody));
 
       print("in orderbikeraccept || ${response.statusCode}");
-      print(response.body);
       if(response.statusCode > 299){
         throw errorHandler.handleError(response);
       }
@@ -102,8 +101,9 @@ class OrderService{
   Future bikerPickUp(String orderId)async{
     String uri = "${TxtConstant.mainUrl}order/biker-pickup";
     dynamic forbody={
-      "bikerId" : "${box.read(TxtConstant.user_id)}",
       "orderId" : orderId,
+      "shopId" : "null",
+      "userId" : "${box.read(TxtConstant.user_id)}",
     };
     try{
       http.Response response = await http.post(Uri.parse(uri),headers: {
@@ -123,4 +123,25 @@ class OrderService{
   }
 
 
+  Future bikerDropOff(String orderId) async{
+    String uri = "${TxtConstant.mainUrl}order/biker-dropoff";
+    dynamic forbody = {
+      "orderId" : orderId,
+      "bikerId" : "${userAccountController.bikermodel[0].userId}",
+    };
+    try{
+      http.Response response = await http.post(Uri.parse(uri),headers: {
+        'Content-Type': 'application/json',
+        "Authorization" : "bearer ${box.read(TxtConstant.accesstoken)}",
+      },body: json.encode(forbody));
+
+      print("in orderbikeraccept || ${response.statusCode}");
+      if(response.statusCode > 299){
+        throw errorHandler.handleError(response);
+      }
+      return response;
+    }on Exception catch(err){
+      throw errorHandler.handleUnknownError(err.toString());
+    }
+  }
 }

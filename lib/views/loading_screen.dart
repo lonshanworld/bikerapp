@@ -17,9 +17,12 @@ class LoadingScreen extends StatelessWidget {
     // final double oneUnitWidth = deviceWidth / 360;
     // final double oneUnitHeight = deviceHeight/772;
 
-    return Scaffold(
-      backgroundColor: Colors.grey.withOpacity(0.4),
-      body: const LoadingWidget(),
+    return WillPopScope(
+      onWillPop: ()async => false,
+      child: Scaffold(
+        backgroundColor: Colors.grey.withOpacity(0.5),
+        body: const LoadingWidget(),
+      ),
     );
   }
 }

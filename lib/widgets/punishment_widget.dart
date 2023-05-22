@@ -1,5 +1,6 @@
 import "package:delivery/constants/uiconstants.dart";
 import "package:flutter/material.dart";
+import "package:get/get.dart";
 import "package:intl/intl.dart";
 
 class PunishmentWidget extends StatelessWidget {
@@ -116,7 +117,7 @@ class PunishmentWidget extends StatelessWidget {
           SizedBox(
             height: 10,
           ),
-          stylingContainer(valueFormat.format(punishmentAmount), " MMK", value: isSatisfied,isReverse: true),
+          stylingContainer(valueFormat.format(punishmentAmount), "mmk".tr, value: isSatisfied,isReverse: true),
           if(supportname != null)Row(
             children: [
               Icon(

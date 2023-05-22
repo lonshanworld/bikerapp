@@ -135,7 +135,7 @@ class OrderController extends GetxController{
     var rawdata = json.decode(response.body);
     var data = rawdata["data"];
     List<OrderChoice> _orderChoices = [];
-    print(data["orderChoices"]);
+    // print(data["orderChoices"]);
     if( data["orderChoices"] != [] && data["orderChoices"] != null && data["orderChoices"] == "null"){
       for(int a = 0; a < data["orderChoices"].length; a++){
         OrderChoice _neworderChoice = OrderChoice(
@@ -362,5 +362,26 @@ class OrderController extends GetxController{
     Get.dialog(LoadingScreen(), barrierDismissible: false);
     await service.bikerPickUp(orderId);
     Get.back();
+  }
+
+  Future<void> bikerDropOff(String orderId) async{
+    http.Response response = await service.bikerDropOff(orderId);
+    if(response.statusCode < 299){
+      CustomGlobalSnackbar.show(
+        context: Get.context!,
+        title: "Order Accept",
+        txt: "Thanks for accepting order.",
+        icon: Icons.emoji_emotions_outlined,
+        position: true,
+      );
+    }else{
+      CustomGlobalSnackbar.show(
+        context: Get.context!,
+        title: "Order cannot accepted",
+        txt: "Order cannnot be accepted.  Please try again later.",
+        icon: Icons.info_outline,
+        position: true,
+      );
+    }
   }
 }

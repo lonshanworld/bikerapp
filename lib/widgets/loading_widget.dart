@@ -11,13 +11,24 @@ class LoadingWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double deviceHeight = MediaQuery.of(context).size.height;
-    final double oneUnitWidth = deviceWidth / 360;
-    final double oneUnitHeight = deviceHeight/772;
+
     return Center(
-      child: LoadingAnimationWidget.twistingDots(
-        size: deviceWidth > 500 ? oneUnitWidth * 60 : oneUnitWidth * 80,
-        leftDotColor: UIConstant.pink,
-        rightDotColor: UIConstant.orange,
+      child: Container(
+        width: deviceWidth > 600 ? 400 : 250,
+        height: deviceWidth > 600 ? 400 : 250,
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: UIConstant.orange,
+            width: 1,
+          ),
+          borderRadius: BorderRadius.all(Radius.circular(30)),
+          image: DecorationImage(
+            image: AssetImage(
+              "assets/images/Ride.gif",
+            ),
+            fit: BoxFit.cover,
+          )
+        ),
       ),
     );
   }

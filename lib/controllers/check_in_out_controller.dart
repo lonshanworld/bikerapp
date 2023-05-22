@@ -36,7 +36,8 @@ class CheckInOutController extends GetxController{
 
       CustomGlobalSnackbar.show(
         context: Get.context!,
-        title: "Success : ${response.statusCode}",
+        // title: "Success : ${response.statusCode}",
+        title: "Success",
         txt: "Checked In Successfully!",
         icon: Icons.check,
         position: false,
@@ -45,8 +46,9 @@ class CheckInOutController extends GetxController{
     }else{
       CustomGlobalSnackbar.show(
         context: Get.context!,
-        title: "Failed : ${response.statusCode}",
-        txt: "There is no item available to Check In!",
+        // title: "Failed : ${response.statusCode}",
+        title: "fail".tr,
+        txt: "checkinfail".tr,
         icon: Icons.info_outline,
         position: false,
       );

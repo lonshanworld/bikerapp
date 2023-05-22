@@ -50,7 +50,7 @@ class _ScheduleTabbarState extends State<ScheduleTabbar>
             },
           ),
           title: Text(
-            "Schedule",
+            "schedule".tr,
           ),
           bottom: PreferredSize(
             preferredSize: Size.fromHeight(40),
@@ -74,12 +74,12 @@ class _ScheduleTabbarState extends State<ScheduleTabbar>
                 unselectedLabelColor: Theme.of(context).primaryColor,
                 tabs: [
                   Tab(
-                    text: 'Next Schedule',
+                    text: "${"next".tr} ${"schedule".tr}",
                   ),
                   //child: Image.asset('images/android.png'),
 
                   Tab(
-                    text: 'Available Schedule',
+                    text: "${"available".tr} ${"schedule".tr}",
                   ),
                 ],
               ),

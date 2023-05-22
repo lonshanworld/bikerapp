@@ -38,7 +38,7 @@ class _RuleScreenState extends State<RuleScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Rule and Regulation"),
+        title: Text("ruleandregulation".tr),
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios,

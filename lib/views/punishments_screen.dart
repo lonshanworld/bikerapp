@@ -46,7 +46,7 @@ class _PunishmentScreenState extends State<PunishmentScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Punishments"),
+        title: Text("punishment".tr),
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios,
@@ -72,7 +72,7 @@ class _PunishmentScreenState extends State<PunishmentScreen> {
             ),
             children: [
               if(punishmentList.isEmpty)NoItemListWidget(
-                txt: "There is no punishment for this biker.",
+                txt: "nopunishment".tr,
               ),
               if(punishmentList.isNotEmpty)for(PunishmentModel item in punishmentList)PunishmentWidget(
                   date: DateFormat('y-MM-d').format(item.date!),

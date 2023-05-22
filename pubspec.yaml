@@ -60,6 +60,7 @@ dependencies:
   flutter_widget_from_html: ^0.10.0
   pinput: ^2.2.31
   internet_connection_checker: ^1.0.0+1
+  flutter_native_splash: ^2.2.19
 
 dev_dependencies:
   flutter_test:
@@ -70,6 +71,16 @@ flutter_launcher_icons:
   ios: true
   remove_alpha_ios: true
   image_path: "assets/images/biker_logo_icon.png"
+
+
+flutter_native_splash:
+  color: "#FFEAD1"
+  image: "assets/images/biker_splash_icon.png"
+  android: true
+  ios: true
+
+
+
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your

@@ -45,7 +45,7 @@ class CustomGlobalSnackbar{
                   Icon(
                     icon,
                     size: 28,
-                    color: Theme.of(context).brightness == Brightness.dark ? Colors.red : Colors.white,
+                    color: Theme.of(context).brightness == Brightness.dark ? Colors.red : Colors.red.shade800,
                   ),
                   Text(
                     title,

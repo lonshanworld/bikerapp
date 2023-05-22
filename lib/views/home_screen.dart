@@ -10,13 +10,12 @@ import "package:delivery/models/schedule_model.dart";
 import "package:delivery/routehelper.dart";
 import "package:delivery/views/drawer.dart";
 import "package:delivery/views/loading_screen.dart";
-import "package:firebase_messaging/firebase_messaging.dart";
 import "package:flutter/material.dart";
 
 import "package:get/get.dart";
 import "package:get_storage/get_storage.dart";
+import "package:intl/intl.dart";
 
-import "../main.dart";
 import "../models/noti_model.dart";
 import "../widgets/current_order_widget.dart";
 import "../widgets/loading_widget.dart";
@@ -45,6 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final box = GetStorage();
 
   bool isloading = true;
+  DateTime? checkoutTime;
 
   // requestFirebasePermission()async{
   //   NotificationSettings settings = await firebaseMessaging.requestPermission(
@@ -70,17 +70,38 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   loadData()async{
-    await notiController.initController();
+    // DateTime starttime = DateTime.now();
     await userAccountController.getInfo();
+    // if(mounted){
+    //   setState(() {
+    //     isloading = false;
+    //   });
+    // }
+    await notiController.initController();
     await scheduleController.scheduleReload();
     await orderController.getCurrentOrderList();
     checkinModel = checkInOutController.getCheckInData();
-    if(!mounted){
-      return;
+    if(checkinModel != null){
+      String checkoutDay = DateFormat("y-MM-d").format(checkinModel!.scheduleId!);
+      String checkoutdetailtime = DateFormat.Hms().format(DateFormat.jm().parse(checkinModel!.endSchedule!));
+      checkoutTime = DateTime.parse("${checkoutDay}T${checkoutdetailtime}");
     }
-    setState(() {
-      isloading = false;
-    });
+    // print("This is check out detail $checkoutall");  DateTime.parse("${checkoutDay}T${checkoutTime}")
+    if(mounted){
+      setState(() {
+        isloading = false;
+      });
+    }
+    // DateTime endtime = DateTime.now();
+    // double delaytime = starttime.difference(endtime).inMilliseconds / 1000;
+    // if(mounted){
+    //   print("delay api time $delaytime");
+    //   setState(() {
+    //     isloading = false;
+    //   });
+    // }
+
+
   }
 
   // firebaseNotiFunc()async{
@@ -105,6 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
 
     loadData();
+
   }
 
   @override
@@ -146,7 +168,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   foregroundColor: Theme.of(context).primaryColor,
                 ),
                 child: Text(
-                  box.read(TxtConstant.checkOutBtn) == true ? "Check Out" : "Check In",
+                  box.read(TxtConstant.checkOutBtn) == true ? "checkout".tr : "checkin".tr,
                   style: UIConstant.normal.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -164,11 +186,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   // }
                   if(box.read(TxtConstant.checkOutBtn)== true){
                     showDialog(
+                      barrierDismissible: false,
                       context: context,
                       builder: (ctx){
                         return ConfirmAll_Screen(
-                          title: 'Confirm?!',
-                          txt: 'Are you sure to check out?',
+                          title: '${"confirm".tr}?!',
+                          txt: '${"wanttocheckout".tr}?',
                           acceptFun: () async{
                             Get.dialog(const LoadingScreen(), barrierDismissible: false);
                             await checkInOutController.checkOut();
@@ -202,22 +225,73 @@ class _HomeScreenState extends State<HomeScreen> {
                 width: deviceWidth > 500 ? deviceWidth * 0.8 : deviceWidth,
                 child: ListView(
                   children: [
+                    if(checkinModel != null && DateTime.now().isAfter(checkoutTime!))SizedBox(
+                      height: 5,
+                    ),
+                    if(checkinModel != null && DateTime.now().isAfter(checkoutTime!))Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 30,
+                      ),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Theme.of(context).brightness == Brightness.dark ? UIConstant.pink : UIConstant.orange,
+                          foregroundColor: Theme.of(context).scaffoldBackgroundColor,
+                        ),
+                        onPressed: (){
+                          showDialog(
+                            barrierDismissible: false,
+                            context: context,
+                            builder: (ctx){
+                              return ConfirmAll_Screen(
+                                title: '${"confirm".tr}?!',
+                                txt: '${"wanttocheckout".tr}?',
+                                acceptFun: () async{
+                                  Get.dialog(const LoadingScreen(), barrierDismissible: false);
+                                  await checkInOutController.checkOut();
+                                  Get.offAllNamed(RouteHelper.getHomePage());
+                                },
+                                refuseFun: () {
+                                  Navigator.of(context).pop();
+                                },
+                              );
+                            },
+                          );
+                        },
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.touch_app_outlined,
+                                  size: 28,
+                                ),
+                                Text(
+                                  "clicktocheckout".tr,
+                                  style: UIConstant.normal,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                     Padding(
                       padding: EdgeInsets.only(
                         left: 20,
                         top: 10,
                       ),
                       child: Text(
-                        "Dashboard",
+                        "dashboard".tr,
                         style: UIConstant.title,
                       ),
                     ),
                     if(notiController.notiListByshowFlag.isEmpty)NoItemListWidget(
-                        txt: "There is no Notification"
+                        txt: "nonoti".tr
                     ),
                     if(notiController.notiListByshowFlag.isNotEmpty)ListView.builder(
                       shrinkWrap: true,
-                      physics: ScrollPhysics(),
+                      physics: NeverScrollableScrollPhysics(),
                       itemCount: notiController.notiListByshowFlag.length,
                       itemBuilder: (ctx, index){
                         print("Get the length of list ${notiController.notiListByshowFlag.length}");
@@ -230,7 +304,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           earning: _item.notiBodyModel!.earning!,
                           shopName: _item.notiBodyModel!.shopName!,
                           distance: _item.notiBodyModel!.distanceMeter!,
-                          photo: _item.notiBodyModel!.photo!,
+                          photo: _item.notiBodyModel!.photo ?? "",
                           func: (){
                             // setState(() {
                             //   _notiController.notiList.removeAt(index);
@@ -242,21 +316,21 @@ class _HomeScreenState extends State<HomeScreen> {
                       },
                     ),
 
-                    SubTitleWidget(txt: "Current Order"),
+                    SubTitleWidget(txt: "currentorder".tr,),
                     if(orderController.currentorderList.isEmpty)NoItemListWidget(
-                      txt: "There is no Current Item",
+                      txt: "nocuritem".tr,
                     ),
                     if(orderController.currentorderList.isNotEmpty)ListView.builder(
-                      physics: ScrollPhysics(),
+                      physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: orderController.currentorderList.length,
                       itemBuilder: (ctx, index){
                         return CurrentOrderWidget(currentOrderModel: orderController.currentorderList[index]);
                       },
                     ),
-                    SubTitleWidget(txt: "Check-In Schedule"),
+                    SubTitleWidget(txt: "${"checkin".tr} ${"schedule".tr}"),
                     if(checkinModel == null)NoItemListWidget(
-                        txt: "There is no Check-In Schedule"
+                        txt: "nocheckinschedule".tr,
                     ),
                     if(checkinModel != null)ScheduleWidget(
                         scheduleName: checkinModel!.scheduleName!,
@@ -264,13 +338,16 @@ class _HomeScreenState extends State<HomeScreen> {
                         startSchedule: checkinModel!.startSchedule!,
                         endSchedule: checkinModel!.endSchedule!,
                     ),
-                    const SubTitleWidget(txt: "Schedule"),
-                    if(scheduleController.nextScheduleList.isEmpty)const NoItemListWidget(
-                        txt: "There is no Available Schedule"
+                    SubTitleWidget(txt: "schedule".tr),
+                    if(scheduleController.nextScheduleList.isEmpty) NoItemListWidget(
+                        txt: "noavailableschedule".tr,
                     ),
                     if(scheduleController.nextScheduleList.isNotEmpty)ListView.builder(
-                        physics: ScrollPhysics(),
+                        physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 10,
+                        ),
                         itemCount: scheduleController.nextScheduleList.length,
                         itemBuilder: (context, index) {
                           ScheduleModel item = scheduleController.nextScheduleList[index];
@@ -282,9 +359,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           );
                         }
                     ),
-
-
-
                   ],
                 ),
               ),

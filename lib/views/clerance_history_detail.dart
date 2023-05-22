@@ -1,4 +1,5 @@
 
+import 'package:delivery/constants/uiconstants.dart';
 import 'package:delivery/models/clearance_history_model.dart';
 import 'package:flutter/material.dart';
 import "package:get/get.dart";
@@ -41,7 +42,7 @@ class _ClearanceHistoryDetailsState extends State<ClearanceHistoryDetails> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Clerance Details"),
+        title: Text("${"clearance".tr} ${"detail".tr}"),
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios,
@@ -64,7 +65,7 @@ class _ClearanceHistoryDetailsState extends State<ClearanceHistoryDetails> {
                   children: [
                     Expanded(
                       child: Text(
-                        "Date: " + widget.data.date.toString().substring(0, 10),
+                        "${"date".tr}: " + widget.data.date.toString().substring(0, 10),
                         style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.w600,
@@ -73,7 +74,7 @@ class _ClearanceHistoryDetailsState extends State<ClearanceHistoryDetails> {
                     ),
                     Expanded(
                       child: Text(
-                        "Zone: " + widget.data.zoneName.toString(),
+                        "${"zone".tr}: " + widget.data.zoneName.toString(),
                         style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.w600,
@@ -87,7 +88,7 @@ class _ClearanceHistoryDetailsState extends State<ClearanceHistoryDetails> {
                   children: [
                     Expanded(
                       child: Text(
-                        "Total Qrder Qty",
+                        "totalorderqty".tr,
                         style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.w600,
@@ -113,7 +114,7 @@ class _ClearanceHistoryDetailsState extends State<ClearanceHistoryDetails> {
                   children: [
                     Expanded(
                       child: Text(
-                        "Total Distance",
+                        "totaldistance".tr,
                         style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.w600,
@@ -139,7 +140,7 @@ class _ClearanceHistoryDetailsState extends State<ClearanceHistoryDetails> {
                   children: [
                     Expanded(
                       child: Text(
-                        "Total Cash Collect",
+                        "${"total".tr} ${"cashcollected".tr}",
                         style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.w600,
@@ -165,7 +166,7 @@ class _ClearanceHistoryDetailsState extends State<ClearanceHistoryDetails> {
                   children: [
                     Expanded(
                       child: Text(
-                        "MISC Usage",
+                        "${"misc".tr} ${"usage".tr}",
                         style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.w600,
@@ -191,7 +192,7 @@ class _ClearanceHistoryDetailsState extends State<ClearanceHistoryDetails> {
                   children: [
                     Expanded(
                       child: Text(
-                        "Credit",
+                        "credit".tr,
                         style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.w600,
@@ -217,7 +218,7 @@ class _ClearanceHistoryDetailsState extends State<ClearanceHistoryDetails> {
                   children: [
                     Expanded(
                       child: Text(
-                        "Total Clerance",
+                        "${"total".tr} ${"clearance".tr}",
                         style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.w600,
@@ -253,7 +254,10 @@ class _ClearanceHistoryDetailsState extends State<ClearanceHistoryDetails> {
                     children: [
                       Icon(Icons.camera_alt, color: Colors.orange),
                       SizedBox(height: 5),
-                      Text("Capture payment Document")
+                      Text(
+                        "capturepaymentdocument".tr,
+                        style: UIConstant.normal,
+                      )
                     ],
                   ),
                 ),

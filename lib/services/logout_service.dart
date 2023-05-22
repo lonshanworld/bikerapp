@@ -9,6 +9,7 @@ import "package:get/get.dart";
 
 import '../dependencies.dart';
 import '../routehelper.dart';
+import 'language_service.dart';
 
 class LogOutService{
   final box = GetStorage();
@@ -19,6 +20,9 @@ class LogOutService{
     Future.delayed(Duration(seconds: 2),(){
       if(Theme.of(context).brightness == Brightness.dark){
         ThemeService().switchTheme();
+      }
+      if(Get.locale.toString() != "en_US"){
+        LanguageService().changeLanguage();
       }
       notiService.deleteAll();
       box.erase();

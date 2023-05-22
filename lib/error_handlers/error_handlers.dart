@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:delivery/controllers/noti_controller.dart';
 import 'package:delivery/services/logout_service.dart';
 import 'package:delivery/services/noti_service.dart';
 import 'package:flutter/material.dart';
@@ -8,8 +7,6 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 
-import '../routehelper.dart';
-import '../services/theme_service.dart';
 import 'error_screen.dart';
 import 'forceexit_service.dart';
 
@@ -23,9 +20,11 @@ class ErrorHandler{
       Get.back();
       showDialog(
         context: Get.context!,
+        barrierDismissible: false,
         builder: (ctx){
           return ErrorScreen(
-            title: "Unauthorized Error : ${response.statusCode}",
+            // title: "Unauthorized Error : ${response.statusCode}",
+            title: "Unauthorized",
             txt: "Please Click the button to Logout and Login again to continue.",
             btntxt: "Click to Logout",
             Func: (){
@@ -44,12 +43,16 @@ class ErrorHandler{
       Get.back();
       showDialog(
         context: Get.context!,
+        barrierDismissible: false,
         builder: (ctx){
           return ErrorScreen(
-            title: "Internal Server Error : ${response.statusCode}",
+            // title: "Internal Server Error : ${response.statusCode}",
+            // txt: json.decode(response.body)["error"]["message"],
+            title: "We are sorry!",
             txt: json.decode(response.body)["error"]["message"],
             btntxt: "Click to go back",
             Func: (){
+              Get.back();
               Get.back();
             },
           );
@@ -59,12 +62,16 @@ class ErrorHandler{
       Get.back();
       showDialog(
         context: Get.context!,
+        barrierDismissible: false,
         builder: (ctx){
           return ErrorScreen(
-            title: "Unexpected Error : ${response.statusCode}",
+            // title: "Unexpected Error : ${response.statusCode}",
+            // txt: json.decode(response.body)["error"]["message"],
+            title: "We are sorry!",
             txt: json.decode(response.body)["error"]["message"],
             btntxt: "Click to go back",
             Func: (){
+              Get.back();
               Get.back();
             },
           );
@@ -74,12 +81,16 @@ class ErrorHandler{
       Get.back();
       showDialog(
         context: Get.context!,
+        barrierDismissible: false,
         builder: (ctx){
           return ErrorScreen(
-            title: "Unexpected Error : ${response.statusCode}",
-            txt: json.decode(response.body)["error"]["message"],
+            // title: "Unexpected Error : ${response.statusCode}",
+            // txt: json.decode(response.body)["error"]["message"],
+            title: "We are sorry!",
+            txt: "Something unexcepted occurs",
             btntxt: "Click to go back",
             Func: (){
+              Get.back();
               Get.back();
             },
           );
@@ -92,26 +103,34 @@ class ErrorHandler{
     Get.back();
     showDialog(
       context: Get.context!,
+      barrierDismissible: false,
       builder: (ctx){
         return ErrorScreen(
-          title: "Unknown Error",
+          // title: "Unknown Error",
+          // txt: txt,
+          title: "We are sorry!",
           txt: txt,
           btntxt: "Click to go back",
           Func: (){
             Get.back();
+            Get.back();
+            // ForceExitAppService().exitApp();
           },
         );
       },
     );
   }
 
-  handleNullError(String txt){
+  handleNoSignalRerror(String txt){
     Get.back();
     showDialog(
       context: Get.context!,
+      barrierDismissible: false,
       builder: (ctx){
         return ErrorScreen(
-          title: "Unknown Error",
+          // title: "Unknown Error",
+          // txt: txt,
+          title: "We are sorry",
           txt: txt,
           btntxt: "Click to leave the app",
           Func: (){
