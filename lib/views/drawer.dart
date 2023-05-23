@@ -28,29 +28,30 @@ class _DrawerPageState extends State<DrawerPage> {
   final CheckInOutController checkInOutController = Get.find<CheckInOutController>();
   final LogOutService logOutService = LogOutService();
 
+  bool showdefaultimage = false;
+
   GetStorage box = GetStorage();
 
+  // String imageurl = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgWv75KuTKR5tEa6fNHmINh0SrIAoWhlAYbvoxnG7poIN8dLV4Fxe5IErjDo2RG6grnyU&usqp=CAU';
 
-  String imageurl = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgWv75KuTKR5tEa6fNHmINh0SrIAoWhlAYbvoxnG7poIN8dLV4Fxe5IErjDo2RG6grnyU&usqp=CAU';
-
-  Future<void> checkImageError()async{
-    if(userAccountController.bikermodel[0].profileImage != null){
-      http.Response response = await http.get(Uri.parse(userAccountController.bikermodel[0].profileImage!));
-      if(response.statusCode == 200){
-        if(mounted){
-          setState(() {
-            imageurl = userAccountController.bikermodel[0].profileImage!;
-          });
-        }
-      }
-    }
-  }
+  // Future<void> checkImageError()async{
+  //   if(userAccountController.bikermodel[0].profileImage != null){
+  //     http.Response response = await http.get(Uri.parse(userAccountController.bikermodel[0].profileImage!));
+  //     if(response.statusCode == 200){
+  //       if(mounted){
+  //         setState(() {
+  //           imageurl = userAccountController.bikermodel[0].profileImage!;
+  //         });
+  //       }
+  //     }
+  //   }
+  // }
 
 
   @override
   void initState() {
     super.initState();
-    checkImageError();
+    // checkImageError();
   }
 
   @override
@@ -62,7 +63,6 @@ class _DrawerPageState extends State<DrawerPage> {
     // final double oneUnitHeight = deviceHeight/772;
 
     final double drawerWidth = deviceWidth > 500 ? 350 : (deviceWidth / 4) * 3;
-
 
     ListTile customListTile(IconData icon, String title, VoidCallback Func ){
       return ListTile(
@@ -175,10 +175,21 @@ class _DrawerPageState extends State<DrawerPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    CircleAvatar(
+                    if(!showdefaultimage && (userAccountController.bikermodel[0].profileImage != null && userAccountController.bikermodel[0].profileImage !=""))CircleAvatar(
                       radius: deviceWidth > 500 ? 50 : 40,
+                      onBackgroundImageError: (object, stacktrace){
+                        setState(() {
+                          showdefaultimage = true;
+                        });
+                      },
                       backgroundImage: NetworkImage(
-                        imageurl,
+                        userAccountController.bikermodel[0].profileImage!,
+                      ),
+                    ),
+                    if(showdefaultimage || userAccountController.bikermodel[0].profileImage == null || userAccountController.bikermodel[0].profileImage =="")CircleAvatar(
+                      radius: deviceWidth > 500 ? 50 : 40,
+                      backgroundImage: AssetImage(
+                        "assets/images/biker_icon.png",
                       ),
                     ),
                     Container(

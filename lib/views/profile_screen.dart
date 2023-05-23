@@ -32,7 +32,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   bool isShowImage = false;
   File? newselectedImage = File('');
-  String imageurl = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgWv75KuTKR5tEa6fNHmINh0SrIAoWhlAYbvoxnG7poIN8dLV4Fxe5IErjDo2RG6grnyU&usqp=CAU';
+
+  bool showdefaultimage = false;
 
   getCamera(){
     cameraImageControlller.getCamera().then((file){
@@ -59,18 +60,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
   //   }
   // }
 
-  Future<void> checkImageError()async{
-    if(userAccountController.bikermodel[0].profileImage != null){
-      http.Response response = await http.get(Uri.parse(userAccountController.bikermodel[0].profileImage!));
-      if(response.statusCode == 200){
-        if(mounted){
-          setState(() {
-            imageurl = userAccountController.bikermodel[0].profileImage!;
-          });
-        }
-      }
-    }
-  }
+  // Future<void> checkImageError()async{
+  //   if(userAccountController.bikermodel[0].profileImage != null){
+  //     http.Response response = await http.get(Uri.parse(userAccountController.bikermodel[0].profileImage!));
+  //     if(response.statusCode == 200){
+  //       if(mounted){
+  //         setState(() {
+  //           imageurl = userAccountController.bikermodel[0].profileImage!;
+  //         });
+  //       }
+  //     }
+  //   }
+  // }
 
 
   @override
@@ -79,7 +80,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     nameController.text = userAccountController.bikermodel[0].fullName ??  "";
     nrcController.text = userAccountController.bikermodel[0].nrc ?? "";
     emailController.text = userAccountController.bikermodel[0].email ?? "";
-    checkImageError();
+    // checkImageError();
   } // late String img64;
 
   @override
@@ -99,7 +100,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         title: Text("Profile"),
         leading: IconButton(
           icon: Icon(
-            Icons.arrow_back_ios,
+            Icons.arrow_back,
             size: 24,
           ),
           onPressed: () {
@@ -122,10 +123,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 children: [
                   Column(
                     children: [
-                      if(!isShowImage)CircleAvatar(
+                      if(!isShowImage && !showdefaultimage && userAccountController.bikermodel[0].profileImage!=null && userAccountController.bikermodel[0].profileImage!="")CircleAvatar(
                         radius: 60,
+                        onBackgroundImageError: (object, stacktrace){
+                          setState(() {
+                            showdefaultimage = true;
+                          });
+                        },
                         backgroundImage: NetworkImage(
-                          imageurl,
+                          userAccountController.bikermodel[0].profileImage!,
+                        ),
+                      ),
+                      if(!isShowImage && (showdefaultimage || userAccountController.bikermodel[0].profileImage!=null || userAccountController.bikermodel[0].profileImage!=""))CircleAvatar(
+                        radius: 60,
+                        backgroundImage: AssetImage(
+                          "assets/images/biker_icon.png",
                         ),
                       ),
                       if(isShowImage)CircleAvatar(

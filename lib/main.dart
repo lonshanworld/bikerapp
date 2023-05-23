@@ -287,8 +287,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
                   textAlign: TextAlign.center,
                 ),
                 content: Container(
-                  width: Get.context!.width > 600 ? 400 : 250,
-                  height: Get.context!.width > 600 ? 400 : 250,
+                  width: Get.context!.width > 600 ? 300 : 250,
+                  height: Get.context!.width > 600 ? 300 : 250,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(30)),
                       image: DecorationImage(

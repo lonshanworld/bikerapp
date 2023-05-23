@@ -94,7 +94,7 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
         ),
         leading: IconButton(
           icon: Icon(
-            Icons.arrow_back_ios,
+            Icons.arrow_back,
             size: 24,
           ),
           onPressed: () {
@@ -113,7 +113,7 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
         ),
         leading: IconButton(
           icon: Icon(
-            Icons.arrow_back_ios,
+            Icons.arrow_back,
             size: 24,
           ),
           onPressed: () {

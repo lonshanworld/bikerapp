@@ -96,7 +96,7 @@ class _PasscodeScreenState extends State<PasscodeScreen> {
               Get.back();
             },
             icon: Icon(
-              Icons.arrow_back_ios,
+              Icons.arrow_back,
               size: 24,
             ),
             color: UIConstant.orange,

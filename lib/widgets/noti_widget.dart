@@ -43,28 +43,29 @@ class _NotiWidgetState extends State<NotiWidget> with SingleTickerProviderStateM
   late Animation<double> _animation;
 
   bool showDetail = false;
-  String? imageurl;
+  bool showdefaultimage = false;
+  // String imageurl = "";
+  // bool isloading = true;
 
-  Future<void>checkPhotoError()async{
-    if(widget.photo == null || widget.photo == "" || widget.photo == "null"){
-      return ;
-    }else{
-      http.Response response = await http.get(Uri.parse(widget.photo));
-      if(response == 200){
-        if(mounted){
-          setState(() {
-            imageurl = widget.photo;
-          });
-        }
-      }
-    }
-
-
-  }
+  // Future<void>checkPhotoError()async{
+  //   if(widget.photo == ""){
+  //     return ;
+  //   }else{
+  //     http.Response response = await http.get(Uri.parse(widget.photo));
+  //     if(response == 200){
+  //       imageurl = widget.photo;
+  //     }
+  //   }
+  // }
 
   @override
   void initState(){
     super.initState();
+    // checkPhotoError().then((_){
+    //   setState(() {
+    //     isloading = true;
+    //   });
+    // });
     _animationController = AnimationController(
         vsync: this,
         duration: Duration(milliseconds: 500),
@@ -74,7 +75,7 @@ class _NotiWidgetState extends State<NotiWidget> with SingleTickerProviderStateM
         begin: 0,
         end: 0.5
     ).animate(_animationController);
-    checkPhotoError();
+
   }
 
   @override
@@ -238,21 +239,26 @@ class _NotiWidgetState extends State<NotiWidget> with SingleTickerProviderStateM
                 SizedBox(
                   height: 10,
                 ),
-                if(imageurl != null)Container(
+                if(!showdefaultimage && widget.photo != "")Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(
                       Radius.circular(10),
                     ),
                     image: DecorationImage(
+                      onError: (Object, stackTrace){
+                        setState(() {
+                          showdefaultimage = true;
+                        });
+                      },
                         image: NetworkImage(
-                          imageurl!,
+                          widget.photo,
                         ),
                         fit: BoxFit.cover
                     ),
                   ),
                   height: deviceHeight * 0.15,
                 ),
-                if(imageurl == null)Container(
+                if(showdefaultimage || widget.photo == "")Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(
                       Radius.circular(10),

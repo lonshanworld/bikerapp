@@ -74,7 +74,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
         title: Text("${"order".tr} ${"history".tr}"),
         leading: IconButton(
           icon: Icon(
-            Icons.arrow_back_ios,
+            Icons.arrow_back,
             size: 24,
           ),
           onPressed: () {

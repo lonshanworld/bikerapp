@@ -50,7 +50,7 @@ class _ClearanceHistoryState extends State<ClearanceHistory> {
         title: Text("${"clearance".tr} ${"history".tr}"),
         leading: IconButton(
           icon: Icon(
-            Icons.arrow_back_ios,
+            Icons.arrow_back,
             size: 24,
           ),
           onPressed: () {

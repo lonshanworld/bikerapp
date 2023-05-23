@@ -41,7 +41,7 @@ class _RuleScreenState extends State<RuleScreen> {
         title: Text("ruleandregulation".tr),
         leading: IconButton(
           icon: Icon(
-            Icons.arrow_back_ios,
+            Icons.arrow_back,
             size: 24,
           ),
           onPressed: () {

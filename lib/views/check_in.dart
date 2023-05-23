@@ -72,7 +72,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
         ),
         leading: IconButton(
           icon: Icon(
-            Icons.arrow_back_ios,
+            Icons.arrow_back,
             size: 24,
           ),
           onPressed: (){
@@ -138,7 +138,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
                   //   });
                   // }
                   if(!hideBtn){
-                    if(newselectedImage!.path == "" || newselectedImage == null){
+                    if(newselectedImage?.path == "" || newselectedImage == null){
                       CustomGlobalSnackbar.show(
                         context: context,
                         title: "image".tr,

@@ -112,7 +112,7 @@ class _QRscreenState extends State<QRscreen> {
         title: Text(userAccountController.bikermodel[0].fullName!),
         leading: IconButton(
           icon: Icon(
-            Icons.arrow_back_ios,
+            Icons.arrow_back,
             size: 24,
           ),
           onPressed: () {

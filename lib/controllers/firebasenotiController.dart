@@ -14,7 +14,6 @@ class FirebaseNotiController extends GetxController{
 
   firebaseNotiInit()async{
     await firebaseMessaging.getInitialMessage();
-    await firebaseMessaging.subscribeToTopic("android");
 
     streamSubscription = FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
 

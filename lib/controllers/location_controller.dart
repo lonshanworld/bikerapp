@@ -72,9 +72,12 @@ class LocationController extends GetxController{
     }
     _permission = await Geolocator.checkPermission();
     print(_permission);
-    if (_permission != LocationPermission.always) {
-      Get.toNamed(RouteHelper.getLocationErrorPage(turnOn: true));
-      throw Exception("Location Permission must be always allowed.");
+    if (_permission == LocationPermission.denied || _permission == LocationPermission.deniedForever || _permission == LocationPermission.unableToDetermine) {
+      _permission == await Geolocator.requestPermission();
+      if(_permission == LocationPermission.denied || _permission == LocationPermission.deniedForever || _permission == LocationPermission.unableToDetermine){
+        Get.toNamed(RouteHelper.getLocationErrorPage(turnOn: true));
+        throw Exception("Location Permission must be allowed.");
+      }
     }
     // else if(_permission == LocationPermission.whileInUse){
     //   late bool openappvalue;

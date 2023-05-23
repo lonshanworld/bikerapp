@@ -54,7 +54,7 @@ class _LocationErrorScreenState extends State<LocationErrorScreen> with WidgetsB
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(
-              Icons.arrow_back_ios,
+              Icons.arrow_back,
           ),
           onPressed: (){
             Get.offAllNamed(RouteHelper.getSplashPage());

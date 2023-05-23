@@ -25,9 +25,9 @@ class CurrentOrderWidget extends StatefulWidget {
 class _CurrentOrderWidgetState extends State<CurrentOrderWidget> {
 
   bool showDetail = false;
+  bool showdefaultimage = false;
   // final GeneralController _generalController = Get.put(GeneralController());
   // bool photoError = false;
-  String? imageurl;
 
   _makePhoneCall(String phoneNumber) async {
     final Uri launchUri = Uri(
@@ -35,28 +35,6 @@ class _CurrentOrderWidgetState extends State<CurrentOrderWidget> {
       path: phoneNumber,
     );
     await launchUrl(launchUri);
-  }
-
-  Future<void>checkPhotoError()async{
-    if(widget.currentOrderModel.image == null || widget.currentOrderModel.image == "" || widget.currentOrderModel.image == "null"){
-      return ;
-    }else{
-      http.Response response = await http.get(Uri.parse(widget.currentOrderModel.image!));
-      if(response == 200){
-        if(mounted){
-          setState(() {
-            imageurl = widget.currentOrderModel.image;
-          });
-        }
-      }
-    }
-  }
-
-
-  @override
-  void initState() {
-    super.initState();
-    checkPhotoError();
   }
 
   @override
@@ -208,21 +186,26 @@ class _CurrentOrderWidgetState extends State<CurrentOrderWidget> {
                     color: Colors.grey,
                     height: 15,
                   ),
-                  if(imageurl != null)Container(
+                  if(!showdefaultimage && (widget.currentOrderModel.image != null && widget.currentOrderModel.image != ""))Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(
                         Radius.circular(10),
                       ),
                       image: DecorationImage(
+                        onError: (Oobject,stacktrace){
+                          setState(() {
+                            showdefaultimage = true;
+                          });
+                        },
                           image: NetworkImage(
-                            imageurl!,
+                            widget.currentOrderModel.image!,
                           ),
                           fit: BoxFit.cover
                       ),
                     ),
                     height: deviceHeight * 0.15,
                   ),
-                  if(imageurl == null)Container(
+                  if(showdefaultimage || widget.currentOrderModel.image == null || widget.currentOrderModel.image == "")Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(
                         Radius.circular(10),
@@ -300,8 +283,8 @@ class _CurrentOrderWidgetState extends State<CurrentOrderWidget> {
                           //   orderId: widget.currentOrderModel.orderId,
                           //   hasButton: true,
                           // ));
-                          Get.toNamed(RouteHelper.getOrderDetailPage(orderId: widget.currentOrderModel.orderId!, hasButton: true));
-                          // Get.toNamed(RouteHelper.getDropOffPage(orderId: widget.currentOrderModel.orderId!));
+                          // Get.toNamed(RouteHelper.getOrderDetailPage(orderId: widget.currentOrderModel.orderId!, hasButton: true));
+                          Get.toNamed(RouteHelper.getDropOffPage(orderId: widget.currentOrderModel.orderId!));
                         }
                       },
                       txtClr: UIConstant.orange,

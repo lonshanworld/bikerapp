@@ -90,7 +90,7 @@ class _CleranceState extends State<Clerance> {
         title: Text("Clerance"),
         leading: IconButton(
           icon: Icon(
-            Icons.arrow_back_ios,
+            Icons.arrow_back,
             size: 24,
           ),
           onPressed: () {

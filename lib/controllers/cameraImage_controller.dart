@@ -6,7 +6,7 @@ class CameraImageControlller extends GetxController{
 
   final picker = ImagePicker();
 
-  Future<File>getCamera() async{
+  Future<File?>getCamera() async{
     final XFile? photo = await picker.pickImage(
       source: ImageSource.camera,
       maxWidth: 720,
@@ -14,8 +14,11 @@ class CameraImageControlller extends GetxController{
       imageQuality: 50,
       preferredCameraDevice: CameraDevice.rear,
     );
-    File image = File(photo!.path);
+
+    File? image = File(photo!.path);
 
     return image;
   }
+
+
 }

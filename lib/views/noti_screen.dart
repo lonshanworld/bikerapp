@@ -21,7 +21,7 @@ class NotiScreen extends StatelessWidget {
         title: Text("Notification ${"history".tr}"),
         leading: IconButton(
           icon: Icon(
-            Icons.arrow_back_ios,
+            Icons.arrow_back,
             size: 24,
           ),
           onPressed: () {

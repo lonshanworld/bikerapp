@@ -49,7 +49,7 @@ class _PunishmentScreenState extends State<PunishmentScreen> {
         title: Text("punishment".tr),
         leading: IconButton(
           icon: Icon(
-            Icons.arrow_back_ios,
+            Icons.arrow_back,
             size: 24,
           ),
           onPressed: () {

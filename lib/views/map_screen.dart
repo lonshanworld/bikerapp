@@ -195,16 +195,17 @@ class _MapScreenState extends State<MapScreen> {
 
     _locationController.getPermission().then((_)async{
       Position position = await _locationController.getcurLagLong();
+      _initialcameraPosition =CameraPosition(
+        target: LatLng(position.latitude, position.longitude),
+        zoom: 16,
+      );
       if(widget.isDropOff){
         _locationController.getLocationStream(widget.cusLatLng);
       }else{
         _locationController.getLocationStream(widget.shopLatLng);
       }
 
-      _initialcameraPosition =CameraPosition(
-        target: LatLng(position.latitude, position.longitude),
-        zoom: 16,
-      );
+
     });
   }
 
@@ -309,6 +310,8 @@ class _MapScreenState extends State<MapScreen> {
                     zoomControlsEnabled: false,
                     compassEnabled: false,
                     mapToolbarEnabled: false,
+                    myLocationButtonEnabled: false,
+                    myLocationEnabled: false,
                     // mapType: MapType.hybrid,
                     onMapCreated: (GoogleMapController controller)async{
                       if(!completer.isCompleted){

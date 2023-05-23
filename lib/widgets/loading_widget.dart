@@ -14,8 +14,8 @@ class LoadingWidget extends StatelessWidget {
 
     return Center(
       child: Container(
-        width: deviceWidth > 600 ? 400 : 250,
-        height: deviceWidth > 600 ? 400 : 250,
+        width: deviceWidth > 600 ? 300 : 250,
+        height: deviceWidth > 600 ? 300 : 250,
         decoration: BoxDecoration(
           border: Border.all(
             color: UIConstant.orange,

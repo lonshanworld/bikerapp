@@ -31,11 +31,11 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
 
   final OrderController orderController = Get.find<OrderController>();
   late OrderDetailModel _orderDetailModel;
-  String? imageurl;
 
   // bool _isloading = true;
   List<String> orderItemShopnameList = [];
   bool isloading = true;
+  bool showdefaultimage = false;
 
   Future<void> assignvalue() async{
     _orderDetailModel = await orderController.getSingleOrderDetail(widget.orderId);
@@ -57,28 +57,12 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
     });
   }
 
-  Future<void> checkPhotoError()async{
-    if(_orderDetailModel.image == null || _orderDetailModel.image == "" || _orderDetailModel.image == "null"){
-      return;
-    }else{
-      http.Response response = await http.get(Uri.parse(_orderDetailModel.image!));
-      if(response == 200){
-        if(mounted){
-          setState(() {
-            imageurl == _orderDetailModel.image;
-          });
-        }
-      }
-    }
-  }
 
 
   @override
   void initState() {
     super.initState();
-    assignvalue().then((_){
-      checkPhotoError();
-    });
+    assignvalue();
   }
 
   @override
@@ -94,7 +78,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
         ),
         leading: IconButton(
           icon: Icon(
-            Icons.arrow_back_ios,
+            Icons.arrow_back,
             size: 24,
           ),
           onPressed: (){
@@ -151,12 +135,21 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                         ),
                       ],
                     ),
-                    if(imageurl != null)Container(
+                    if(!showdefaultimage && (_orderDetailModel.image != null && _orderDetailModel.image != ""))Container(
                       height: deviceHeight * 0.22,
                       decoration: BoxDecoration(
                         image: DecorationImage(
+                          onError: (object, stacktrace){
+                            Future.delayed(Duration(seconds: 1),(){
+                              if(mounted){
+                                setState(() {
+                                  showdefaultimage = true;
+                                });
+                              }
+                            });
+                          },
                             image: NetworkImage(
-                              imageurl ?? "",
+                              _orderDetailModel.image!,
                             ),
                             fit: BoxFit.cover
                         ),
@@ -165,7 +158,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                         ),
                       ),
                     ),
-                    if(imageurl == null)Container(
+                    if(showdefaultimage || _orderDetailModel.image == null || _orderDetailModel.image == "")Container(
                       height: deviceHeight * 0.22,
                       decoration: BoxDecoration(
                         image: DecorationImage(

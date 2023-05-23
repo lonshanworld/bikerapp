@@ -141,7 +141,15 @@ class NotiController extends GetxController{
 
   Future<void>initialize() async {
     var androidInitialize = AndroidInitializationSettings("mipmap/ic_launcher");
-    var iosInitialize = DarwinInitializationSettings();
+    var iosInitialize = DarwinInitializationSettings(
+      requestAlertPermission: true,
+      requestSoundPermission: true,
+      requestBadgePermission: true,
+      requestCriticalPermission: true,
+      defaultPresentAlert: true,
+      defaultPresentBadge: true,
+      defaultPresentSound: true,
+    );
     var initializationSettings = InitializationSettings(
       android: androidInitialize,
       iOS: iosInitialize,
@@ -200,6 +208,7 @@ class NotiController extends GetxController{
     print(Get.find<NotiController>().obs.value);
     await flutterLocalNotificationsPlugin.show(0, remoteMessage.notification!.title, remoteMessage.notification!.body, notidetails);
 
+    print("This is checking noti in ios ${remoteMessage.data["type"]}");
     if(remoteMessage.data.containsKey("type")){
       print("This contain key");
       if(remoteMessage.data["type"].toString().toLowerCase().trim() == "orderpickedup"){

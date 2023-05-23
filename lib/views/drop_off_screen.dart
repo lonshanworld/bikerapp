@@ -253,7 +253,7 @@ class _DropOffScreenState extends State<DropOffScreen> {
           ),
           leading: IconButton(
             icon: Icon(
-              Icons.arrow_back_ios,
+              Icons.arrow_back,
               size: 24,
             ),
             onPressed: (){
@@ -272,7 +272,7 @@ class _DropOffScreenState extends State<DropOffScreen> {
           ),
           leading: IconButton(
             icon: Icon(
-              Icons.arrow_back_ios,
+              Icons.arrow_back,
               size: 24,
             ),
             onPressed: (){
