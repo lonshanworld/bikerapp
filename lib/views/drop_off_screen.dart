@@ -342,12 +342,15 @@ class _DropOffScreenState extends State<DropOffScreen> {
                           target: LatLng(curlat, curlong),
                           zoom: 16
                       ),
+                      mapType: MapType.normal,
                       zoomControlsEnabled: false,
                       compassEnabled: false,
                       mapToolbarEnabled: false,
                       rotateGesturesEnabled: false,
                       scrollGesturesEnabled: false,
                       zoomGesturesEnabled: false,
+                      myLocationButtonEnabled: false,
+                      myLocationEnabled: false,
                       onMapCreated: (GoogleMapController controller)async{
                         // setState(() {
                         //   _controller = controller;
@@ -373,7 +376,7 @@ class _DropOffScreenState extends State<DropOffScreen> {
                         _controller.complete(controller);
 
                         makemapcomplete(_controller).then((_){
-                          Future.delayed(Duration(milliseconds: 500),(){
+                          Future.delayed(Duration(seconds: 1),(){
                             mapController!.animateCamera(
                                 CameraUpdate.newLatLngBounds(
                                   LatLngBounds(

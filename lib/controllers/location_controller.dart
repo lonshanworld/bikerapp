@@ -227,7 +227,7 @@ class LocationController extends GetxController{
   }
 
 
-  void getLocationStream(LatLng randomlatlng)async{
+  Future<void> getLocationStream(LatLng randomlatlng)async{
     // await hubConnection.start();
     if (defaultTargetPlatform == TargetPlatform.android) {
       _locationSettings = AndroidSettings(

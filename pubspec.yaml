@@ -43,7 +43,6 @@ dependencies:
   flutter_exit_app: ^1.1.2
   loading_animation_widget: ^1.2.0+4
   firebase_messaging: ^14.4.1
-  firebase_core: ^2.10.0
   sqflite: ^2.2.7
   url_launcher: ^6.1.10
   google_maps_flutter: ^2.2.5
@@ -61,6 +60,7 @@ dependencies:
   internet_connection_checker: ^1.0.0+1
   flutter_native_splash: ^2.2.19
   image_picker: ^0.8.7+5
+  firebase_core: ^2.13.0
 
 dev_dependencies:
   flutter_test:

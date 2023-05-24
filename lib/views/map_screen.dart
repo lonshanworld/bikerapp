@@ -204,9 +204,9 @@ class _MapScreenState extends State<MapScreen> {
        curLat = position.latitude;
        curlong = position.longitude;
       if(widget.isDropOff){
-        _locationController.getLocationStream(widget.cusLatLng);
+        await _locationController.getLocationStream(widget.cusLatLng);
       }else{
-        _locationController.getLocationStream(widget.shopLatLng);
+        await _locationController.getLocationStream(widget.shopLatLng);
       }
 
 
@@ -302,7 +302,6 @@ class _MapScreenState extends State<MapScreen> {
           // widget.isDropOff
           //     ?
           Obx(() {
-
             return Stack(
               children: [
                 Positioned(
@@ -316,6 +315,7 @@ class _MapScreenState extends State<MapScreen> {
                       target: LatLng(curLat, curlong),
                       zoom: 16,
                     ),
+                    mapType: MapType.normal,
                     zoomControlsEnabled: false,
                     compassEnabled: false,
                     mapToolbarEnabled: false,
@@ -332,7 +332,7 @@ class _MapScreenState extends State<MapScreen> {
                       if(_locationController.streamPosition.isNotEmpty){
                         // print("Point is not empty------------------------------");
                         makemapcomplete(completer).then((_) {
-                          Future.delayed(Duration(milliseconds: 500),(){
+                          Future.delayed(Duration(seconds: 1),(){
                             if(widget.isDropOff){
                               mapController!.animateCamera(
                                   CameraUpdate.newLatLngBounds(
