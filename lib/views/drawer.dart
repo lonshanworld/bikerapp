@@ -175,21 +175,37 @@ class _DrawerPageState extends State<DrawerPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    if(!showdefaultimage && (userAccountController.bikermodel[0].profileImage != null && userAccountController.bikermodel[0].profileImage !=""))CircleAvatar(
-                      radius: deviceWidth > 500 ? 50 : 40,
-                      onBackgroundImageError: (object, stacktrace){
-                        setState(() {
-                          showdefaultimage = true;
-                        });
-                      },
-                      backgroundImage: NetworkImage(
-                        userAccountController.bikermodel[0].profileImage!,
+                    if(!showdefaultimage && (userAccountController.bikermodel[0].profileImage != null && userAccountController.bikermodel[0].profileImage !=""))Container(
+                      width: deviceWidth > 500 ? 100 : 80,
+                      height: deviceWidth > 500 ? 100 : 80,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            onError: (object, stacktrace){
+                              if(mounted){
+                                setState(() {
+                                  showdefaultimage = true;
+                                });
+                              }
+                            },
+                            image: NetworkImage(
+                              userAccountController.bikermodel[0].profileImage!,
+                            ),
+                            fit: BoxFit.contain,
+                          )
                       ),
                     ),
-                    if(showdefaultimage || userAccountController.bikermodel[0].profileImage == null || userAccountController.bikermodel[0].profileImage =="")CircleAvatar(
-                      radius: deviceWidth > 500 ? 50 : 40,
-                      backgroundImage: AssetImage(
-                        "assets/images/biker_icon.png",
+                    if(showdefaultimage || userAccountController.bikermodel[0].profileImage == null || userAccountController.bikermodel[0].profileImage =="")Container(
+                      width: deviceWidth > 500 ? 100 : 80,
+                      height: deviceWidth > 500 ? 100 : 80,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          image: AssetImage(
+                            "assets/images/profile.png",
+                          ),
+                          fit: BoxFit.contain,
+                        )
                       ),
                     ),
                     Container(

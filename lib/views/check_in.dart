@@ -38,12 +38,25 @@ class _CheckInScreenState extends State<CheckInScreen> {
     newselectedImage = null;
   }
 
+
+  @override
+  void dispose() {
+    imageControlller.dispose();
+    super.dispose();
+  }
+
   getCamera(){
     imageControlller.getCamera().then((file){
-      setState(() {
-        isShowImage = true;
-        newselectedImage = file;
-      });
+      if(file == "" || file == null){
+        return ;
+      }else{
+        if(mounted){
+          setState(() {
+            isShowImage = true;
+            newselectedImage = file;
+          });
+        }
+      }
     });
 
   }

@@ -153,7 +153,7 @@ class _QRscreenState extends State<QRscreen> {
                   margin: EdgeInsets.symmetric(
                     vertical: 10,
                   ),
-                  child: QrImage(
+                  child: QrImageView(
                     data: "${orderDetailModel!.orderId}|${orderDetailModel!.cusId}",
                     version: QrVersions.auto,
                     size: 250,
@@ -161,7 +161,10 @@ class _QRscreenState extends State<QRscreen> {
                     // embeddedImageStyle: QrEmbeddedImageStyle(
                     //   size: Size(80, 80),
                     // ),
-                    foregroundColor: Theme.of(context).primaryColor,
+                    eyeStyle: QrEyeStyle(
+                      eyeShape: QrEyeShape.square,
+                      color: Theme.of(context).primaryColor,
+                    ),
                     backgroundColor: Theme.of(context).brightness == Brightness.dark ? UIConstant.bgDark : UIConstant.bgWhite,
                     errorStateBuilder: (cxt, err) {
                       return const Center(

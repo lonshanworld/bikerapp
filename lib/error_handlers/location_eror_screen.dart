@@ -36,7 +36,7 @@ class _LocationErrorScreenState extends State<LocationErrorScreen> with WidgetsB
     if(state == AppLifecycleState.resumed){
       if(widget.turnOn){
         LocationPermission permission = await Geolocator.checkPermission();
-        if(permission == LocationPermission.always){
+        if(permission != LocationPermission.deniedForever || permission != LocationPermission.denied || permission != LocationPermission.unableToDetermine){
           Get.offAllNamed(RouteHelper.getSplashPage());
         }
       }else{

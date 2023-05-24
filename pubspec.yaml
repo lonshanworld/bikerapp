@@ -46,7 +46,6 @@ dependencies:
   firebase_core: ^2.10.0
   sqflite: ^2.2.7
   url_launcher: ^6.1.10
-  image_picker: ^0.8.7+4
   google_maps_flutter: ^2.2.5
   geolocator: ^9.0.2
   geocoding: ^2.1.0
@@ -61,6 +60,7 @@ dependencies:
   pinput: ^2.2.31
   internet_connection_checker: ^1.0.0+1
   flutter_native_splash: ^2.2.19
+  image_picker: ^0.8.7+5
 
 dev_dependencies:
   flutter_test:

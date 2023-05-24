@@ -40,8 +40,10 @@ class _MapScreenState extends State<MapScreen> {
 
   final Completer<GoogleMapController> completer = Completer<GoogleMapController>();
   GoogleMapController? mapController;
-  late CameraPosition _initialcameraPosition;
+
   final LocationController _locationController = Get.put(LocationController());
+  double curLat = 0;
+  double curlong = 0;
   // final TextEditingController _textController = TextEditingController();
 
   // double bikerlat = 0;
@@ -195,10 +197,12 @@ class _MapScreenState extends State<MapScreen> {
 
     _locationController.getPermission().then((_)async{
       Position position = await _locationController.getcurLagLong();
-      _initialcameraPosition =CameraPosition(
-        target: LatLng(position.latitude, position.longitude),
-        zoom: 16,
-      );
+      // _initialcameraPosition =CameraPosition(
+      //   target: LatLng(position.latitude, position.longitude),
+      //   zoom: 16,
+      // );
+       curLat = position.latitude;
+       curlong = position.longitude;
       if(widget.isDropOff){
         _locationController.getLocationStream(widget.cusLatLng);
       }else{
@@ -212,9 +216,11 @@ class _MapScreenState extends State<MapScreen> {
   Future<void> initFunc() async{
     await getcustomMarker();
     await getPermission();
-
   }
 
+  Future<void> makemapcomplete(Completer<GoogleMapController> Cuscompleter)async{
+    mapController = await Cuscompleter.future;
+  }
 
   @override
   void initState() {
@@ -242,8 +248,8 @@ class _MapScreenState extends State<MapScreen> {
   @override
   Widget build(BuildContext context) {
 
-    final double deviceWidth = MediaQuery.of(context).size.width;
-    final double deviceHeight = MediaQuery.of(context).size.height;
+    // final double deviceWidth = MediaQuery.of(context).size.width;
+    // final double deviceHeight = MediaQuery.of(context).size.height;
     //
     // final Marker marker1 = Marker(
     //   markerId: MarkerId("biker"),
@@ -306,7 +312,10 @@ class _MapScreenState extends State<MapScreen> {
                   right: 0,
                   child: GoogleMap(
                     padding: EdgeInsets.all(20),
-                    initialCameraPosition:  _initialcameraPosition,
+                    initialCameraPosition:  CameraPosition(
+                      target: LatLng(curLat, curlong),
+                      zoom: 16,
+                    ),
                     zoomControlsEnabled: false,
                     compassEnabled: false,
                     mapToolbarEnabled: false,
@@ -314,46 +323,52 @@ class _MapScreenState extends State<MapScreen> {
                     myLocationEnabled: false,
                     // mapType: MapType.hybrid,
                     onMapCreated: (GoogleMapController controller)async{
-                      if(!completer.isCompleted){
-                        completer.complete(controller);
-                      }
+                      // if(!completer.isCompleted){
+                      //   completer.complete(controller);
+                      // }
+                      // print("...................map created............................");
+                      completer.complete(controller);
 
                       if(_locationController.streamPosition.isNotEmpty){
-                        print("Point is not empty------------------------------");
-                        mapController = await completer.future;
-                        if(widget.isDropOff){
-                          mapController?.animateCamera(
-                              CameraUpdate.newLatLngBounds(
-                                LatLngBounds(
-                                    southwest: LatLng(
-                                        _locationController.streamPosition[0].latitude <= widget.cusLatLng.latitude ? _locationController.streamPosition[0].latitude : widget.cusLatLng.latitude,
-                                        _locationController.streamPosition[0].longitude <= widget.cusLatLng.longitude ? _locationController.streamPosition[0].longitude : widget.cusLatLng.longitude
+                        // print("Point is not empty------------------------------");
+                        makemapcomplete(completer).then((_) {
+                          Future.delayed(Duration(milliseconds: 500),(){
+                            if(widget.isDropOff){
+                              mapController!.animateCamera(
+                                  CameraUpdate.newLatLngBounds(
+                                    LatLngBounds(
+                                        southwest: LatLng(
+                                            _locationController.streamPosition[0].latitude <= widget.cusLatLng.latitude ? _locationController.streamPosition[0].latitude : widget.cusLatLng.latitude,
+                                            _locationController.streamPosition[0].longitude <= widget.cusLatLng.longitude ? _locationController.streamPosition[0].longitude : widget.cusLatLng.longitude
+                                        ),
+                                        northeast: LatLng(
+                                            _locationController.streamPosition[0].latitude >= widget.cusLatLng.latitude ? _locationController.streamPosition[0].latitude : widget.cusLatLng.latitude,
+                                            _locationController.streamPosition[0].longitude >= widget.cusLatLng.longitude ? _locationController.streamPosition[0].longitude : widget.cusLatLng.longitude
+                                        )
                                     ),
-                                    northeast: LatLng(
-                                        _locationController.streamPosition[0].latitude >= widget.cusLatLng.latitude ? _locationController.streamPosition[0].latitude : widget.cusLatLng.latitude,
-                                        _locationController.streamPosition[0].longitude >= widget.cusLatLng.longitude ? _locationController.streamPosition[0].longitude : widget.cusLatLng.longitude
-                                    )
-                                ),
-                                80,
-                              )
-                          );
-                        }else{
-                          mapController?.animateCamera(
-                              CameraUpdate.newLatLngBounds(
-                                LatLngBounds(
-                                    southwest: LatLng(
-                                        _locationController.streamPosition[0].latitude <= widget.shopLatLng.latitude ? _locationController.streamPosition[0].latitude : widget.shopLatLng.latitude,
-                                        _locationController.streamPosition[0].longitude <= widget.shopLatLng.longitude ? _locationController.streamPosition[0].longitude : widget.shopLatLng.longitude
+                                    50,
+                                  )
+                              );
+                            }else{
+                              mapController!.animateCamera(
+                                  CameraUpdate.newLatLngBounds(
+                                    LatLngBounds(
+                                        southwest: LatLng(
+                                            _locationController.streamPosition[0].latitude <= widget.shopLatLng.latitude ? _locationController.streamPosition[0].latitude : widget.shopLatLng.latitude,
+                                            _locationController.streamPosition[0].longitude <= widget.shopLatLng.longitude ? _locationController.streamPosition[0].longitude : widget.shopLatLng.longitude
+                                        ),
+                                        northeast: LatLng(
+                                            _locationController.streamPosition[0].latitude >= widget.shopLatLng.latitude ? _locationController.streamPosition[0].latitude : widget.shopLatLng.latitude,
+                                            _locationController.streamPosition[0].longitude >= widget.shopLatLng.longitude ? _locationController.streamPosition[0].longitude : widget.shopLatLng.longitude
+                                        )
                                     ),
-                                    northeast: LatLng(
-                                        _locationController.streamPosition[0].latitude >= widget.shopLatLng.latitude ? _locationController.streamPosition[0].latitude : widget.shopLatLng.latitude,
-                                        _locationController.streamPosition[0].longitude >= widget.shopLatLng.longitude ? _locationController.streamPosition[0].longitude : widget.shopLatLng.longitude
-                                    )
-                                ),
-                                80,
-                              )
-                          );
-                        }
+                                    50,
+                                  )
+                              );
+                            }
+                          });
+                        });
+
                       }else{
                         print("Point is empty--------------------------------");
                       }
@@ -422,14 +437,18 @@ class _MapScreenState extends State<MapScreen> {
                   child:Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      IconButton(
+                      ElevatedButton(
                         onPressed: (){
                           Get.back();
                         },
-                        icon: Icon(
+                        style: ElevatedButton.styleFrom(
+                          shape: CircleBorder(),
+                          backgroundColor: UIConstant.pink,
+                          foregroundColor: UIConstant.orange,
+                        ),
+                        child: Icon(
                           Icons.arrow_back,
                           size: 24,
-                          color: UIConstant.orange,
                         ),
                       ),
                     ],

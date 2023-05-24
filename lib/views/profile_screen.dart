@@ -37,10 +37,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   getCamera(){
     cameraImageControlller.getCamera().then((file){
-      setState(() {
-        isShowImage = true;
-        newselectedImage = file;
-      });
+      if(file == "" || file == null){
+        return ;
+      }else{
+        if(mounted){
+          setState(() {
+            isShowImage = true;
+            newselectedImage = file;
+          });
+        }
+      }
     });
   }
 
@@ -81,7 +87,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
     nrcController.text = userAccountController.bikermodel[0].nrc ?? "";
     emailController.text = userAccountController.bikermodel[0].email ?? "";
     // checkImageError();
+  }
+
+  @override
+  void dispose() {
+    cameraImageControlller.dispose();
+    super.dispose();
   } // late String img64;
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -123,27 +138,51 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 children: [
                   Column(
                     children: [
-                      if(!isShowImage && !showdefaultimage && userAccountController.bikermodel[0].profileImage!=null && userAccountController.bikermodel[0].profileImage!="")CircleAvatar(
-                        radius: 60,
-                        onBackgroundImageError: (object, stacktrace){
-                          setState(() {
-                            showdefaultimage = true;
-                          });
-                        },
-                        backgroundImage: NetworkImage(
-                          userAccountController.bikermodel[0].profileImage!,
+                      if(!isShowImage && !showdefaultimage && userAccountController.bikermodel[0].profileImage!=null && userAccountController.bikermodel[0].profileImage!="")Container(
+                        width: 120,
+                        height: 120,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            onError: (object, stacktrace){
+                              print("This is in error image ... ${ userAccountController.bikermodel[0].profileImage}");
+                              if(mounted){
+                                setState(() {
+                                  showdefaultimage = true;
+                                });
+                              }
+                            },
+                            image: NetworkImage(
+                              userAccountController.bikermodel[0].profileImage!,
+                            ),
+                            fit: BoxFit.contain,
+                          )
                         ),
                       ),
-                      if(!isShowImage && (showdefaultimage || userAccountController.bikermodel[0].profileImage!=null || userAccountController.bikermodel[0].profileImage!=""))CircleAvatar(
-                        radius: 60,
-                        backgroundImage: AssetImage(
-                          "assets/images/biker_icon.png",
+                      if(!isShowImage && (showdefaultimage || userAccountController.bikermodel[0].profileImage!=null || userAccountController.bikermodel[0].profileImage!=""))Container(
+                        width: 120,
+                        height: 120,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            image: AssetImage(
+                              "assets/images/profile.png",
+                            ),
+                            fit: BoxFit.contain,
+                          ),
                         ),
                       ),
-                      if(isShowImage)CircleAvatar(
-                        radius: 60,
-                        backgroundImage: FileImage(
-                          newselectedImage!,
+                      if(isShowImage && newselectedImage != "" && newselectedImage != null)Container(
+                        width: 120,
+                        height: 120,
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                              image: FileImage(
+                                newselectedImage!,
+                              ),
+                              fit: BoxFit.cover,
+                            )
                         ),
                       ),
                       CustomButton(
@@ -244,7 +283,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 },
                 txtClr: Colors.white,
                 bgClr: UIConstant.orange,
-                txtsize: 14,
+                txtsize: 16,
                 rad: 10,
               ),
             ],

@@ -191,9 +191,11 @@ class _NotiWidgetState extends State<NotiWidget> with SingleTickerProviderStateM
                   turns: _animation,
                   child: IconButton(
                     onPressed: (){
-                      setState(() {
-                        showDetail = !showDetail;
-                      });
+                      if(mounted){
+                        setState(() {
+                          showDetail = !showDetail;
+                        });
+                      }
                       if(showDetail){
                         _animationController.forward();
                       }else{
@@ -246,9 +248,11 @@ class _NotiWidgetState extends State<NotiWidget> with SingleTickerProviderStateM
                     ),
                     image: DecorationImage(
                       onError: (Object, stackTrace){
-                        setState(() {
-                          showdefaultimage = true;
-                        });
+                        if(mounted){
+                          setState(() {
+                            showdefaultimage = true;
+                          });
+                        }
                       },
                         image: NetworkImage(
                           widget.photo,

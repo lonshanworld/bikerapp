@@ -73,8 +73,8 @@ class LocationController extends GetxController{
     _permission = await Geolocator.checkPermission();
     print(_permission);
     if (_permission == LocationPermission.denied || _permission == LocationPermission.deniedForever || _permission == LocationPermission.unableToDetermine) {
-      _permission == await Geolocator.requestPermission();
-      if(_permission == LocationPermission.denied || _permission == LocationPermission.deniedForever || _permission == LocationPermission.unableToDetermine){
+      LocationPermission finalpermission = await Geolocator.requestPermission();
+      if(finalpermission == LocationPermission.denied || finalpermission == LocationPermission.deniedForever || finalpermission == LocationPermission.unableToDetermine){
         Get.toNamed(RouteHelper.getLocationErrorPage(turnOn: true));
         throw Exception("Location Permission must be allowed.");
       }
@@ -185,18 +185,20 @@ class LocationController extends GetxController{
   }
 
 
-  Future<List<LatLng>> getpolyPointList(LatLng shoplatlang, LatLng cuslatlang) async{
+  Future<List<LatLng>> getpolyPointList(LatLng firstlatlong, LatLng secondlatlong) async{
     PolylinePoints _polypoints = PolylinePoints();
     try{
       PolylineResult _result = await _polypoints.getRouteBetweenCoordinates(
         Apikey,
-        PointLatLng(shoplatlang.latitude, shoplatlang.longitude),
-        PointLatLng(cuslatlang.latitude, cuslatlang.longitude),
-        travelMode: TravelMode.transit,
+        PointLatLng(firstlatlong.latitude, firstlatlong.longitude),
+        PointLatLng(secondlatlong.latitude, secondlatlong.longitude),
+        travelMode: TravelMode.walking,
       );
       List<LatLng> _listpoint = [];
+      print("This is in polypoint list start*********************************** length is ${_result.points.length}");
       for (var element in _result.points) {
         _listpoint.add(LatLng(element.latitude, element.longitude));
+        print("This is in polypoint list ${element.latitude} ${element.longitude}------------------------------------------");
       }
       polypointStream.assignAll(_listpoint.map((e) => e).toList());
       return _listpoint;
@@ -254,13 +256,17 @@ class LocationController extends GetxController{
       print(event);
       streamPosition.clear();
       streamPosition.add(event);
+
       await getplacemark(event.latitude, event.longitude);
+      print("This is inside location stream-.................................");
       await getpolyPointList(LatLng(event.latitude, event.longitude), randomlatlng);
       // print("This is in controller");
     });
   }
 
   void stopLocationStream()async{
-    await locationstream!.cancel();
+    if(locationstream != null){
+      await locationstream!.cancel();
+    }
   }
 }

@@ -38,7 +38,10 @@ class _DropOffScreenState extends State<DropOffScreen> {
 
   final Completer<GoogleMapController> _controller = Completer<GoogleMapController>();
   GoogleMapController? mapController;
-  late CameraPosition _initialcameraPosition;
+  // CameraPosition _initialcameraPosition = CameraPosition(
+  //     target: LatLng(0, 0),
+  //     zoom: 16
+  // );
   final OrderController orderController = Get.find<OrderController>();
   final LocationController _locationController = Get.put(LocationController());
   final UserAccountController userAccountController = Get.find<UserAccountController>();
@@ -125,10 +128,6 @@ class _DropOffScreenState extends State<DropOffScreen> {
       curlat = _location.latitude;
       curlong = _location.longitude;
       curplacename = "${txtplace.thoroughfare}, ${txtplace.subAdministrativeArea}, ${txtplace.administrativeArea}";
-      _initialcameraPosition = CameraPosition(
-          target: LatLng(curlat, curlong),
-          zoom: 16
-      );
       await getPolypoints();
     });
   }
@@ -178,13 +177,19 @@ class _DropOffScreenState extends State<DropOffScreen> {
 
   }
 
+  Future<void>makemapcomplete(Completer<GoogleMapController> Cuscompleter)async{
+    mapController = await Cuscompleter.future;
+  }
+
   @override
   void initState() {
     super.initState();
     assignOrder().then((_){
       if(mounted){
-        setState(() {
-          isloading = false;
+        Future.delayed(Duration(seconds: 3),(){
+          setState(() {
+            isloading = false;
+          });
         });
       }
     });
@@ -194,6 +199,7 @@ class _DropOffScreenState extends State<DropOffScreen> {
   @override
   void dispose() {
     mapController?.dispose();
+    _locationController.stopLocationStream();
     super.dispose();
   }
 
@@ -204,7 +210,7 @@ class _DropOffScreenState extends State<DropOffScreen> {
     final double deviceHeight = MediaQuery.of(context).size.height;
 
     late Marker marker1 = Marker(
-      markerId: MarkerId("1"),
+      markerId: MarkerId("biker"),
       position: LatLng(curlat,curlong),
       draggable: false,
       icon:bikermarkerIcon,
@@ -332,7 +338,10 @@ class _DropOffScreenState extends State<DropOffScreen> {
                       Radius.circular(10),
                     ),
                     child: GoogleMap(
-                      initialCameraPosition: _initialcameraPosition,
+                      initialCameraPosition:  CameraPosition(
+                          target: LatLng(curlat, curlong),
+                          zoom: 16
+                      ),
                       zoomControlsEnabled: false,
                       compassEnabled: false,
                       mapToolbarEnabled: false,
@@ -359,27 +368,32 @@ class _DropOffScreenState extends State<DropOffScreen> {
                         //     )
                         // );
                         if(!_controller.isCompleted){
-                          _controller.complete(controller);
-                        }
 
-                        mapController = await _controller.future;
-                        print("Completer value ${_controller.isCompleted}");
-                        print(_controller.future);
-                        mapController!.animateCamera(
-                            CameraUpdate.newLatLngBounds(
-                              LatLngBounds(
-                                  southwest: LatLng(
-                                    curlat <= orderDetailModel!.cuslat!.toDouble() ? curlat : orderDetailModel!.cuslat!.toDouble(),
-                                    curlong <= orderDetailModel!.cuslong!.toDouble() ? curlong : orderDetailModel!.cuslong!.toDouble(),
+                        }
+                        _controller.complete(controller);
+
+                        makemapcomplete(_controller).then((_){
+                          Future.delayed(Duration(milliseconds: 500),(){
+                            mapController!.animateCamera(
+                                CameraUpdate.newLatLngBounds(
+                                  LatLngBounds(
+                                      southwest: LatLng(
+                                        curlat <= orderDetailModel!.cuslat!.toDouble() ? curlat : orderDetailModel!.cuslat!.toDouble(),
+                                        curlong <= orderDetailModel!.cuslong!.toDouble() ? curlong : orderDetailModel!.cuslong!.toDouble(),
+                                      ),
+                                      northeast: LatLng(
+                                        curlat >= orderDetailModel!.cuslat!.toDouble() ? curlat : orderDetailModel!.cuslat!.toDouble(),
+                                        curlong >= orderDetailModel!.cuslong!.toDouble() ? curlong : orderDetailModel!.cuslong!.toDouble(),
+                                      )
                                   ),
-                                  northeast: LatLng(
-                                    curlat >= orderDetailModel!.cuslat!.toDouble() ? curlat : orderDetailModel!.cuslat!.toDouble(),
-                                    curlong >= orderDetailModel!.cuslong!.toDouble() ? curlong : orderDetailModel!.cuslong!.toDouble(),
-                                  )
-                              ),
-                              80,
-                            )
-                        );
+                                  80,
+                                )
+                            );
+                          });
+                        });
+                        // print("Completer value ${_controller.isCompleted}");
+                        // print(_controller.future);
+
 
                       },
                       markers: <Marker>{

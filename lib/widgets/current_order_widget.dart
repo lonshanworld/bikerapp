@@ -193,8 +193,18 @@ class _CurrentOrderWidgetState extends State<CurrentOrderWidget> {
                       ),
                       image: DecorationImage(
                         onError: (Oobject,stacktrace){
-                          setState(() {
-                            showdefaultimage = true;
+                          // WidgetsBinding.instance.addPostFrameCallback((_) {
+                          //   print("this is inside addpostframecallback.......................");
+                          //   setState(() {
+                          //     showdefaultimage = true;
+                          //   });
+                          // });
+                          Future.delayed(Duration(milliseconds: 500),(){
+                            if(mounted){
+                              setState(() {
+                                showdefaultimage = !showdefaultimage;
+                              });
+                            }
                           });
                         },
                           image: NetworkImage(
