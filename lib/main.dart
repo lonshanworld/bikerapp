@@ -193,6 +193,60 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    listener = InternetConnectionChecker().onStatusChange.listen((status) {
+      switch (status) {
+        case InternetConnectionStatus.connected:
+          Get.back();
+          print('Data connection is available.');
+          // WidgetsBinding.instance.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
+          break;
+        case InternetConnectionStatus.disconnected:
+          print('You are disconnected from the internet.');
+          showDialog(barrierDismissible: false,context: Get.context!, builder: (ctx){
+            return WillPopScope(
+              onWillPop: ()async=> false,
+              child: AlertDialog(
+                titlePadding: EdgeInsets.only(
+                  top: 20,
+                ),
+                contentPadding: EdgeInsets.all(0),
+                title: Text(
+                  'No Internet Connection',
+                  style: UIConstant.title.copyWith(
+                    color: UIConstant.orange,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                content: Container(
+                  width: Get.context!.width > 600 ? 300 : 250,
+                  height: Get.context!.width > 600 ? 300 : 250,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(30)),
+                      image: DecorationImage(
+                        image: AssetImage(
+                          "assets/images/noconnection.gif",
+                        ),
+                        fit: BoxFit.cover,
+                      )
+                  ),
+                ),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    side: BorderSide(
+                      color: UIConstant.orange,
+                    )
+                ),
+                backgroundColor: UIConstant.bgWhite,
+              ),
+            );
+          });
+
+          // Future.delayed(Duration(seconds: 3),(){
+          //   WidgetsBinding.instance.handleAppLifecycleStateChanged(AppLifecycleState.paused);
+          // });
+          break;
+      }
+    });
     // listener = InternetConnectionChecker().onStatusChange.listen((status) {
     //   switch (status) {
     //     case InternetConnectionStatus.connected:
@@ -266,56 +320,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
 
     // final deviceWidth = MediaQuery.of(context).size.width;
 
-    listener = InternetConnectionChecker().onStatusChange.listen((status) {
-      switch (status) {
-        case InternetConnectionStatus.connected:
-          Get.back();
-          print('Data connection is available.');
-          // WidgetsBinding.instance.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
-          break;
-        case InternetConnectionStatus.disconnected:
-          print('You are disconnected from the internet.');
-          showDialog(barrierDismissible: false,context: Get.context!, builder: (ctx){
-            return WillPopScope(
-              onWillPop: ()async=> false,
-              child: AlertDialog(
-                title: Text(
-                  'No Internet Connection',
-                  style: UIConstant.title.copyWith(
-                    color: UIConstant.orange,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                content: Container(
-                  width: Get.context!.width > 600 ? 300 : 250,
-                  height: Get.context!.width > 600 ? 300 : 250,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(30)),
-                      image: DecorationImage(
-                        image: AssetImage(
-                          "assets/images/noconnection.gif",
-                        ),
-                        fit: BoxFit.cover,
-                      )
-                  ),
-                ),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0),
-                    side: BorderSide(
-                      color: UIConstant.orange,
-                    )
-                ),
-                backgroundColor: Theme.of(Get.context!).brightness == Brightness.dark ? UIConstant.bgDark : UIConstant.bgWhite,
-              ),
-            );
-          });
 
-          // Future.delayed(Duration(seconds: 3),(){
-          //   WidgetsBinding.instance.handleAppLifecycleStateChanged(AppLifecycleState.paused);
-          // });
-          break;
-      }
-    });
 
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,

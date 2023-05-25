@@ -103,7 +103,7 @@ class LanguageKeyStrings extends Translations{
       "deliverycharges" : "Delivery Charges",
       "vat" : "VAT",
       // "paymentoptions" : "Payment Options",
-      "useEsignandconfirmorder": "Please use E-sign and confirm order.",
+      "useEsignandconfirmorder": "Please use E-sign and confirm order",
       "cancel": "Cancel",
       "transfertoother" : "Transfer to Others",
       "ref": "Ref-No",
