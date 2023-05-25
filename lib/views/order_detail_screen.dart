@@ -82,11 +82,12 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
             size: 24,
           ),
           onPressed: (){
-            if(widget.hasButton){
-              Get.offAllNamed(RouteHelper.getHomePage());
-            }else{
-              Get.back();
-            }
+            // if(widget.hasButton){
+            //   Get.offAllNamed(RouteHelper.getHomePage());
+            // }else{
+            //   Get.back();
+            // }
+            Get.back();
           },
         ),
       ),
