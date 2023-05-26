@@ -490,8 +490,8 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
                                 body:  Stack(
                                   children: [
                                     Positioned(
-                                      top: 0,
-                                      bottom: 70,
+                                      top: -20,
+                                      bottom: 60,
                                       left: 0,
                                       right: 0,
                                       child: Container(
@@ -527,9 +527,10 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
                                 ),
                                 bottomSheet: Container(
                                   color: Theme.of(context).brightness == Brightness.light ? UIConstant.bgDark : UIConstant.bgWhite,
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 20,
-                                    vertical: 10,
+                                  padding: EdgeInsets.only(
+                                    left: 20,
+                                    right: 20,
+                                    bottom: 10,
                                   ),
                                   child: Row(
                                     children: [

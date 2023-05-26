@@ -18,8 +18,8 @@ class LoadingWidget extends StatelessWidget {
         height: deviceWidth > 600 ? 300 : 250,
         decoration: BoxDecoration(
           border: Border.all(
-            color: UIConstant.orange,
-            width: 1,
+            color: Theme.of(context).brightness == Brightness.dark ? UIConstant.orange : Colors.transparent,
+            width: 1 ,
           ),
           borderRadius: BorderRadius.all(Radius.circular(30)),
           image: DecorationImage(
