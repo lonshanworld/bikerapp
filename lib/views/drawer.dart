@@ -312,7 +312,7 @@ class _DrawerPageState extends State<DrawerPage> {
                 },
               ),
               customListTile(
-                Icons.history,
+                Icons.fastfood_outlined,
                 "${"order".tr} ${"history".tr}",
                 () {
                   Get.toNamed(RouteHelper.getOrderHistoryPage());
@@ -354,7 +354,7 @@ class _DrawerPageState extends State<DrawerPage> {
                 },
               ),
               customListTile(
-                Icons.notification_important_outlined,
+                Icons.notifications_active_outlined,
                 "Notifications",
                 () {
                   Get.toNamed(RouteHelper.getNotiPage());
