@@ -47,14 +47,14 @@ class OrderDetailWidget extends StatelessWidget {
               Text(
                 "${orderItem.itemName}  x  ${orderItem.qty}",
                 style: TextStyle(
-                  fontSize: 12,
+                  fontSize: 14,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               Text(
                 "${orderItem.onlinePrice} ${"mmk".tr}",
                 style: TextStyle(
-                  fontSize: 12,
+                  fontSize: 14,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -68,7 +68,7 @@ class OrderDetailWidget extends StatelessWidget {
               for(OrderChoice _orderChoice in orderItem.orderChoices!) Text(
                 "${_orderChoice.citemName}, ",
                 style: TextStyle(
-                  fontSize: 10,
+                  fontSize: 14,
                   color: Colors.black54,
                 ),
               ),

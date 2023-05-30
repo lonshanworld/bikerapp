@@ -293,419 +293,554 @@ class _MapScreenState extends State<MapScreen> {
     //   startCap: Cap.roundCap,
     // );
 
-    return SafeArea(
-      child: Scaffold(
-          body: isloading
-              ?
-          LoadingWidget()
-              :
-          // widget.isDropOff
-          //     ?
-          Obx(() {
-            return Stack(
-              children: [
-                Positioned(
-                  top: 0,
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  child: GoogleMap(
-                    padding: EdgeInsets.all(20),
-                    initialCameraPosition:  CameraPosition(
-                      target: LatLng(curLat, curlong),
-                      zoom: 16,
-                    ),
-                    mapType: MapType.normal,
-                    zoomControlsEnabled: false,
-                    compassEnabled: false,
-                    mapToolbarEnabled: false,
-                    myLocationButtonEnabled: false,
-                    myLocationEnabled: false,
-                    // mapType: MapType.hybrid,
-                    onMapCreated: (GoogleMapController controller)async{
-                      // if(!completer.isCompleted){
-                      //   completer.complete(controller);
-                      // }
-                      // print("...................map created............................");
-                      completer.complete(controller);
-
-                      if(_locationController.streamPosition.isNotEmpty){
-                        // print("Point is not empty------------------------------");
-                        makemapcomplete(completer).then((_) {
-                          Future.delayed(Duration(seconds: 1),(){
-                            if(widget.isDropOff){
-                              mapController!.animateCamera(
-                                  CameraUpdate.newLatLngBounds(
-                                    LatLngBounds(
-                                        southwest: LatLng(
-                                            _locationController.streamPosition[0].latitude <= widget.cusLatLng.latitude ? _locationController.streamPosition[0].latitude : widget.cusLatLng.latitude,
-                                            _locationController.streamPosition[0].longitude <= widget.cusLatLng.longitude ? _locationController.streamPosition[0].longitude : widget.cusLatLng.longitude
-                                        ),
-                                        northeast: LatLng(
-                                            _locationController.streamPosition[0].latitude >= widget.cusLatLng.latitude ? _locationController.streamPosition[0].latitude : widget.cusLatLng.latitude,
-                                            _locationController.streamPosition[0].longitude >= widget.cusLatLng.longitude ? _locationController.streamPosition[0].longitude : widget.cusLatLng.longitude
-                                        )
-                                    ),
-                                    50,
-                                  )
-                              );
-                            }else{
-                              mapController!.animateCamera(
-                                  CameraUpdate.newLatLngBounds(
-                                    LatLngBounds(
-                                        southwest: LatLng(
-                                            _locationController.streamPosition[0].latitude <= widget.shopLatLng.latitude ? _locationController.streamPosition[0].latitude : widget.shopLatLng.latitude,
-                                            _locationController.streamPosition[0].longitude <= widget.shopLatLng.longitude ? _locationController.streamPosition[0].longitude : widget.shopLatLng.longitude
-                                        ),
-                                        northeast: LatLng(
-                                            _locationController.streamPosition[0].latitude >= widget.shopLatLng.latitude ? _locationController.streamPosition[0].latitude : widget.shopLatLng.latitude,
-                                            _locationController.streamPosition[0].longitude >= widget.shopLatLng.longitude ? _locationController.streamPosition[0].longitude : widget.shopLatLng.longitude
-                                        )
-                                    ),
-                                    50,
-                                  )
-                              );
-                            }
-                          });
-                        });
-
-                      }else{
-                        print("Point is empty--------------------------------");
-                      }
-                    },
-                    markers: <Marker>{
-                      Marker(
-                        markerId: MarkerId("biker"),
-                        position: LatLng(_locationController.streamPosition[0].latitude,_locationController.streamPosition[0].longitude),
-                        draggable: true,
-                        icon: bikermarkerIcon,
-                        infoWindow: InfoWindow(
-                          title: _locationController.bikerplaceName.value,
-                        ),
-                        // onDragEnd: (value){
-                        //   assignplacevalue(value);
-                        // },
-                      ),
-                      shopMarker,
-                      cusMarker,
-                    },
-                    polylines: <Polyline>{
-                      Polyline(
-                        polylineId: PolylineId(_locationController.bikerplaceName.value),
-                        color: Colors.grey,
-                        points: _locationController.polypointStream,
-                        width: 6,
-                        geodesic: true,
-                        endCap: Cap.roundCap,
-                        startCap: Cap.roundCap,
-                      ),
-                    },
-                  ),
-                ),
-                Positioned(
-                  bottom: 30,
-                  left: 20,
-                  right: 20,
-                  child: Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 10,
-                    ),
-                    decoration: BoxDecoration(
-                        color: UIConstant.pink,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10),
-                        ),
-                        border: Border.all(
-                          style: BorderStyle.solid,
-                          color: UIConstant.orange,
-                          width: 1,
-                        )
-                    ),
-                    child: Text(
-                      _locationController.bikerplaceName.value,
-                      style: UIConstant.normal.copyWith(
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                ),
-                Positioned(
-                  top: 45,
-                  left: 10,
-                  right: 10,
-                  child:Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      ElevatedButton(
-                        onPressed: (){
-                          Get.back();
-                        },
-                        style: ElevatedButton.styleFrom(
-                          shape: CircleBorder(),
-                          backgroundColor: UIConstant.pink,
-                          foregroundColor: UIConstant.orange,
-                        ),
-                        child: Icon(
-                          Icons.arrow_back,
-                          size: 24,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            );
-          })
-          //     :
-          // Stack(
-          //   children: [
-          //     Positioned(
-          //       top: 0,
-          //       bottom: 0,
-          //       left: 0,
-          //       right: 0,
-          //       child: GoogleMap(
-          //         padding: EdgeInsets.all(20),
-          //         initialCameraPosition:  _initialcameraPosition,
-          //         zoomControlsEnabled: false,
-          //         // mapType: MapType.hybrid,
-          //         onMapCreated: (GoogleMapController controller)async{
-          //           if(!completer.isCompleted){
-          //             completer.complete(controller);
-          //           }
-          //           mapController = await completer.future;
-          //           mapController?.animateCamera(
-          //               CameraUpdate.newLatLngBounds(
-          //                 LatLngBounds(
-          //                     southwest: LatLng(
-          //                         widget.shopLatLng.latitude <= widget.cusLatLng.latitude ? widget.shopLatLng.latitude : widget.cusLatLng.latitude,
-          //                         widget.shopLatLng.longitude <= widget.cusLatLng.longitude ? widget.shopLatLng.longitude : widget.cusLatLng.longitude
-          //                     ),
-          //                     northeast: LatLng(
-          //                         widget.shopLatLng.latitude >= widget.cusLatLng.latitude ? widget.shopLatLng.latitude : widget.cusLatLng.latitude,
-          //                         widget.shopLatLng.longitude >= widget.cusLatLng.longitude ? widget.shopLatLng.longitude : widget.cusLatLng.longitude
-          //                     )
-          //                 ),
-          //                 50,
-          //               )
-          //           );
-          //         },
-          //         onTap: (value){
-          //           assignplacevalue(value);
-          //         },
-          //         markers: <Marker>{
-          //           Marker(
-          //             markerId: MarkerId("biker"),
-          //             position: LatLng(lat,long),
-          //             draggable: true,
-          //             infoWindow: InfoWindow(
-          //               title: placename,
-          //             ),
-          //             onDragEnd: (value){
-          //               assignplacevalue(value);
-          //             },
-          //           ),
-          //           shopMarker,
-          //           cusMarker,
-          //         },
-          //         polylines: <Polyline>{
-          //           Polyline(
-          //             polylineId: PolylineId(placename),
-          //             color: widget.isDropOff ? Colors.purpleAccent : UIConstant.orange,
-          //             points: polypoints,
-          //             width: 4,
-          //             geodesic: true,
-          //             endCap: Cap.roundCap,
-          //             startCap: Cap.roundCap,
-          //           ),
-          //         },
-          //       ),
-          //     ),
-          //     Positioned(
-          //       bottom: 30,
-          //       left: 20,
-          //       right: 20,
-          //       child: Container(
-          //         padding: EdgeInsets.symmetric(
-          //           horizontal: 20,
-          //           vertical: 10,
-          //         ),
-          //         decoration: BoxDecoration(
-          //             color: UIConstant.pink,
-          //             borderRadius: BorderRadius.all(
-          //               Radius.circular(10),
-          //             ),
-          //             border: Border.all(
-          //               style: BorderStyle.solid,
-          //               color: UIConstant.orange,
-          //               width: 1,
-          //             )
-          //         ),
-          //         child: Text(
-          //           placename,
-          //           style: TextStyle(
-          //             color: Colors.black,
-          //           ),
-          //         ),
-          //       ),
-          //     ),
-          //     Positioned(
-          //       top: 45,
-          //       left: 10,
-          //       right: 20,
-          //       child:Row(
-          //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //         children: [
-          //           IconButton(
-          //             onPressed: (){
-          //               Get.back();
-          //             },
-          //             icon: Icon(
-          //               Icons.arrow_back_ios,
-          //               size: 28,
-          //               color: UIConstant.orange,
-          //             ),
-          //           ),
-          //           Container(
-          //             decoration: BoxDecoration(
-          //                 color: Colors.white,
-          //                 borderRadius: BorderRadius.all(
-          //                   Radius.circular(10),
-          //                 ),
-          //                 boxShadow: [
-          //                   BoxShadow(
-          //                     color: Color(0xffDDDDDD),
-          //                     blurRadius: 6.0,
-          //                     spreadRadius: 2.0,
-          //                     offset: Offset(0.0, 0.0),
-          //                   )
-          //                 ]
-          //             ),
-          //             child: Row(
-          //               children: [
-          //                 Container(
-          //                   padding: EdgeInsets.symmetric(
-          //                     horizontal: 10,
-          //                     vertical: 0,
-          //                   ),
-          //                   width : (deviceWidth / 100) * 62,
-          //                   child: TextField(
-          //                     controller: _textController,
-          //                     decoration: InputDecoration(
-          //                       border: InputBorder.none,
-          //                       hintText: "Enter Address...",
-          //                       hintStyle: UIConstant.normal.copyWith(
-          //                         color: Colors.grey,
-          //                       ),
-          //                     ),
-          //                     style: UIConstant.normal.copyWith(
-          //                       color: Colors.black,
-          //                     ),
-          //                     onChanged: (value){
-          //                       if(value != ""){
-          //                         _locationController.getListofplaces(value).then((value) {
-          //                           setState(() {
-          //                             _showbox = true;
-          //                             placeList = value;
-          //                           });
-          //                         });
-          //                       }else{
-          //                         setState(() {
-          //                           _showbox = false;
-          //                         });
-          //                       }
-          //                     },
-          //                   ),
-          //                 ),
-          //                 IconButton(
-          //                   onPressed: (){
-          //                     setState(() {
-          //                       _textController.clear();
-          //                     });
-          //                   },
-          //                   icon: Icon(Icons.close),
-          //                 ),
-          //               ],
-          //             ),
-          //           ),
-          //         ],
-          //       ),
-          //     ),
-          //     if(_showbox) Positioned(
-          //       top: 90,
-          //       left: 40,
-          //       right: 40,
-          //       bottom: (deviceHeight/100) * 60,
-          //       child: ListView.builder(
-          //         itemCount: placeList.length,
-          //         itemBuilder: (ctx, index){
-          //           return Material(
-          //             color: Colors.white,
-          //             shape: Border(
-          //               bottom: BorderSide(
-          //                 width: 1,
-          //                 color: Colors.grey.shade300,
-          //               ),
-          //             ),
-          //             child: InkWell(
-          //               onTap: (){
-          //                 _locationController.getplaceDetailfromId(placeList[index].placeId).then((value) {
-          //                   mapController?.animateCamera(
-          //                       CameraUpdate.newCameraPosition(
-          //                         CameraPosition(target: value, zoom: 17),
-          //                       )
-          //                   );
-          //                   assignplacevalue(value);
-          //                   setState(() {
-          //                     _textController.text = placeList[index].placename;
-          //                     _showbox = false;
-          //                   });
-          //                 });
-          //               },
-          //               child: Padding(
-          //                 padding: EdgeInsets.symmetric(
-          //                   vertical: 8,
-          //                   horizontal: 10,
-          //                 ),
-          //                 child: Text(
-          //                   placeList[index].placename,
-          //                   style: TextStyle(
-          //                     color: Colors.black,
-          //                   ),
-          //                 ),
-          //               ),
-          //             ),
-          //           );
-          //         },
-          //       ),
-          //     ),
-          //     Positioned(
-          //       bottom: 100,
-          //       right: 20,
-          //       child: ElevatedButton(
-          //         onPressed: () {
-          //           getcurlocation();
-          //         },
-          //         style: ElevatedButton.styleFrom(
-          //           backgroundColor: UIConstant.pink,
-          //           shape: CircleBorder(
-          //             side: BorderSide(
-          //               color: UIConstant.orange,
-          //             ),
-          //           ),
-          //           padding: EdgeInsets.all(10),
-          //         ),
-          //         child: Icon(
-          //           Icons.gps_fixed_outlined,
-          //           size: 28,
-          //           color: Colors.black,
-          //         ),
-          //       ),
-          //     ),
-          //   ],
-          // )
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Map"),
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            size: 24,
+          ),
+          onPressed: () {
+            // Get.offAllNamed("/home");
+            Get.back();
+          },
+        ),
       ),
+      body: isloading
+          ?
+      LoadingWidget()
+          :
+      Obx(() {
+        return GoogleMap(
+          padding: EdgeInsets.all(20),
+          initialCameraPosition:  CameraPosition(
+            target: LatLng(curLat, curlong),
+            zoom: 16,
+          ),
+          mapType: MapType.normal,
+          zoomControlsEnabled: false,
+          compassEnabled: false,
+          mapToolbarEnabled: false,
+          myLocationButtonEnabled: false,
+          myLocationEnabled: false,
+          // mapType: MapType.hybrid,
+          onMapCreated: (GoogleMapController controller)async{
+            // if(!completer.isCompleted){
+            //   completer.complete(controller);
+            // }
+            // print("...................map created............................");
+            completer.complete(controller);
+
+            if(_locationController.streamPosition.isNotEmpty){
+              // print("Point is not empty------------------------------");
+              makemapcomplete(completer).then((_) {
+                Future.delayed(Duration(seconds: 1),(){
+                  if(widget.isDropOff){
+                    mapController!.animateCamera(
+                        CameraUpdate.newLatLngBounds(
+                          LatLngBounds(
+                              southwest: LatLng(
+                                  _locationController.streamPosition[0].latitude <= widget.cusLatLng.latitude ? _locationController.streamPosition[0].latitude : widget.cusLatLng.latitude,
+                                  _locationController.streamPosition[0].longitude <= widget.cusLatLng.longitude ? _locationController.streamPosition[0].longitude : widget.cusLatLng.longitude
+                              ),
+                              northeast: LatLng(
+                                  _locationController.streamPosition[0].latitude >= widget.cusLatLng.latitude ? _locationController.streamPosition[0].latitude : widget.cusLatLng.latitude,
+                                  _locationController.streamPosition[0].longitude >= widget.cusLatLng.longitude ? _locationController.streamPosition[0].longitude : widget.cusLatLng.longitude
+                              )
+                          ),
+                          50,
+                        )
+                    );
+                  }else{
+                    mapController!.animateCamera(
+                        CameraUpdate.newLatLngBounds(
+                          LatLngBounds(
+                              southwest: LatLng(
+                                  _locationController.streamPosition[0].latitude <= widget.shopLatLng.latitude ? _locationController.streamPosition[0].latitude : widget.shopLatLng.latitude,
+                                  _locationController.streamPosition[0].longitude <= widget.shopLatLng.longitude ? _locationController.streamPosition[0].longitude : widget.shopLatLng.longitude
+                              ),
+                              northeast: LatLng(
+                                  _locationController.streamPosition[0].latitude >= widget.shopLatLng.latitude ? _locationController.streamPosition[0].latitude : widget.shopLatLng.latitude,
+                                  _locationController.streamPosition[0].longitude >= widget.shopLatLng.longitude ? _locationController.streamPosition[0].longitude : widget.shopLatLng.longitude
+                              )
+                          ),
+                          50,
+                        )
+                    );
+                  }
+                });
+              });
+
+            }else{
+              print("Point is empty--------------------------------");
+            }
+          },
+          markers: <Marker>{
+            Marker(
+              markerId: MarkerId("biker"),
+              position: LatLng(_locationController.streamPosition[0].latitude,_locationController.streamPosition[0].longitude),
+              draggable: true,
+              icon: bikermarkerIcon,
+              infoWindow: InfoWindow(
+                title: _locationController.bikerplaceName.value,
+              ),
+              // onDragEnd: (value){
+              //   assignplacevalue(value);
+              // },
+            ),
+            shopMarker,
+            cusMarker,
+          },
+          polylines: <Polyline>{
+            Polyline(
+              polylineId: PolylineId(_locationController.bikerplaceName.value),
+              color: Colors.grey,
+              points: _locationController.polypointStream,
+              width: 6,
+              geodesic: true,
+              endCap: Cap.roundCap,
+              startCap: Cap.roundCap,
+            ),
+          },
+        );
+      }),
+      bottomSheet: Container(
+        padding: EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 10,
+        ),
+        margin: EdgeInsets.only(
+          bottom: 20,
+        ),
+        decoration: BoxDecoration(
+            color: UIConstant.pink,
+            borderRadius: BorderRadius.all(
+              Radius.circular(10),
+            ),
+            border: Border.all(
+              style: BorderStyle.solid,
+              color: UIConstant.orange,
+              width: 1,
+            )
+        ),
+        child: Text(
+          _locationController.bikerplaceName.value,
+          style: UIConstant.normal.copyWith(
+            color: Colors.black,
+          ),
+        ),
+      ),
+      // body: isloading
+      //     ?
+      // LoadingWidget()
+      //     :
+      // // widget.isDropOff
+      // //     ?
+      // Obx(() {
+      //   return Stack(
+      //     children: [
+      //       Positioned(
+      //         top: 0,
+      //         bottom: 0,
+      //         left: 0,
+      //         right: 0,
+      //         child: GoogleMap(
+      //           padding: EdgeInsets.all(20),
+      //           initialCameraPosition:  CameraPosition(
+      //             target: LatLng(curLat, curlong),
+      //             zoom: 16,
+      //           ),
+      //           mapType: MapType.normal,
+      //           zoomControlsEnabled: false,
+      //           compassEnabled: false,
+      //           mapToolbarEnabled: false,
+      //           myLocationButtonEnabled: false,
+      //           myLocationEnabled: false,
+      //           // mapType: MapType.hybrid,
+      //           onMapCreated: (GoogleMapController controller)async{
+      //             // if(!completer.isCompleted){
+      //             //   completer.complete(controller);
+      //             // }
+      //             // print("...................map created............................");
+      //             completer.complete(controller);
+      //
+      //             if(_locationController.streamPosition.isNotEmpty){
+      //               // print("Point is not empty------------------------------");
+      //               makemapcomplete(completer).then((_) {
+      //                 Future.delayed(Duration(seconds: 1),(){
+      //                   if(widget.isDropOff){
+      //                     mapController!.animateCamera(
+      //                         CameraUpdate.newLatLngBounds(
+      //                           LatLngBounds(
+      //                               southwest: LatLng(
+      //                                   _locationController.streamPosition[0].latitude <= widget.cusLatLng.latitude ? _locationController.streamPosition[0].latitude : widget.cusLatLng.latitude,
+      //                                   _locationController.streamPosition[0].longitude <= widget.cusLatLng.longitude ? _locationController.streamPosition[0].longitude : widget.cusLatLng.longitude
+      //                               ),
+      //                               northeast: LatLng(
+      //                                   _locationController.streamPosition[0].latitude >= widget.cusLatLng.latitude ? _locationController.streamPosition[0].latitude : widget.cusLatLng.latitude,
+      //                                   _locationController.streamPosition[0].longitude >= widget.cusLatLng.longitude ? _locationController.streamPosition[0].longitude : widget.cusLatLng.longitude
+      //                               )
+      //                           ),
+      //                           50,
+      //                         )
+      //                     );
+      //                   }else{
+      //                     mapController!.animateCamera(
+      //                         CameraUpdate.newLatLngBounds(
+      //                           LatLngBounds(
+      //                               southwest: LatLng(
+      //                                   _locationController.streamPosition[0].latitude <= widget.shopLatLng.latitude ? _locationController.streamPosition[0].latitude : widget.shopLatLng.latitude,
+      //                                   _locationController.streamPosition[0].longitude <= widget.shopLatLng.longitude ? _locationController.streamPosition[0].longitude : widget.shopLatLng.longitude
+      //                               ),
+      //                               northeast: LatLng(
+      //                                   _locationController.streamPosition[0].latitude >= widget.shopLatLng.latitude ? _locationController.streamPosition[0].latitude : widget.shopLatLng.latitude,
+      //                                   _locationController.streamPosition[0].longitude >= widget.shopLatLng.longitude ? _locationController.streamPosition[0].longitude : widget.shopLatLng.longitude
+      //                               )
+      //                           ),
+      //                           50,
+      //                         )
+      //                     );
+      //                   }
+      //                 });
+      //               });
+      //
+      //             }else{
+      //               print("Point is empty--------------------------------");
+      //             }
+      //           },
+      //           markers: <Marker>{
+      //             Marker(
+      //               markerId: MarkerId("biker"),
+      //               position: LatLng(_locationController.streamPosition[0].latitude,_locationController.streamPosition[0].longitude),
+      //               draggable: true,
+      //               icon: bikermarkerIcon,
+      //               infoWindow: InfoWindow(
+      //                 title: _locationController.bikerplaceName.value,
+      //               ),
+      //               // onDragEnd: (value){
+      //               //   assignplacevalue(value);
+      //               // },
+      //             ),
+      //             shopMarker,
+      //             cusMarker,
+      //           },
+      //           polylines: <Polyline>{
+      //             Polyline(
+      //               polylineId: PolylineId(_locationController.bikerplaceName.value),
+      //               color: Colors.grey,
+      //               points: _locationController.polypointStream,
+      //               width: 6,
+      //               geodesic: true,
+      //               endCap: Cap.roundCap,
+      //               startCap: Cap.roundCap,
+      //             ),
+      //           },
+      //         ),
+      //       ),
+      //       Positioned(
+      //         bottom: 30,
+      //         left: 20,
+      //         right: 20,
+      //         child: Container(
+      //           padding: EdgeInsets.symmetric(
+      //             horizontal: 20,
+      //             vertical: 10,
+      //           ),
+      //           decoration: BoxDecoration(
+      //               color: UIConstant.pink,
+      //               borderRadius: BorderRadius.all(
+      //                 Radius.circular(10),
+      //               ),
+      //               border: Border.all(
+      //                 style: BorderStyle.solid,
+      //                 color: UIConstant.orange,
+      //                 width: 1,
+      //               )
+      //           ),
+      //           child: Text(
+      //             _locationController.bikerplaceName.value,
+      //             style: UIConstant.normal.copyWith(
+      //               color: Colors.black,
+      //             ),
+      //           ),
+      //         ),
+      //       ),
+      //       Positioned(
+      //         top: 45,
+      //         left: 10,
+      //         right: 10,
+      //         child:Row(
+      //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //           children: [
+      //             ElevatedButton(
+      //               onPressed: (){
+      //                 Get.back();
+      //               },
+      //               style: ElevatedButton.styleFrom(
+      //                 shape: CircleBorder(),
+      //                 backgroundColor: UIConstant.pink,
+      //                 foregroundColor: UIConstant.orange,
+      //               ),
+      //               child: Icon(
+      //                 Icons.arrow_back,
+      //                 size: 24,
+      //               ),
+      //             ),
+      //           ],
+      //         ),
+      //       ),
+      //     ],
+      //   );
+      // })
+      //     :
+      // Stack(
+      //   children: [
+      //     Positioned(
+      //       top: 0,
+      //       bottom: 0,
+      //       left: 0,
+      //       right: 0,
+      //       child: GoogleMap(
+      //         padding: EdgeInsets.all(20),
+      //         initialCameraPosition:  _initialcameraPosition,
+      //         zoomControlsEnabled: false,
+      //         // mapType: MapType.hybrid,
+      //         onMapCreated: (GoogleMapController controller)async{
+      //           if(!completer.isCompleted){
+      //             completer.complete(controller);
+      //           }
+      //           mapController = await completer.future;
+      //           mapController?.animateCamera(
+      //               CameraUpdate.newLatLngBounds(
+      //                 LatLngBounds(
+      //                     southwest: LatLng(
+      //                         widget.shopLatLng.latitude <= widget.cusLatLng.latitude ? widget.shopLatLng.latitude : widget.cusLatLng.latitude,
+      //                         widget.shopLatLng.longitude <= widget.cusLatLng.longitude ? widget.shopLatLng.longitude : widget.cusLatLng.longitude
+      //                     ),
+      //                     northeast: LatLng(
+      //                         widget.shopLatLng.latitude >= widget.cusLatLng.latitude ? widget.shopLatLng.latitude : widget.cusLatLng.latitude,
+      //                         widget.shopLatLng.longitude >= widget.cusLatLng.longitude ? widget.shopLatLng.longitude : widget.cusLatLng.longitude
+      //                     )
+      //                 ),
+      //                 50,
+      //               )
+      //           );
+      //         },
+      //         onTap: (value){
+      //           assignplacevalue(value);
+      //         },
+      //         markers: <Marker>{
+      //           Marker(
+      //             markerId: MarkerId("biker"),
+      //             position: LatLng(lat,long),
+      //             draggable: true,
+      //             infoWindow: InfoWindow(
+      //               title: placename,
+      //             ),
+      //             onDragEnd: (value){
+      //               assignplacevalue(value);
+      //             },
+      //           ),
+      //           shopMarker,
+      //           cusMarker,
+      //         },
+      //         polylines: <Polyline>{
+      //           Polyline(
+      //             polylineId: PolylineId(placename),
+      //             color: widget.isDropOff ? Colors.purpleAccent : UIConstant.orange,
+      //             points: polypoints,
+      //             width: 4,
+      //             geodesic: true,
+      //             endCap: Cap.roundCap,
+      //             startCap: Cap.roundCap,
+      //           ),
+      //         },
+      //       ),
+      //     ),
+      //     Positioned(
+      //       bottom: 30,
+      //       left: 20,
+      //       right: 20,
+      //       child: Container(
+      //         padding: EdgeInsets.symmetric(
+      //           horizontal: 20,
+      //           vertical: 10,
+      //         ),
+      //         decoration: BoxDecoration(
+      //             color: UIConstant.pink,
+      //             borderRadius: BorderRadius.all(
+      //               Radius.circular(10),
+      //             ),
+      //             border: Border.all(
+      //               style: BorderStyle.solid,
+      //               color: UIConstant.orange,
+      //               width: 1,
+      //             )
+      //         ),
+      //         child: Text(
+      //           placename,
+      //           style: TextStyle(
+      //             color: Colors.black,
+      //           ),
+      //         ),
+      //       ),
+      //     ),
+      //     Positioned(
+      //       top: 45,
+      //       left: 10,
+      //       right: 20,
+      //       child:Row(
+      //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //         children: [
+      //           IconButton(
+      //             onPressed: (){
+      //               Get.back();
+      //             },
+      //             icon: Icon(
+      //               Icons.arrow_back_ios,
+      //               size: 28,
+      //               color: UIConstant.orange,
+      //             ),
+      //           ),
+      //           Container(
+      //             decoration: BoxDecoration(
+      //                 color: Colors.white,
+      //                 borderRadius: BorderRadius.all(
+      //                   Radius.circular(10),
+      //                 ),
+      //                 boxShadow: [
+      //                   BoxShadow(
+      //                     color: Color(0xffDDDDDD),
+      //                     blurRadius: 6.0,
+      //                     spreadRadius: 2.0,
+      //                     offset: Offset(0.0, 0.0),
+      //                   )
+      //                 ]
+      //             ),
+      //             child: Row(
+      //               children: [
+      //                 Container(
+      //                   padding: EdgeInsets.symmetric(
+      //                     horizontal: 10,
+      //                     vertical: 0,
+      //                   ),
+      //                   width : (deviceWidth / 100) * 62,
+      //                   child: TextField(
+      //                     controller: _textController,
+      //                     decoration: InputDecoration(
+      //                       border: InputBorder.none,
+      //                       hintText: "Enter Address...",
+      //                       hintStyle: UIConstant.normal.copyWith(
+      //                         color: Colors.grey,
+      //                       ),
+      //                     ),
+      //                     style: UIConstant.normal.copyWith(
+      //                       color: Colors.black,
+      //                     ),
+      //                     onChanged: (value){
+      //                       if(value != ""){
+      //                         _locationController.getListofplaces(value).then((value) {
+      //                           setState(() {
+      //                             _showbox = true;
+      //                             placeList = value;
+      //                           });
+      //                         });
+      //                       }else{
+      //                         setState(() {
+      //                           _showbox = false;
+      //                         });
+      //                       }
+      //                     },
+      //                   ),
+      //                 ),
+      //                 IconButton(
+      //                   onPressed: (){
+      //                     setState(() {
+      //                       _textController.clear();
+      //                     });
+      //                   },
+      //                   icon: Icon(Icons.close),
+      //                 ),
+      //               ],
+      //             ),
+      //           ),
+      //         ],
+      //       ),
+      //     ),
+      //     if(_showbox) Positioned(
+      //       top: 90,
+      //       left: 40,
+      //       right: 40,
+      //       bottom: (deviceHeight/100) * 60,
+      //       child: ListView.builder(
+      //         itemCount: placeList.length,
+      //         itemBuilder: (ctx, index){
+      //           return Material(
+      //             color: Colors.white,
+      //             shape: Border(
+      //               bottom: BorderSide(
+      //                 width: 1,
+      //                 color: Colors.grey.shade300,
+      //               ),
+      //             ),
+      //             child: InkWell(
+      //               onTap: (){
+      //                 _locationController.getplaceDetailfromId(placeList[index].placeId).then((value) {
+      //                   mapController?.animateCamera(
+      //                       CameraUpdate.newCameraPosition(
+      //                         CameraPosition(target: value, zoom: 17),
+      //                       )
+      //                   );
+      //                   assignplacevalue(value);
+      //                   setState(() {
+      //                     _textController.text = placeList[index].placename;
+      //                     _showbox = false;
+      //                   });
+      //                 });
+      //               },
+      //               child: Padding(
+      //                 padding: EdgeInsets.symmetric(
+      //                   vertical: 8,
+      //                   horizontal: 10,
+      //                 ),
+      //                 child: Text(
+      //                   placeList[index].placename,
+      //                   style: TextStyle(
+      //                     color: Colors.black,
+      //                   ),
+      //                 ),
+      //               ),
+      //             ),
+      //           );
+      //         },
+      //       ),
+      //     ),
+      //     Positioned(
+      //       bottom: 100,
+      //       right: 20,
+      //       child: ElevatedButton(
+      //         onPressed: () {
+      //           getcurlocation();
+      //         },
+      //         style: ElevatedButton.styleFrom(
+      //           backgroundColor: UIConstant.pink,
+      //           shape: CircleBorder(
+      //             side: BorderSide(
+      //               color: UIConstant.orange,
+      //             ),
+      //           ),
+      //           padding: EdgeInsets.all(10),
+      //         ),
+      //         child: Icon(
+      //           Icons.gps_fixed_outlined,
+      //           size: 28,
+      //           color: Colors.black,
+      //         ),
+      //       ),
+      //     ),
+      //   ],
+      // )
     );
   }
 }

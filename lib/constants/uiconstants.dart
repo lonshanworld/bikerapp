@@ -10,7 +10,14 @@ class UIConstant{
   // static double oneUnitHeight = screenHeight / 772;
   // static double oneUnitWidth = screenWidth / 360;
 
-  static const Color orange = Color(0xFFF26600);
+  // static const Color orange = Color(0xFFF26600);
+
+  // static const Color orange = Color(0xFFF68C13);
+  static const Color orange = Color(0xFFFD680C);
+
+  // static const Color oppositeorange = Color(0xFF0973B9);
+  static const Color oppositeorange = Color(0xFF0287C6);
+
   static const Color pink = Color(0xFFFFEAD1);
   static const Color bgWhite = Color(0xFFF8F8F8);
   static const Color bgDark = Color(0xFF333333);
@@ -34,6 +41,10 @@ class UIConstant{
       ),
     ),
     scaffoldBackgroundColor: Colors.white,
+    bottomSheetTheme: BottomSheetThemeData(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+    ),
   );
 
   static final darkTheme = ThemeData(
@@ -50,6 +61,10 @@ class UIConstant{
       ),
     ),
     scaffoldBackgroundColor: Colors.black,
+    bottomSheetTheme: BottomSheetThemeData(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+    ),
   );
 
   static TextStyle maintitle = TextStyle(

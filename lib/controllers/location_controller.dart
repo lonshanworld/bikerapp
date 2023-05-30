@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'dart:typed_data';
 
@@ -34,7 +35,6 @@ class LocationController extends GetxController{
   //   super.onReady();
   // }
   final box = GetStorage();
-  static const String Apikey = "AIzaSyB-m8EmkEroNVsQha_T90UANoQZ9dlCTVY";
 
   // Location location = new Location();
   late LocationSettings _locationSettings;
@@ -134,7 +134,7 @@ class LocationController extends GetxController{
 
 
   Future <GEO.Placemark> getplacemark(double lat, double long) async{
-    List<GEO.Placemark> list = await GEO.placemarkFromCoordinates(lat, long);
+    List<GEO.Placemark> list = await GEO.placemarkFromCoordinates(lat, long, localeIdentifier: "my_MM");
     List<String> placeStringList = [];
     print("This is in getplacemark");
     list.forEach((element) {
@@ -148,7 +148,7 @@ class LocationController extends GetxController{
 
 
   Future<List<PlaceListModel>> getListofplaces(String input)async {
-    String uri = "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input&language=my&components=country:MM&key=$Apikey";
+    String uri = "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input&language=my&components=country:MM&key=${Platform.isIOS ? TxtConstant.Apikeyforios : TxtConstant.Apikeyforandroid}";
     List<PlaceListModel> placelists = [];
     try{
       http.Response response = await http.get(Uri.parse(uri));
@@ -171,7 +171,7 @@ class LocationController extends GetxController{
 
 
   Future<LatLng> getplaceDetailfromId(String placeid)async{
-    String uri = "https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeid&&language=my&components=country:MM&key=$Apikey";
+    String uri = "https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeid&&language=my&components=country:MM&key=${Platform.isIOS ? TxtConstant.Apikeyforios : TxtConstant.Apikeyforandroid}";
     try{
       http.Response response = await http.get(Uri.parse(uri));
       var body = json.decode(response.body);
@@ -189,7 +189,7 @@ class LocationController extends GetxController{
     PolylinePoints _polypoints = PolylinePoints();
     try{
       PolylineResult _result = await _polypoints.getRouteBetweenCoordinates(
-        Apikey,
+        Platform.isIOS ? TxtConstant.Apikeyforios : TxtConstant.Apikeyforandroid,
         PointLatLng(firstlatlong.latitude, firstlatlong.longitude),
         PointLatLng(secondlatlong.latitude, secondlatlong.longitude),
         travelMode: TravelMode.walking,

@@ -118,7 +118,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                       children: [
                         Text(
                           "Ref-No: ${_orderDetailModel.refNo} ",
-                          style: UIConstant.minititle.copyWith(
+                          style: UIConstant.title.copyWith(
                             color: UIConstant.orange,
                           ),
                         ),
@@ -178,7 +178,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                       children: [
                         Text(
                           _orderDetailModel.shopName!,
-                          style: UIConstant.normal.copyWith(
+                          style: UIConstant.minititle.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -189,7 +189,8 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                           func: (){
 
                             Get.to(() => MapScreen(
-                              shopLatLng: LatLng(_orderDetailModel.shoplat!.toDouble(),_orderDetailModel.shoplong!.toDouble()),
+                              // shopLatLng: LatLng(_orderDetailModel.shoplat!.toDouble(),_orderDetailModel.shoplong!.toDouble()),
+                              shopLatLng: LatLng(16.782759,	96.14413),
                               cusLatLng: LatLng(_orderDetailModel.cuslat!.toDouble(),_orderDetailModel.cuslong!.toDouble()),
                               shopaddress: _orderDetailModel.shopAddress!,
                               cusAddress: _orderDetailModel.cusAddress!,
@@ -210,12 +211,12 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                     ),
                     Text(
                       "cusinfo".tr,
-                      style: UIConstant.normal.copyWith(
+                      style: UIConstant.minititle.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     SizedBox(
-                      height: 10,
+                      height: 5,
                     ),
                     Container(
                       decoration: BoxDecoration(
@@ -230,7 +231,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                         children: [
                           Text(
                             _orderDetailModel.phone!,
-                            style: UIConstant.small.copyWith(
+                            style: UIConstant.normal.copyWith(
                                 fontWeight: FontWeight.bold
                             ),
                           ),
@@ -243,7 +244,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                           ),
                           Text(
                             "${_orderDetailModel.cusAddress} | ${"note".tr}: ${_orderDetailModel.addressNote}",
-                            style: UIConstant.tinytext,
+                            style: UIConstant.small,
                           ),
                         ],
                       ),
@@ -253,9 +254,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                     ),
                     Text(
                       "${"order".tr} ${"detail".tr}",
-                      style: UIConstant.normal.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: UIConstant.minititle,
                     ),
                     // ListView.builder(
                     //   itemCount: _orderDetailModel.orderItems.length,
@@ -298,11 +297,11 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                             children: [
                               Text(
                                 "${"order".tr} ${"total".tr}",
-                                style: UIConstant.small,
+                                style: UIConstant.normal,
                               ),
                               Text(
                                 "${_orderDetailModel.totalOnlinePrice} ${"mmk".tr}",
-                                style: UIConstant.small.copyWith(
+                                style: UIConstant.normal.copyWith(
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -316,11 +315,11 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                             children: [
                               Text(
                                 "deliverycharges".tr,
-                                style: UIConstant.small,
+                                style: UIConstant.normal,
                               ),
                               Text(
                                 "${_orderDetailModel.deliCharges} ${"mmk".tr}",
-                                style: UIConstant.small.copyWith(
+                                style: UIConstant.normal.copyWith(
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -334,11 +333,11 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                             children: [
                               Text(
                                 "cashcollected".tr,
-                                style: UIConstant.small,
+                                style: UIConstant.normal,
                               ),
                               Text(
                                 "${_orderDetailModel.totalOnlinePrice! + _orderDetailModel.deliCharges!} ${"mmk".tr}",
-                                style: UIConstant.small.copyWith(
+                                style: UIConstant.normal.copyWith(
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -352,11 +351,11 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                             children: [
                               Text(
                                 "vat".tr,
-                                style: UIConstant.small,
+                                style: UIConstant.normal,
                               ),
                               Text(
                                 "${_orderDetailModel.tax} ${"mmk".tr}",
-                                style: UIConstant.small.copyWith(
+                                style: UIConstant.normal.copyWith(
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),

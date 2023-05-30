@@ -108,7 +108,7 @@ class _CurrentOrderWidgetState extends State<CurrentOrderWidget> {
                     ),
                   ),
                   SizedBox(
-                    width: 10,
+                    width: 5,
                   ),
                   Expanded(
                     child: Column(
@@ -126,7 +126,7 @@ class _CurrentOrderWidgetState extends State<CurrentOrderWidget> {
                             Container(
                               padding: EdgeInsets.symmetric(
                                 vertical: 1,
-                                horizontal: 10,
+                                horizontal: 6,
                               ),
                               margin: EdgeInsets.symmetric(
                                 vertical: 5,
@@ -137,7 +137,7 @@ class _CurrentOrderWidgetState extends State<CurrentOrderWidget> {
                               ),
                               child: Text(
                                 "Ref : ${widget.currentOrderModel.refNo}",
-                                style: UIConstant.small.copyWith(
+                                style: UIConstant.normal.copyWith(
                                   color: Theme.of(context).scaffoldBackgroundColor,
                                   fontWeight: FontWeight.bold,
                                 ),

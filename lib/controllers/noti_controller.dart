@@ -205,10 +205,11 @@ class NotiController extends GetxController{
       android: _androidNotificationDetails,
       iOS: _iOSNotificationDetail,
     );
-    print(Get.find<NotiController>().obs.value);
-    await flutterLocalNotificationsPlugin.show(0, remoteMessage.notification!.title, remoteMessage.notification!.body, notidetails);
 
-    print("This is checking noti in ios ${remoteMessage.data["type"]}");
+    await flutterLocalNotificationsPlugin.show(0, remoteMessage.notification!.title, remoteMessage.notification!.body, notidetails);
+    print("checking noti data ----------------------------------------------------");
+    print(remoteMessage.data);
+    // print("This is checking noti ${remoteMessage.data["type"]}");
     if(remoteMessage.data.containsKey("type")){
       print("This contain key");
       if(remoteMessage.data["type"].toString().toLowerCase().trim() == "orderpickedup"){
@@ -296,7 +297,7 @@ class NotiController extends GetxController{
       RandomNotiModel randomNotiModel = RandomNotiModel(
         title: remoteMessage.notification!.title!,
         body: remoteMessage.notification!.body!,
-        date: DateFormat("y-MMM-d").format(DateTime.now()),
+        date: DateFormat("y-MMM-d H:mm a").format(DateTime.now()),
       );
       addRandomNoti(randomNotiModel);
       // await scheduleController.scheduleReload();

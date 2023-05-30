@@ -22,6 +22,7 @@ class UserAccountService{
     String uri = "${TxtConstant.mainUrl}auth/get-user?phone=$mobileNo";
     try{
       http.Response response = await http.get(Uri.parse(uri));
+      print("in user check || ${response.statusCode}");
       if(response.statusCode > 299){
         throw errorHandler.handleError(response);
       }

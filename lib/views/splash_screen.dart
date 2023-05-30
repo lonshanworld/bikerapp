@@ -59,9 +59,9 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
       if(box.read(TxtConstant.accesstoken) == null){
         return Get.offAllNamed(RouteHelper.getLoginPage());
       }else{
-        Get.dialog(const LoadingScreen(), barrierDismissible: false);
+        // Get.dialog(const LoadingScreen(), barrierDismissible: false);
         await userAccountController.refreshUserToken();
-        await userAccountController.getInfo();
+        // await userAccountController.getInfo();
         return Get.offAllNamed(RouteHelper.getHomePage());
       }
     });
@@ -81,7 +81,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
     );
 
     timer = Timer(
-      const Duration(seconds: 6),
+      const Duration(seconds: 5),
       Checkroute,
     );
   }
