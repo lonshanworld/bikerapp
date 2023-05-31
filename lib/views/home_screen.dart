@@ -16,6 +16,7 @@ import "package:get/get.dart";
 import "package:get_storage/get_storage.dart";
 import "package:intl/intl.dart";
 
+import "../db/db_service.dart";
 import "../models/noti_model.dart";
 import "../widgets/current_order_widget.dart";
 import "../widgets/loading_widget.dart";
@@ -124,9 +125,9 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-
-    loadData();
-
+    DBservices.initDB().then((_){
+      loadData();
+    });
   }
 
   @override

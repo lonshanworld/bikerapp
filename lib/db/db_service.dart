@@ -103,6 +103,9 @@ class DBservices{
 
   @pragma('vm:entry-point')
   static deleteAllNoti()async{
-    return await _db!.execute("DELETE FROM $_tablename");
+    // return await _db!.execute("DELETE FROM $_tablename");
+    var databasepath = await getDatabasesPath();
+    String path = join(databasepath, _tablename);
+    return await deleteDatabase(path);
   }
 }
