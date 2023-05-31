@@ -189,8 +189,8 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                           func: (){
 
                             Get.to(() => MapScreen(
-                              // shopLatLng: LatLng(_orderDetailModel.shoplat!.toDouble(),_orderDetailModel.shoplong!.toDouble()),
-                              shopLatLng: LatLng(16.782759,	96.14413),
+                              shopLatLng: LatLng(_orderDetailModel.shoplat!.toDouble(),_orderDetailModel.shoplong!.toDouble()),
+                              // shopLatLng: LatLng(16.782759,	96.14413),
                               cusLatLng: LatLng(_orderDetailModel.cuslat!.toDouble(),_orderDetailModel.cuslong!.toDouble()),
                               shopaddress: _orderDetailModel.shopAddress!,
                               cusAddress: _orderDetailModel.cusAddress!,

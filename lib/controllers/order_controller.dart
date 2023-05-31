@@ -348,6 +348,7 @@ class OrderController extends GetxController{
   Future<void> acceptOrder(String orderId)async{
     http.Response response = await service.OrderBikerAccept(orderId);
     if(response.statusCode <299){
+      await getCurrentOrderList();
       CustomGlobalSnackbar.show(
         context: Get.context!,
         title: "Order Accept",

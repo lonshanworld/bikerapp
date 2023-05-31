@@ -313,7 +313,7 @@ class _DropOffScreenState extends State<DropOffScreen> {
                       },
                       txtClr: Colors.white,
                       bgClr: UIConstant.orange,
-                      txtsize: 10,
+                      txtsize: 12,
                       rad: 5,
                     ),
                   ],
@@ -333,91 +333,86 @@ class _DropOffScreenState extends State<DropOffScreen> {
                     ],
                   ),
                   height: deviceHeight / 2,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(10),
+                  child:  GoogleMap(
+                    initialCameraPosition:  CameraPosition(
+                        target: LatLng(curlat, curlong),
+                        zoom: 16
                     ),
-                    child: GoogleMap(
-                      initialCameraPosition:  CameraPosition(
-                          target: LatLng(curlat, curlong),
-                          zoom: 16
-                      ),
-                      mapType: MapType.normal,
-                      zoomControlsEnabled: false,
-                      compassEnabled: false,
-                      mapToolbarEnabled: false,
-                      rotateGesturesEnabled: false,
-                      scrollGesturesEnabled: false,
-                      zoomGesturesEnabled: false,
-                      myLocationButtonEnabled: false,
-                      myLocationEnabled: false,
-                      onMapCreated: (GoogleMapController controller)async{
-                        // setState(() {
-                        //   _controller = controller;
-                        // });
-                        // controller.animateCamera(
-                        //     CameraUpdate.newLatLngBounds(
-                        //       LatLngBounds(
-                        //           southwest: LatLng(
-                        //             curlat <= orderDetailModel!.cuslat!.toDouble() ? curlat : orderDetailModel!.cuslat!.toDouble(),
-                        //             curlong <= orderDetailModel!.cuslong!.toDouble() ? curlong : orderDetailModel!.cuslong!.toDouble(),
-                        //           ),
-                        //           northeast: LatLng(
-                        //             curlat >= orderDetailModel!.cuslat!.toDouble() ? curlat : orderDetailModel!.cuslat!.toDouble(),
-                        //             curlong >= orderDetailModel!.cuslong!.toDouble() ? curlong : orderDetailModel!.cuslong!.toDouble(),
-                        //           )
-                        //       ),
-                        //       80,
-                        //     )
-                        // );
-                        if(!_controller.isCompleted){
+                    mapType: MapType.normal,
+                    zoomControlsEnabled: false,
+                    compassEnabled: false,
+                    mapToolbarEnabled: false,
+                    myLocationButtonEnabled: false,
+                    myLocationEnabled: false,
+                    scrollGesturesEnabled: false,
+                    zoomGesturesEnabled: false,
 
-                        }
-                        _controller.complete(controller);
+                    onMapCreated: (GoogleMapController controller)async{
+                      // setState(() {
+                      //   _controller = controller;
+                      // });
+                      // controller.animateCamera(
+                      //     CameraUpdate.newLatLngBounds(
+                      //       LatLngBounds(
+                      //           southwest: LatLng(
+                      //             curlat <= orderDetailModel!.cuslat!.toDouble() ? curlat : orderDetailModel!.cuslat!.toDouble(),
+                      //             curlong <= orderDetailModel!.cuslong!.toDouble() ? curlong : orderDetailModel!.cuslong!.toDouble(),
+                      //           ),
+                      //           northeast: LatLng(
+                      //             curlat >= orderDetailModel!.cuslat!.toDouble() ? curlat : orderDetailModel!.cuslat!.toDouble(),
+                      //             curlong >= orderDetailModel!.cuslong!.toDouble() ? curlong : orderDetailModel!.cuslong!.toDouble(),
+                      //           )
+                      //       ),
+                      //       80,
+                      //     )
+                      // );
+                      // if(!_controller.isCompleted){
+                      //
+                      // }
+                      _controller.complete(controller);
 
-                        makemapcomplete(_controller).then((_){
-                          Future.delayed(Duration(seconds: 1),(){
-                            mapController!.animateCamera(
-                                CameraUpdate.newLatLngBounds(
-                                  LatLngBounds(
-                                      southwest: LatLng(
-                                        curlat <= orderDetailModel!.cuslat!.toDouble() ? curlat : orderDetailModel!.cuslat!.toDouble(),
-                                        curlong <= orderDetailModel!.cuslong!.toDouble() ? curlong : orderDetailModel!.cuslong!.toDouble(),
-                                      ),
-                                      northeast: LatLng(
-                                        curlat >= orderDetailModel!.cuslat!.toDouble() ? curlat : orderDetailModel!.cuslat!.toDouble(),
-                                        curlong >= orderDetailModel!.cuslong!.toDouble() ? curlong : orderDetailModel!.cuslong!.toDouble(),
-                                      )
-                                  ),
-                                  80,
-                                )
-                            );
-                          });
+                      makemapcomplete(_controller).then((_){
+                        Future.delayed(Duration(seconds: 1),(){
+                          mapController!.animateCamera(
+                              CameraUpdate.newLatLngBounds(
+                                LatLngBounds(
+                                    southwest: LatLng(
+                                      curlat <= orderDetailModel!.cuslat!.toDouble() ? curlat : orderDetailModel!.cuslat!.toDouble(),
+                                      curlong <= orderDetailModel!.cuslong!.toDouble() ? curlong : orderDetailModel!.cuslong!.toDouble(),
+                                    ),
+                                    northeast: LatLng(
+                                      curlat >= orderDetailModel!.cuslat!.toDouble() ? curlat : orderDetailModel!.cuslat!.toDouble(),
+                                      curlong >= orderDetailModel!.cuslong!.toDouble() ? curlong : orderDetailModel!.cuslong!.toDouble(),
+                                    )
+                                ),
+                                80,
+                              )
+                          );
                         });
-                        // print("Completer value ${_controller.isCompleted}");
-                        // print(_controller.future);
+                      });
+                      // print("Completer value ${_controller.isCompleted}");
+                      // print(_controller.future);
 
 
-                      },
-                      markers: <Marker>{
-                        marker1,
-                        shopMarker,
-                        cusMarker,
-                      },
-                      polylines: <Polyline>{
-                        _polyline,
-                      },
-                      onLongPress: (_){
-                        mapController?.dispose();
-                        Get.to(() => MapScreen(
-                            shopLatLng: LatLng(orderDetailModel!.shoplat!.toDouble(),orderDetailModel!.shoplong!.toDouble()),
-                            cusLatLng: LatLng(orderDetailModel!.cuslat!.toDouble(),orderDetailModel!.cuslong!.toDouble()),
-                            cusAddress: orderDetailModel!.cusAddress!,
-                            shopaddress: orderDetailModel!.shopAddress!,
-                            isDropOff: true
-                        ));
-                      },
-                    ),
+                    },
+                    markers: <Marker>{
+                      marker1,
+                      shopMarker,
+                      cusMarker,
+                    },
+                    polylines: <Polyline>{
+                      _polyline,
+                    },
+                    onLongPress: (_){
+                      mapController?.dispose();
+                      Get.to(() => MapScreen(
+                          shopLatLng: LatLng(orderDetailModel!.shoplat!.toDouble(),orderDetailModel!.shoplong!.toDouble()),
+                          cusLatLng: LatLng(orderDetailModel!.cuslat!.toDouble(),orderDetailModel!.cuslong!.toDouble()),
+                          cusAddress: orderDetailModel!.cusAddress!,
+                          shopaddress: orderDetailModel!.shopAddress!,
+                          isDropOff: true
+                      ));
+                    },
                   ),
                 ),
                 Row(
@@ -446,7 +441,7 @@ class _DropOffScreenState extends State<DropOffScreen> {
                       },
                       txtClr: Colors.white,
                       bgClr: Colors.grey.shade600,
-                      txtsize: 10,
+                      txtsize: 12,
                       rad: 5,
                     ),
                   ],
