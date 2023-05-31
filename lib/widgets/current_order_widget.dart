@@ -293,10 +293,10 @@ class _CurrentOrderWidgetState extends State<CurrentOrderWidget> {
                           //   orderId: widget.currentOrderModel.orderId,
                           //   hasButton: true,
                           // ));
-                          Get.toNamed(RouteHelper.getDropOffPage(orderId: widget.currentOrderModel.orderId!));
+                          // Get.toNamed(RouteHelper.getDropOffPage(orderId: widget.currentOrderModel.orderId!));
                           // Get.toNamed(RouteHelper.getOrderSummaryPage(orderId: widget.currentOrderModel.orderId!));
 
-                          // Get.toNamed(RouteHelper.getOrderDetailPage(orderId: widget.currentOrderModel.orderId!, hasButton: true));
+                          Get.toNamed(RouteHelper.getOrderDetailPage(orderId: widget.currentOrderModel.orderId!, hasButton: true));
                         }
                       },
                       txtClr: UIConstant.orange,
