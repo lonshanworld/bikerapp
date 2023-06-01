@@ -83,9 +83,13 @@ class _HomeScreenState extends State<HomeScreen> {
     await orderController.getCurrentOrderList();
     checkinModel = checkInOutController.getCheckInData();
     if(checkinModel != null){
-      String checkoutDay = DateFormat("y-MM-d").format(checkinModel!.scheduleId!);
+      var checkoutDay = checkinModel!.scheduleId!.toString().split(" ");
       String checkoutdetailtime = DateFormat.Hms().format(DateFormat.jm().parse(checkinModel!.endSchedule!));
-      checkoutTime = DateTime.parse("${checkoutDay}T${checkoutdetailtime}");
+      checkoutTime = DateTime.parse("${checkoutDay[0]}T${checkoutdetailtime}");
+      print("This is checkout time");
+      print(checkinModel!.scheduleId.toString());
+      // print(checkoutDay);
+      print(checkoutTime);
     }
     // print("This is check out detail $checkoutall");  DateTime.parse("${checkoutDay}T${checkoutTime}")
     if(mounted){
