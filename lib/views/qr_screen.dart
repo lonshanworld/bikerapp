@@ -12,6 +12,7 @@ import "package:firebase_messaging/firebase_messaging.dart";
 import "package:flutter/material.dart";
 
 import "package:get/get.dart";
+import "package:loading_animation_widget/loading_animation_widget.dart";
 import "package:qr_flutter/qr_flutter.dart";
 
 import "../models/order_model.dart";
@@ -204,7 +205,14 @@ class _QRscreenState extends State<QRscreen> {
           ),
         ),
       ),
-      bottomSheet: Container(
+      bottomSheet: isloading
+          ?
+      LoadingAnimationWidget.newtonCradle(
+        color: UIConstant.orange,
+        size: 100,
+      )
+          :
+      Container(
         padding: EdgeInsets.only(
           top: 20,
           bottom: 20,

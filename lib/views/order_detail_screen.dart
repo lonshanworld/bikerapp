@@ -95,317 +95,325 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
           ?
         const LoadingWidget()
           :
-      Stack(
-        children: [
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 70,
-            child: Center(
-              child: SizedBox(
-                width: deviceWidth > 500 ? deviceWidth * 0.8 : deviceWidth,
-                child: ListView(
-                  padding: EdgeInsets.only(
-                    left: 20,
-                    right: 20,
-                    top: 10,
-                    bottom: widget.hasButton ? 70 : 10,
+      Center(
+        child: SizedBox(
+          width: deviceWidth > 500 ? deviceWidth * 0.8 : deviceWidth,
+          child: ListView(
+            padding: EdgeInsets.only(
+              left: 20,
+              right: 20,
+              top: 10,
+              bottom: widget.hasButton ? 120 : 20,
+            ),
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Ref-No: ${_orderDetailModel.refNo} ",
+                    style: UIConstant.title.copyWith(
+                      color: UIConstant.orange,
+                    ),
                   ),
+                  CustomButton(
+                    verticalPadding: 5,
+                    horizontalPadding: 10,
+                    txt: "transfertoother".tr,
+                    func: (){
+
+                    },
+                    txtClr: Colors.white,
+                    bgClr: UIConstant.orange,
+                    txtsize: 10,
+                    rad: 5,
+                  ),
+                ],
+              ),
+              if(!showdefaultimage && (_orderDetailModel.image != null && _orderDetailModel.image != ""))Container(
+                height: deviceHeight * 0.22,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                      onError: (object, stacktrace){
+                        Future.delayed(Duration(seconds: 1),(){
+                          if(mounted){
+                            setState(() {
+                              showdefaultimage = true;
+                            });
+                          }
+                        });
+                      },
+                      image: NetworkImage(
+                        _orderDetailModel.image!,
+                      ),
+                      fit: BoxFit.cover
+                  ),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10),
+                  ),
+                ),
+              ),
+              if(showdefaultimage || _orderDetailModel.image == null || _orderDetailModel.image == "")Container(
+                height: deviceHeight * 0.22,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage(
+                        "assets/images/biker_icon.png",
+                      ),
+                      fit: BoxFit.contain
+                  ),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10),
+                  ),
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    _orderDetailModel.shopName!,
+                    style: UIConstant.minititle.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  CustomButton(
+                    verticalPadding: 5,
+                    horizontalPadding: 20,
+                    txt: "viewmap".tr,
+                    func: (){
+
+                      Get.to(() => MapScreen(
+                        shopLatLng: LatLng(_orderDetailModel.shoplat!.toDouble(),_orderDetailModel.shoplong!.toDouble()),
+                        // shopLatLng: LatLng(16.782759,	96.14413),
+                        cusLatLng: LatLng(_orderDetailModel.cuslat!.toDouble(),_orderDetailModel.cuslong!.toDouble()),
+                        shopaddress: _orderDetailModel.shopAddress!,
+                        cusAddress: _orderDetailModel.cusAddress!,
+                        isDropOff: false,
+                      ),
+                        transition: Transition.rightToLeft,
+                      );
+                    },
+                    txtClr: Colors.white,
+                    bgClr: Colors.grey,
+                    txtsize: 10,
+                    rad: 5,
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Text(
+                "cusinfo".tr,
+                style: UIConstant.minititle.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).brightness == Brightness.dark ? UIConstant.bgDark : UIConstant.bgWhite,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10),
+                  ),
+                ),
+                padding: EdgeInsets.all(15),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      _orderDetailModel.phone!,
+                      style: UIConstant.normal.copyWith(
+                          fontWeight: FontWeight.bold
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      _orderDetailModel.cusName!,
+                      style: UIConstant.small,
+                    ),
+                    Text(
+                      "${_orderDetailModel.cusAddress} | ${"note".tr}: ${_orderDetailModel.addressNote}",
+                      style: UIConstant.small,
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              Text(
+                "${"order".tr} ${"detail".tr}",
+                style: UIConstant.minititle,
+              ),
+              // ListView.builder(
+              //   itemCount: _orderDetailModel.orderItems.length,
+              //   itemBuilder: (ctx,index){
+              //     return OrderDetailWidget(orderItem: _orderDetailModel.orderItems[index]);
+              //   },
+              // ),
+              Column(
+                children: [
+                  if(orderItemShopnameList.isEmpty)for(OrderItem _orderItem in _orderDetailModel.orderItems!) OrderDetailWidget(
+                    orderItem: _orderItem,hasMoreShop: false,
+                  ),
+                  if(orderItemShopnameList.isNotEmpty)for(OrderItem _orderItem in _orderDetailModel.orderItems!) OrderDetailWidget(
+                    orderItem: _orderItem,hasMoreShop: true,
+                  )
+                ],
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              Text(
+                "ordersummary".tr,
+                style: UIConstant.minititle,
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Container(
+                padding: EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                  color : Theme.of(context).brightness == Brightness.dark ? UIConstant.bgDark : UIConstant.bgWhite,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10),
+                  ),
+                ),
+                child: Column(
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Ref-No: ${_orderDetailModel.refNo} ",
-                          style: UIConstant.title.copyWith(
-                            color: UIConstant.orange,
-                          ),
+                          "${"order".tr} ${"total".tr}",
+                          style: UIConstant.normal,
                         ),
-                        CustomButton(
-                          verticalPadding: 5,
-                          horizontalPadding: 10,
-                          txt: "transfertoother".tr,
-                          func: (){
-
-                          },
-                          txtClr: Colors.white,
-                          bgClr: UIConstant.orange,
-                          txtsize: 10,
-                          rad: 5,
+                        Text(
+                          "${_orderDetailModel.totalOnlinePrice} ${"mmk".tr}",
+                          style: UIConstant.normal.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ],
                     ),
-                    if(!showdefaultimage && (_orderDetailModel.image != null && _orderDetailModel.image != ""))Container(
-                      height: deviceHeight * 0.22,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          onError: (object, stacktrace){
-                            Future.delayed(Duration(seconds: 1),(){
-                              if(mounted){
-                                setState(() {
-                                  showdefaultimage = true;
-                                });
-                              }
-                            });
-                          },
-                            image: NetworkImage(
-                              _orderDetailModel.image!,
-                            ),
-                            fit: BoxFit.cover
-                        ),
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10),
-                        ),
-                      ),
-                    ),
-                    if(showdefaultimage || _orderDetailModel.image == null || _orderDetailModel.image == "")Container(
-                      height: deviceHeight * 0.22,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage(
-                              "assets/images/biker_icon.png",
-                            ),
-                            fit: BoxFit.contain
-                        ),
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10),
-                        ),
-                      ),
+                    SizedBox(
+                      height: 10,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          _orderDetailModel.shopName!,
-                          style: UIConstant.minititle.copyWith(
+                          "deliverycharges".tr,
+                          style: UIConstant.normal,
+                        ),
+                        Text(
+                          "${_orderDetailModel.deliCharges} ${"mmk".tr}",
+                          style: UIConstant.normal.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        CustomButton(
-                          verticalPadding: 5,
-                          horizontalPadding: 20,
-                          txt: "viewmap".tr,
-                          func: (){
-
-                            Get.to(() => MapScreen(
-                              shopLatLng: LatLng(_orderDetailModel.shoplat!.toDouble(),_orderDetailModel.shoplong!.toDouble()),
-                              // shopLatLng: LatLng(16.782759,	96.14413),
-                              cusLatLng: LatLng(_orderDetailModel.cuslat!.toDouble(),_orderDetailModel.cuslong!.toDouble()),
-                              shopaddress: _orderDetailModel.shopAddress!,
-                              cusAddress: _orderDetailModel.cusAddress!,
-                              isDropOff: false,
-                            ),
-                              transition: Transition.rightToLeft,
-                            );
-                          },
-                          txtClr: Colors.white,
-                          bgClr: Colors.grey,
-                          txtsize: 10,
-                          rad: 5,
-                        ),
                       ],
                     ),
-                    const SizedBox(
+                    SizedBox(
                       height: 10,
                     ),
-                    Text(
-                      "cusinfo".tr,
-                      style: UIConstant.minititle.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).brightness == Brightness.dark ? UIConstant.bgDark : UIConstant.bgWhite,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10),
-                        ),
-                      ),
-                      padding: EdgeInsets.all(15),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            _orderDetailModel.phone!,
-                            style: UIConstant.normal.copyWith(
-                                fontWeight: FontWeight.bold
-                            ),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            _orderDetailModel.cusName!,
-                            style: UIConstant.small,
-                          ),
-                          Text(
-                            "${_orderDetailModel.cusAddress} | ${"note".tr}: ${_orderDetailModel.addressNote}",
-                            style: UIConstant.small,
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Text(
-                      "${"order".tr} ${"detail".tr}",
-                      style: UIConstant.minititle,
-                    ),
-                    // ListView.builder(
-                    //   itemCount: _orderDetailModel.orderItems.length,
-                    //   itemBuilder: (ctx,index){
-                    //     return OrderDetailWidget(orderItem: _orderDetailModel.orderItems[index]);
-                    //   },
-                    // ),
-                    Column(
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        if(orderItemShopnameList.isEmpty)for(OrderItem _orderItem in _orderDetailModel.orderItems!) OrderDetailWidget(
-                          orderItem: _orderItem,hasMoreShop: false,
+                        Text(
+                          "cashcollected".tr,
+                          style: UIConstant.normal,
                         ),
-                        if(orderItemShopnameList.isNotEmpty)for(OrderItem _orderItem in _orderDetailModel.orderItems!) OrderDetailWidget(
-                          orderItem: _orderItem,hasMoreShop: true,
-                        )
+                        Text(
+                          "${_orderDetailModel.totalOnlinePrice! + _orderDetailModel.deliCharges!} ${"mmk".tr}",
+                          style: UIConstant.normal.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ],
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Text(
-                      "ordersummary".tr,
-                      style: UIConstant.minititle,
                     ),
                     SizedBox(
                       height: 10,
                     ),
-                    Container(
-                      padding: EdgeInsets.all(15),
-                      decoration: BoxDecoration(
-                        color : Theme.of(context).brightness == Brightness.dark ? UIConstant.bgDark : UIConstant.bgWhite,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "vat".tr,
+                          style: UIConstant.normal,
                         ),
-                      ),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "${"order".tr} ${"total".tr}",
-                                style: UIConstant.normal,
-                              ),
-                              Text(
-                                "${_orderDetailModel.totalOnlinePrice} ${"mmk".tr}",
-                                style: UIConstant.normal.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
+                        Text(
+                          "${_orderDetailModel.tax} ${"mmk".tr}",
+                          style: UIConstant.normal.copyWith(
+                            fontWeight: FontWeight.bold,
                           ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "deliverycharges".tr,
-                                style: UIConstant.normal,
-                              ),
-                              Text(
-                                "${_orderDetailModel.deliCharges} ${"mmk".tr}",
-                                style: UIConstant.normal.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "cashcollected".tr,
-                                style: UIConstant.normal,
-                              ),
-                              Text(
-                                "${_orderDetailModel.totalOnlinePrice! + _orderDetailModel.deliCharges!} ${"mmk".tr}",
-                                style: UIConstant.normal.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "vat".tr,
-                                style: UIConstant.normal,
-                              ),
-                              Text(
-                                "${_orderDetailModel.tax} ${"mmk".tr}",
-                                style: UIConstant.normal.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
               ),
-            ),
+            ],
           ),
-          if(widget.hasButton)Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: Container(
-              padding: EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color:  Colors.black38,
-                    blurRadius: 6.0,
-                    spreadRadius: 2.0,
-                    offset: Offset(0.0, 0.0),
-                  ),
-                ],
-                color: Theme.of(context).brightness == Brightness.dark ? UIConstant.bgDark : UIConstant.bgWhite,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
-                ),
-              ),
-              child: CustomButton(
-                verticalPadding: 10,
-                horizontalPadding: 0,
-                txt: "Pick up",
-                func: (){
-                  Get.toNamed(RouteHelper.getQrPage(orderId: widget.orderId));
-                },
-                txtClr: Colors.white,
-                bgClr: UIConstant.orange,
-                txtsize: 16,
-                rad: 10,
-              ),
-            ),
-          ),
-        ],
+        ),
       ),
+      bottomSheet: Visibility(
+        visible: widget.hasButton,
+        child: Container(
+          padding: EdgeInsets.all(20),
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color:  Colors.black38,
+                blurRadius: 6.0,
+                spreadRadius: 2.0,
+                offset: Offset(0.0, 0.0),
+              ),
+            ],
+            color: Theme.of(context).brightness == Brightness.dark ? UIConstant.bgDark : UIConstant.bgWhite,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+            ),
+          ),
+          child: CustomButton(
+            verticalPadding: 10,
+            horizontalPadding: 0,
+            txt: "Pick up",
+            func: (){
+              Get.toNamed(RouteHelper.getQrPage(orderId: widget.orderId));
+            },
+            txtClr: Colors.white,
+            bgClr: UIConstant.orange,
+            txtsize: 16,
+            rad: 10,
+          ),
+        ),
+      ),
+      // Stack(
+      //   children: [
+      //     Positioned(
+      //       top: 0,
+      //       left: 0,
+      //       right: 0,
+      //       bottom: 70,
+      //       child: Center(
+      //         child: ,
+      //       ),
+      //     ),
+      //     if(widget.hasButton)Positioned(
+      //       bottom: 0,
+      //       left: 0,
+      //       right: 0,
+      //       child: ,
+      //     ),
+      //   ],
+      // ),
     );
   }
 }
