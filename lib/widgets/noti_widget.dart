@@ -99,8 +99,8 @@ class _NotiWidgetState extends State<NotiWidget> with SingleTickerProviderStateM
       ),
       decoration: BoxDecoration(
         boxShadow: [
-          BoxShadow(
-            color: Theme.of(context).brightness == Brightness.dark ? Colors.grey.shade800 : Colors.grey.shade300,
+          if(Theme.of(context).brightness == Brightness.light )BoxShadow(
+            color: Colors.grey.shade300,
             blurRadius: 4.0,
             spreadRadius: 1.0,
             offset: Offset(2.0, 2.0),

@@ -28,7 +28,7 @@ class NoItemListWidget extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         boxShadow: [
-          BoxShadow(
+          if(Theme.of(context).brightness == Brightness.light)BoxShadow(
             color: Theme.of(context).brightness == Brightness.dark ? Colors.grey.shade800 : Colors.grey.shade300,
             blurRadius: 4.0,
             spreadRadius: 1.0,

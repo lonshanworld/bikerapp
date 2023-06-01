@@ -61,7 +61,7 @@ class _CurrentOrderWidgetState extends State<CurrentOrderWidget> {
         color: Theme.of(context).brightness == Brightness.dark ? UIConstant.bgDark :UIConstant.bgWhite,
         border: Border.all(
           width: 1,
-          color: UIConstant.orange,
+          color: Theme.of(context).brightness == Brightness.dark ? UIConstant.orange : UIConstant.pink,
         ),
         borderRadius: BorderRadius.all(
           Radius.circular(10),
@@ -120,61 +120,58 @@ class _CurrentOrderWidgetState extends State<CurrentOrderWidget> {
                             fontWeight: FontWeight.bold
                           ),
                         ),
-                        Row(
-                          children: [
-
-                            Container(
-                              padding: EdgeInsets.symmetric(
-                                vertical: 1,
-                                horizontal: 6,
-                              ),
-                              margin: EdgeInsets.symmetric(
-                                vertical: 5,
-                              ),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.all(Radius.circular(5)),
-                                color: Theme.of(context).primaryColor,
-                              ),
-                              child: Text(
-                                "Ref : ${widget.currentOrderModel.refNo}",
-                                style: UIConstant.normal.copyWith(
-                                  color: Theme.of(context).scaffoldBackgroundColor,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Text(
-                              widget.currentOrderModel.phone!,
-                              style: UIConstant.small.copyWith(
-                                color: UIConstant.secondarytxtClr,
-                              ),
-                            ),
-
-                          ],
+                        Text(
+                          widget.currentOrderModel.phone!,
+                          style: UIConstant.small.copyWith(
+                            color: UIConstant.secondarytxtClr,
+                          ),
                         ),
+                        // Row(
+                        //   children: [
+                        //
+                        //
+                        //     SizedBox(
+                        //       width: 5,
+                        //     ),
+                        //
+                        //
+                        //   ],
+                        // ),
                       ],
                     ),
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: (widget.currentOrderModel.orderStatus == "Order Way On") ? Colors.blue : Colors.green,
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                          vertical: 1,
+                          horizontal: 6,
+                        ),
+                        margin: EdgeInsets.symmetric(
+                          vertical: 5,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(5)),
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        child: Text(
+                          "Ref : ${widget.currentOrderModel.refNo}",
+                          style: UIConstant.normal.copyWith(
+                            color: Theme.of(context).scaffoldBackgroundColor,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
-                    ),
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 3,
-                    ),
-                    child: Text(
-                      widget.currentOrderModel.orderStatus!,
-                      style: UIConstant.tinytext.copyWith(
-                        color: Colors.white,
+                      Text(
+                        widget.currentOrderModel.orderStatus!,
+                        style: UIConstant.small.copyWith(
+                          color:  (widget.currentOrderModel.orderStatus!.trim().toLowerCase() == "order way on") ? Colors.blue : Colors.green,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                 ],
               ),
