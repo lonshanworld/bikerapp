@@ -40,8 +40,8 @@ class ScheduleWidget extends StatelessWidget {
           ),
           color: Theme.of(context).brightness == Brightness.dark ? UIConstant.bgDark : UIConstant.bgWhite,
           boxShadow: [
-            BoxShadow(
-              color: Theme.of(context).brightness == Brightness.dark ? Colors.grey.shade800 : Colors.grey.shade300,
+            if(Theme.of(context).brightness == Brightness.light)BoxShadow(
+              color:Colors.grey.shade300,
               spreadRadius: 1,
               blurRadius: 3,
             ),
