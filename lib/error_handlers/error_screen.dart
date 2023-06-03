@@ -18,15 +18,12 @@ class ErrorScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double deviceWidth = MediaQuery.of(context).size.width;
-    final double deviceHeight = MediaQuery.of(context).size.height;
-    final double oneUnitWidth = deviceWidth / 360;
-    final double oneUnitHeight = deviceHeight/772;
+
     return WillPopScope(
       onWillPop: ()async => false,
       child: AlertDialog(
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8.0),
+            borderRadius: BorderRadius.circular(10.0),
             side: BorderSide(
               color: UIConstant.orange,
             )
@@ -44,14 +41,14 @@ class ErrorScreen extends StatelessWidget {
           Align(
             alignment: Alignment.center,
             child: CustomButton(
-              verticalPadding: oneUnitHeight * 5,
-              horizontalPadding: oneUnitWidth * 30,
+              verticalPadding: 5,
+              horizontalPadding: 30,
               txt: btntxt,
               func: Func,
               txtClr: Colors.white,
               bgClr: UIConstant.orange,
-              txtsize: oneUnitHeight * 14,
-              rad: oneUnitHeight * 5,
+              txtsize:  14,
+              rad: 5,
             ),
           ),
         ],

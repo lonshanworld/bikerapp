@@ -1,4 +1,6 @@
 
+import "dart:async";
+
 import "package:delivery/constants/txtconstants.dart";
 import "package:delivery/constants/uiconstants.dart";
 import "package:delivery/controllers/check_in_out_controller.dart";
@@ -6,6 +8,7 @@ import "package:delivery/controllers/noti_controller.dart";
 import "package:delivery/controllers/order_controller.dart";
 import "package:delivery/controllers/schedule_controller.dart";
 import "package:delivery/controllers/useraccount_controller.dart";
+import "package:delivery/error_handlers/error_screen.dart";
 import "package:delivery/models/schedule_model.dart";
 import "package:delivery/routehelper.dart";
 import "package:delivery/views/drawer.dart";
@@ -45,7 +48,8 @@ class _HomeScreenState extends State<HomeScreen> {
   final box = GetStorage();
 
   bool isloading = true;
-  DateTime? checkoutTime;
+  // DateTime? checkoutTime;
+  Timer? timer;
 
   // requestFirebasePermission()async{
   //   NotificationSettings settings = await firebaseMessaging.requestPermission(
@@ -59,6 +63,21 @@ class _HomeScreenState extends State<HomeScreen> {
   //   );
   //   print('User granted permission: ${settings.authorizationStatus}');
   // }
+
+  checkout(){
+    showDialog( barrierDismissible: false ,context: context, builder: (ctx){
+      return ErrorScreen(
+        title: "Check out!",
+        txt: "Please check out first before continue any further process",
+        btntxt: "Click to check out",
+        Func: ()async{
+          Get.dialog(const LoadingScreen(), barrierDismissible: false);
+          await checkInOutController.checkOut();
+          Get.offAllNamed(RouteHelper.getHomePage());
+        },
+      );
+    });
+  }
 
   reloadFun(){
     if(!mounted){
@@ -85,11 +104,26 @@ class _HomeScreenState extends State<HomeScreen> {
     if(checkinModel != null){
       var checkoutDay = checkinModel!.scheduleId!.toString().split(" ");
       String checkoutdetailtime = DateFormat.Hms().format(DateFormat.jm().parse(checkinModel!.endSchedule!));
-      checkoutTime = DateTime.parse("${checkoutDay[0]}T${checkoutdetailtime}");
+      DateTime checkoutTime = DateTime.parse("${checkoutDay[0]}T${checkoutdetailtime}");
       print("This is checkout time");
-      print(checkinModel!.scheduleId.toString());
-      // print(checkoutDay);
-      print(checkoutTime);
+      // print(checkinModel!.scheduleId.toString());
+      // // print(checkoutDay);
+      // print(checkoutTime);
+      Duration diff = checkoutTime.difference(DateTime.now());
+      print(diff.inSeconds);
+      if(diff.inSeconds > 0){
+        timer = Timer(
+          Duration(seconds: diff.inSeconds),
+          checkout,
+        );
+      }else{
+        // if(mounted){
+        //   setState(() {
+        //     showErrorbox = true;
+        //   });
+        // }
+        checkout;
+      }
     }
     // print("This is check out detail $checkoutall");  DateTime.parse("${checkoutDay}T${checkoutTime}")
     if(mounted){
@@ -134,6 +168,15 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+
+  @override
+  void dispose() {
+    if(timer != null){
+      timer!.cancel();
+    }
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -141,6 +184,23 @@ class _HomeScreenState extends State<HomeScreen> {
     // final double deviceHeight = MediaQuery.of(context).size.height;
     // final double oneUnitWidth = deviceWidth / 360;
     // final double oneUnitHeight = deviceHeight/772;
+
+    // (){
+    //   if(showErrorbox){
+    //     showDialog( barrierDismissible: false ,context: context, builder: (ctx){
+    //       return ErrorScreen(
+    //         title: "Check out!",
+    //         txt: "Please check out first before continue any further process",
+    //         btntxt: "Click to check out",
+    //         Func: ()async{
+    //           Get.dialog(const LoadingScreen(), barrierDismissible: false);
+    //           await checkInOutController.checkOut();
+    //           Get.offAllNamed(RouteHelper.getHomePage());
+    //         },
+    //       );
+    //     });
+    //   }
+    // }();
 
 
     return WillPopScope(
@@ -230,57 +290,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 width: deviceWidth > 500 ? deviceWidth * 0.8 : deviceWidth,
                 child: ListView(
                   children: [
-                    if(checkinModel != null && DateTime.now().isAfter(checkoutTime!))SizedBox(
-                      height: 5,
-                    ),
-                    if(checkinModel != null && DateTime.now().isAfter(checkoutTime!))Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 30,
-                      ),
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Theme.of(context).brightness == Brightness.dark ? UIConstant.pink : UIConstant.orange,
-                          foregroundColor: Theme.of(context).scaffoldBackgroundColor,
-                        ),
-                        onPressed: (){
-                          showDialog(
-                            barrierDismissible: false,
-                            context: context,
-                            builder: (ctx){
-                              return ConfirmAll_Screen(
-                                title: '${"confirm".tr}?!',
-                                txt: '${"wanttocheckout".tr}?',
-                                acceptFun: () async{
-                                  Get.dialog(const LoadingScreen(), barrierDismissible: false);
-                                  await checkInOutController.checkOut();
-                                  Get.offAllNamed(RouteHelper.getHomePage());
-                                },
-                                refuseFun: () {
-                                  Navigator.of(context).pop();
-                                },
-                              );
-                            },
-                          );
-                        },
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.touch_app_outlined,
-                                  size: 28,
-                                ),
-                                Text(
-                                  "clicktocheckout".tr,
-                                  style: UIConstant.normal,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
                     Padding(
                       padding: EdgeInsets.only(
                         left: 20,
