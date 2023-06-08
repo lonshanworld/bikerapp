@@ -8,7 +8,8 @@ class TxtConstant{
   static const String mainUrl = "https://analytics-api.quickfoodmm.com/api/v1/";
   // static const String mainUrl = "http://192.168.100.130/api/v1/";
 
-  static const String serverUrl = "https://admin.quickfoodmm.com/hub/locations";
+  // static const String serverUrl = "https://admin.quickfoodmm.com/hub/locations";
+  static const String serverUrl = "https://analytics.quickfoodmm.com/hub/locations";
 
   static const String accesstoken = "access_token";
   static const String refreshtoken = "refresh_token";

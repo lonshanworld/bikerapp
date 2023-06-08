@@ -115,15 +115,18 @@ class UserAccountService{
 
   Future refreshUserToken()async{
     String uri = "${TxtConstant.mainUrl}auth/refresh-token";
+    print("Checking token-------------------------------------");
+    print(box.read(TxtConstant.accesstoken));
+    print(box.read(TxtConstant.refreshtoken));
     try{
       http.Response response = await http.post(Uri.parse(uri),body: {
-        'Access_Token': box.read(TxtConstant.accesstoken),
-        'Refresh_Token': box.read(TxtConstant.refreshtoken),
+        'Access_Token': box.read(TxtConstant.accesstoken).toString(),
+        'Refresh_Token': box.read(TxtConstant.refreshtoken).toString(),
       });
-      print("In revokeuser info || ${response.statusCode}");
+      print("In refresh info || ${response.statusCode}");
       print(response.body);
       if(response.statusCode > 299){
-        throw errorHandler.handleError(response);
+        throw errorHandler.handleforTokenError(response);
       }
       return response;
     }on Exception catch(err){

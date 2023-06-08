@@ -9,6 +9,7 @@ import "package:get/get.dart";
 
 import '../dependencies.dart';
 import '../routehelper.dart';
+import '../views/loading_screen.dart';
 import 'language_service.dart';
 
 class LogOutService{
@@ -17,6 +18,7 @@ class LogOutService{
   final NotiService notiService = NotiService();
 
   logout(BuildContext context){
+    Get.dialog(const LoadingScreen(), barrierDismissible: false);
     Future.delayed(Duration(seconds: 2),(){
       if(Theme.of(context).brightness == Brightness.dark){
         ThemeService().switchTheme();
@@ -26,6 +28,7 @@ class LogOutService{
       }
       notiService.deleteAll();
       box.erase();
+      Get.back();
       Get.offAllNamed(RouteHelper.getLoginPage());
     });
   }

@@ -42,14 +42,18 @@ class OrderDetailWidget extends StatelessWidget {
             height: 10,
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                "${orderItem.itemName}  x  ${orderItem.qty}",
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
+              Expanded(
+                child: Text(
+                  "${orderItem.itemName}  x  ${orderItem.qty}",
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
+              ),
+              SizedBox(
+                width: 20,
               ),
               Text(
                 "${orderItem.onlinePrice} ${"mmk".tr}",

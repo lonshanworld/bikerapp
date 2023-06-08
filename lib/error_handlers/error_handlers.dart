@@ -121,6 +121,33 @@ class ErrorHandler{
     );
   }
 
+  handleforTokenError(http.Response response){
+    if(response.statusCode > 299){
+      Get.back();
+      showDialog(
+        context: Get.context!,
+        barrierDismissible: false,
+        builder: (ctx){
+          return ErrorScreen(
+            // title: "Unauthorized Error : ${response.statusCode}",
+            title: "Unauthorized",
+            txt: "Please Click the button to Logout and Login again to continue.",
+            btntxt: "Click to Logout",
+            Func: (){
+              // if(Theme.of(Get.context!).brightness == Brightness.dark){
+              //   ThemeService().switchTheme();
+              // }
+              // notiService.deleteAll();
+              // box.erase();
+              // Get.offAllNamed(RouteHelper.getLoginPage());
+              logOutService.logout(Get.context!);
+            },
+          );
+        },
+      );
+    }
+  }
+
   handleNoSignalRerror(String txt){
     Get.back();
     showDialog(

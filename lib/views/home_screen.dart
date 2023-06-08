@@ -64,16 +64,21 @@ class _HomeScreenState extends State<HomeScreen> {
   //   print('User granted permission: ${settings.authorizationStatus}');
   // }
 
-  checkout(){
+  forcecheckout(){
     showDialog( barrierDismissible: false ,context: context, builder: (ctx){
       return ErrorScreen(
         title: "Check out!",
-        txt: "Please check out first before continue any further process",
-        btntxt: "Click to check out",
-        Func: ()async{
+        txt: orderController.currentorderList.isEmpty ? "Please check out first before continue any further process" : "Please don't forget to check out after deliverying all current items",
+        btntxt: orderController.currentorderList.isEmpty ? "Click to check out" : "ok".tr,
+        Func: orderController.currentorderList.isEmpty
+            ?
+        ()async{
           Get.dialog(const LoadingScreen(), barrierDismissible: false);
           await checkInOutController.checkOut();
           Get.offAllNamed(RouteHelper.getHomePage());
+        }  :
+        (){
+          Navigator.of(ctx).pop();
         },
       );
     });
@@ -114,7 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
       if(diff.inSeconds > 0){
         timer = Timer(
           Duration(seconds: diff.inSeconds),
-          checkout,
+          forcecheckout,
         );
       }else{
         // if(mounted){
@@ -122,7 +127,7 @@ class _HomeScreenState extends State<HomeScreen> {
         //     showErrorbox = true;
         //   });
         // }
-        checkout;
+        forcecheckout;
       }
     }
     // print("This is check out detail $checkoutall");  DateTime.parse("${checkoutDay}T${checkoutTime}")
@@ -239,16 +244,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 onPressed: () {
-                  // if(checkOutbtn != null){
-                  //   if(checkOutbtn!){
-                  //     showDialog(
-                  //       context: context,
-                  //       builder: (ctx) => CheckOutScreen(),
-                  //     );
-                  //   }else{
-                  //     Get.toNamed(RouteHelper.getCheckInPage());
-                  //   }
-                  // }
                   if(box.read(TxtConstant.checkOutBtn)== true){
                     showDialog(
                       barrierDismissible: false,
@@ -271,6 +266,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   }else{
                     Get.toNamed(RouteHelper.getCheckInPage());
                   }
+
                 },
               ),
             ],

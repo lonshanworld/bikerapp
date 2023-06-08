@@ -8,10 +8,25 @@
 		<true/>
 		<key>CFBundleDevelopmentRegion</key>
 		<string>$(DEVELOPMENT_LANGUAGE)</string>
+		<key>UIBackgroundModes</key>
+        <array>
+           <string>fetch</string>
+           <string>remote-notification</string>
+        </array>
+        <key>NSAppleMusicUsageDescription</key>
+        <string>Explain why your app uses music</string>
+        <key>UISupportsDocumentBrowser</key>
+        <true/>
+        <key>LSSupportsOpeningDocumentsInPlace</key>
+        <true/>
+        <key>NSPhotoLibraryUsageDescription</key>
+        <string>Explain why your app uses photo library</string>
 		<key>CFBundleDisplayName</key>
 		<string>Delivery</string>
 		<key>CFBundleExecutable</key>
 		<string>$(EXECUTABLE_NAME)</string>
+		<key>NSPhotoLibraryUsageDescription</key>
+        <string>$(PRODUCT_NAME) uses photos</string>
 		<key>CFBundleIdentifier</key>
 		<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 		<key>CFBundleInfoDictionaryVersion</key>

@@ -18,6 +18,7 @@ import "package:get/get.dart";
 import '../constants/uiconstants.dart';
 import '../controllers/location_controller.dart';
 import '../widgets/customButton_widget.dart';
+import 'chat_screen.dart';
 import 'map_screen.dart';
 
 
@@ -34,7 +35,7 @@ class DropOffScreen extends StatefulWidget {
   State<DropOffScreen> createState() => _DropOffScreenState();
 }
 
-class _DropOffScreenState extends State<DropOffScreen> {
+class _DropOffScreenState extends State<DropOffScreen>  with SingleTickerProviderStateMixin{
 
   final Completer<GoogleMapController> _controller = Completer<GoogleMapController>();
   GoogleMapController? mapController;
@@ -55,6 +56,9 @@ class _DropOffScreenState extends State<DropOffScreen> {
   BitmapDescriptor bikermarkerIcon= BitmapDescriptor.defaultMarker;
   BitmapDescriptor shopMarkerIcon = BitmapDescriptor.defaultMarker;
   OrderDetailModel? orderDetailModel;
+
+  AnimationController? anicontroller;
+  CurvedAnimation? curvedAnimation;
 
 
   _makePhoneCall(String phoneNumber) async {
@@ -184,6 +188,17 @@ class _DropOffScreenState extends State<DropOffScreen> {
   @override
   void initState() {
     super.initState();
+    anicontroller = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 800),
+      reverseDuration: Duration(milliseconds: 500),
+      animationBehavior: AnimationBehavior.preserve,
+    );
+    curvedAnimation = CurvedAnimation(
+      parent: anicontroller!,
+      curve: Curves.bounceIn,
+      reverseCurve: Curves.bounceOut,
+    );
     assignOrder().then((_){
       if(mounted){
         Future.delayed(Duration(seconds: 3),(){
@@ -200,6 +215,7 @@ class _DropOffScreenState extends State<DropOffScreen> {
   void dispose() {
     mapController?.dispose();
     _locationController.stopLocationStream();
+    anicontroller?.dispose();
     super.dispose();
   }
 
@@ -459,53 +475,76 @@ class _DropOffScreenState extends State<DropOffScreen> {
                 SizedBox(
                   height: 10,
                 ),
-                CustomButton(
-                  verticalPadding: 5,
-                  horizontalPadding: 0,
-                  txt: "call".tr,
-                  func: (){
-                    _makePhoneCall(orderDetailModel!.phone!);
-                  },
-                  txtClr: Colors.white,
-                  bgClr: UIConstant.orange,
-                  txtsize: 12,
-                  rad: 5,
-                ),
-                // Row(
-                //   children: [
-                //     Expanded(
-                //       child: CustomButton(
-                //         verticalPadding: 1.5.h,
-                //         horizontalPadding: 0,
-                //         txt: "Call",
-                //         func: (){
-                //           _makePhoneCall(orderDetailModel!.phone!);
-                //         },
-                //         txtClr: Colors.white,
-                //         bgClr: UIConstant.orange,
-                //         txtsize: 12.sp,
-                //         rad: 1.h,
-                //       ),
-                //     ),
-                //     SizedBox(
-                //       width: 2.h,
-                //     ),
-                //     Expanded(
-                //       child: CustomButton(
-                //         verticalPadding: 1.5.h,
-                //         horizontalPadding: 0,
-                //         txt: "Chat",
-                //         func: (){
-                //
-                //         },
-                //         txtClr: Colors.white,
-                //         bgClr: UIConstant.orange,
-                //         txtsize: 12.sp,
-                //         rad: 1.h,
-                //       ),
-                //     ),
-                //   ],
+                // CustomButton(
+                //   verticalPadding: 5,
+                //   horizontalPadding: 0,
+                //   txt: "call".tr,
+                //   func: (){
+                //     _makePhoneCall(orderDetailModel!.phone!);
+                //   },
+                //   txtClr: Colors.white,
+                //   bgClr: UIConstant.orange,
+                //   txtsize: 12,
+                //   rad: 5,
                 // ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: CustomButton(
+                        verticalPadding: 5,
+                        horizontalPadding: 0,
+                        txt: "call".tr,
+                        func: (){
+                          _makePhoneCall(orderDetailModel!.phone!);
+                        },
+                        txtClr: Colors.white,
+                        bgClr: UIConstant.orange,
+                        txtsize: 12,
+                        rad: 5,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 30,
+                    ),
+                    Expanded(
+                      child: CustomButton(
+                        verticalPadding: 5,
+                        horizontalPadding: 0,
+                        txt: "Chat",
+                        func: (){
+                          showModalBottomSheet(
+                            backgroundColor: Colors.transparent,
+                            transitionAnimationController: anicontroller,
+                            isScrollControlled: true,
+                            context: context,
+                            builder: (ctx){
+                              return Container(
+                                height: MediaQuery.of(context).size.height - 70,
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).brightness == Brightness.dark ? UIConstant.bgDark : UIConstant.bgWhite,
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(20),
+                                    topRight: Radius.circular(20),
+                                  ),
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(20),
+                                    topRight: Radius.circular(20),
+                                  ),
+                                  child: ChatScreen(),
+                                ),
+                              );
+                            },);
+                        },
+                        txtClr: Colors.white,
+                        bgClr: UIConstant.orange,
+                        txtsize: 12,
+                        rad: 5,
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),

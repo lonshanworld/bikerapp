@@ -1,10 +1,11 @@
-import "dart:convert";
 
 import "package:delivery/constants/uiconstants.dart";
 import "package:delivery/controllers/cameraImage_controller.dart";
 import "package:delivery/controllers/useraccount_controller.dart";
+import "package:delivery/views/chat_screen.dart";
 import "package:delivery/widgets/customButton_widget.dart";
 import "package:delivery/widgets/customtextfield_widget.dart";
+import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
 import"package:get/get.dart";
 import "package:image_picker/image_picker.dart";
@@ -21,7 +22,7 @@ class ProfileScreen extends StatefulWidget {
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _ProfileScreenState extends State<ProfileScreen>{
 
   final UserAccountController userAccountController = Get.find<UserAccountController>();
   final CameraImageControlller cameraImageControlller = Get.put(CameraImageControlller());
@@ -34,6 +35,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   File? newselectedImage = File('');
 
   bool showdefaultimage = false;
+
+
 
   getCamera(){
     cameraImageControlller.getCamera().then((file){
@@ -83,17 +86,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
+
     nameController.text = userAccountController.bikermodel[0].fullName ??  "";
     nrcController.text = userAccountController.bikermodel[0].nrc ?? "";
     emailController.text = userAccountController.bikermodel[0].email ?? "";
     // checkImageError();
   }
 
-  @override
-  void dispose() {
-    cameraImageControlller.dispose();
-    super.dispose();
-  } // late String img64;
+  // late String img64;
 
 
 
@@ -191,6 +191,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         txt: "upload".tr,
                         func: (){
                           getCamera();
+
+
                         },
                         txtClr: Colors.white,
                         bgClr: UIConstant.orange,
@@ -290,6 +292,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ),
       ),
+      // bottomSheet: AnimatedContainer(
+      //   duration: Duration(seconds: 3),
+      //   curve: Curves.easeInOutCubic,
+      //   height: showBottomlayer ? MediaQuery.of(context).size.height - 100 : 0,
+      //   color: Colors.red,
+      // ),
     );
   }
 }

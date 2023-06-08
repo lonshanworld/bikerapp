@@ -2,6 +2,7 @@ import "dart:async";
 
 import "package:delivery/constants/uiconstants.dart";
 import "package:delivery/controllers/useraccount_controller.dart";
+import "package:delivery/db/db_service.dart";
 import "package:delivery/routehelper.dart";
 import "package:flutter/material.dart";
 import "package:geolocator/geolocator.dart";
@@ -56,7 +57,9 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
     //   } );
     // }
     locationController.getPermission().then((_) async{
-      if(box.read(TxtConstant.accesstoken) == null){
+      print("Is token null ??????????????????? ${box.read(TxtConstant.accesstoken) == null }");
+      if(box.read(TxtConstant.accesstoken) == null || box.read(TxtConstant.refreshtoken) == null){
+
         return Get.offAllNamed(RouteHelper.getLoginPage());
       }else{
         // Get.dialog(const LoadingScreen(), barrierDismissible: false);

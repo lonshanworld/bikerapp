@@ -43,7 +43,7 @@ class SignalRController extends GetxController{
     }
     print(hubConnection.state);
     hubConnection.on("LocationRequest", (res){
-      print(res);
+
       print(hubConnection.state);
       if(hubConnection.state == HubConnectionState.Connected){
         locationController.getPermission().then((_) {
@@ -60,11 +60,10 @@ class SignalRController extends GetxController{
           // }
           locationController.getcurLagLong().then((point)async{
             print("This working ...");
-            await hubConnection.invoke("LocationSend", args: <Object>[
+            await hubConnection.invoke("LocationSend", args: <Object>[res![0]!,
               {"userid": box.read(TxtConstant.user_id),"lat" : point.latitude,"lng" : point.longitude},
-            ]).then((res){
-              print("heytyyyy");
-              print(res);
+            ]).then((response){
+              print(response);
             });
           });
         });
