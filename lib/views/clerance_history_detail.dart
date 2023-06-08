@@ -4,13 +4,13 @@ import 'package:delivery/models/clearance_history_model.dart';
 import 'package:flutter/material.dart';
 import "package:get/get.dart";
 
-
 class ClearanceHistoryDetails extends StatefulWidget {
-  ClearanceHistoryModel data;
-  ClearanceHistoryDetails({
-    required this.data,
-  });
 
+  final ClearanceHistoryModel data;
+  const ClearanceHistoryDetails({
+    Key? key,
+    required this.data,
+  }) : super(key: key);
 
   @override
   State<ClearanceHistoryDetails> createState() => _ClearanceHistoryDetailsState();

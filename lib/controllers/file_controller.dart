@@ -13,6 +13,7 @@ class FileController extends GetxController{
 
       if (result != null) {
         print("Checking file in file controller ---------------------------------------");
+        print(result.files.single.path!);
         return File(result.files.single.path!);
       } else {
         // User canceled the picker
