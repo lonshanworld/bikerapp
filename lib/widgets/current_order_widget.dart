@@ -116,7 +116,7 @@ class _CurrentOrderWidgetState extends State<CurrentOrderWidget> {
                       children: [
                         Text(
                           widget.currentOrderModel.cusName!,
-                          style: UIConstant.small.copyWith(
+                          style: UIConstant.normal.copyWith(
                             fontWeight: FontWeight.bold
                           ),
                         ),
@@ -290,10 +290,10 @@ class _CurrentOrderWidgetState extends State<CurrentOrderWidget> {
                           //   orderId: widget.currentOrderModel.orderId,
                           //   hasButton: true,
                           // ));
-                          Get.toNamed(RouteHelper.getDropOffPage(orderId: widget.currentOrderModel.orderId!));
+                          // Get.toNamed(RouteHelper.getDropOffPage(orderId: widget.currentOrderModel.orderId!));
                           // Get.toNamed(RouteHelper.getOrderSummaryPage(orderId: widget.currentOrderModel.orderId!));
 
-                          // Get.toNamed(RouteHelper.getOrderDetailPage(orderId: widget.currentOrderModel.orderId!, hasButton: true));
+                          Get.toNamed(RouteHelper.getOrderDetailPage(orderId: widget.currentOrderModel.orderId!, hasButton: true));
                         }
                       },
                       txtClr: UIConstant.orange,

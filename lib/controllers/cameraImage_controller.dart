@@ -28,7 +28,7 @@ class CameraImageControlller extends GetxController{
     }
   }
 
-  Future<File?> getGallery()async{
+  Future<File?> getGalleryImage()async{
     try{
       final XFile? photo = await picker.pickImage(
         imageQuality: 50,
@@ -39,6 +39,23 @@ class CameraImageControlller extends GetxController{
       }else{
         File? image = File(photo.path);
         return image;
+      }
+
+    }catch(err){
+      rethrow;
+    }
+  }
+
+  Future<File?> getGalleryVideo()async{
+    try{
+      final XFile? video = await picker.pickVideo(
+        source: ImageSource.gallery,
+      );
+      if(video == null){
+        return null;
+      }else{
+        File? videofile = File(video.path);
+        return videofile;
       }
 
     }catch(err){

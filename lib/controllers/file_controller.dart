@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 
 class FileController extends GetxController{
 
-  Future<File?> getFile()async{
+  Future<PlatformFile?> getFile()async{
     try{
       FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.any,
@@ -14,7 +14,7 @@ class FileController extends GetxController{
       if (result != null) {
         print("Checking file in file controller ---------------------------------------");
         print(result.files.single.path!);
-        return File(result.files.single.path!);
+        return result.files.single;
       } else {
         // User canceled the picker
         return null;
