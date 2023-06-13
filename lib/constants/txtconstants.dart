@@ -3,12 +3,12 @@ class TxtConstant{
   static const String theme = "THEME";
 
   static const String defaultPassword = "Efficient@soft#1982";
-  static const String mainUrl = "https://api.quickfoodmm.com/api/v1/";
-  // static const String mainUrl = "https://analytics-api.quickfoodmm.com/api/v1/";
+  // static const String mainUrl = "https://api.quickfoodmm.com/api/v1/";
+  static const String mainUrl = "https://analytics-api.quickfoodmm.com/api/v1/";
   // static const String mainUrl = "http://192.168.100.130/api/v1/";
 
-  static const String serverUrl = "https://admin.quickfoodmm.com/hub/locations";
-  // static const String serverUrl = "https://analytics.quickfoodmm.com/hub/locations";
+  // static const String serverUrl = "https://admin.quickfoodmm.com/hub/locations";
+  static const String serverUrl = "https://analytics.quickfoodmm.com/hub/locations";
 
   static const String accesstoken = "access_token";
   static const String refreshtoken = "refresh_token";

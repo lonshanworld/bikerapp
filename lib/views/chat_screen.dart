@@ -32,6 +32,7 @@ class _ChatScreenState extends State<ChatScreen> {
     newVideo = null;
   }
 
+
   getImage(){
     cameraImageControlller.getGalleryImage().then((value){
       if(value != null){
@@ -122,66 +123,88 @@ class _ChatScreenState extends State<ChatScreen> {
         children: [
           Positioned(
             top: 0,
-            bottom: 0,
+            bottom: 70,
             left: 0,
             right: 0,
-            child: ListView(
-              reverse: true,
-              padding: EdgeInsets.only(
-                left: 10,
-                right: 10,
-                bottom: 80,
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  verticalDirection: VerticalDirection.up,
+                  children: [
+                    MessageWidget(
+                      isBiker: false,
+                      txt: "from customer",
+                      fileUrl: null,
+                      imageUrl: null,
+                      videoUrl: null,
+                    ),
+                    MessageWidget(
+                      isBiker: true,
+                      txt: "This is message from biker",
+                      fileUrl: null,
+                      imageUrl: null,
+                      videoUrl: null,
+                    ),
+                    MessageWidget(
+                      imageUrl: "https://plus.unsplash.com/premium_photo-1680740103993-21639956f3f0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=388&q=80",
+                      isBiker: true,
+                      txt: null,
+                      fileUrl: null,
+                      videoUrl: null,
+                    ),
+                    MessageWidget(
+                      fileUrl: "https://plus.unsplash.com/premium_photo-1680740103993-21639956f3f0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=388&q=80",
+                      isBiker: true,
+                      txt: null,
+                      imageUrl: null,
+                      videoUrl: null,
+                    ),
+                    MessageWidget(
+                      isBiker: false,
+                      txt: "This is very longgggggggggggggggggggggggg message and testing from customer",
+                      fileUrl: null,
+                      imageUrl: null,
+                      videoUrl: null,
+                    ),
+                    MessageWidget(
+                      imageUrl: "https://www.shutterstock.com/image-vector/crowd-behaviors-measuring-social-sampling-600w-689023369.jpg",
+                      isBiker: false,
+                      txt: null,
+                      fileUrl: null,
+                      videoUrl: null,
+                    ),
+                    MessageWidget(
+                      fileUrl: "https://www.shutterstock.com/image-vector/crowd-behaviors-measuring-social-sampling-600w-689023369.jpg",
+                      isBiker: false,
+                      txt: null,
+                      imageUrl: null,
+                      videoUrl: null,
+                    ),
+                    MessageWidget(
+                      isBiker: true,
+                      txt: "This is longgggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg message from biker",
+                      fileUrl: null,
+                      imageUrl: null,
+                      videoUrl: null,
+                    ),
+                    MessageWidget(
+                      fileUrl: null,
+                      isBiker: false,
+                      txt: null,
+                      imageUrl: null,
+                      videoUrl: "https://www.shutterstock.com/image-vector/crowd-behaviors-measuring-social-sampling-600w-689023369.jpg",
+                    ),
+                    MessageWidget(
+                      fileUrl: null,
+                      isBiker: true,
+                      txt: null,
+                      imageUrl: null,
+                      videoUrl: "https://cdn.videvo.net/videvo_files/video/premium/2020-07/large_watermarked/200727_02_Videvo_Stock_Market_2_Growth_Color_2_preview.mp4",
+                    ),
+                  ],
+                ),
               ),
-              children: [
-                MessageWidget(
-                  isBiker: false,
-                  txt: "from customer",
-                  fileUrl: null,
-                  imageUrl: null,
-                ),
-                MessageWidget(
-                  isBiker: true,
-                  txt: "This is message from biker",
-                  fileUrl: null,
-                  imageUrl: null,
-                ),
-                MessageWidget(
-                  imageUrl: "https://plus.unsplash.com/premium_photo-1680740103993-21639956f3f0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=388&q=80",
-                  isBiker: true,
-                  txt: null,
-                  fileUrl: null,
-                ),
-                MessageWidget(
-                  fileUrl: "https://plus.unsplash.com/premium_photo-1680740103993-21639956f3f0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=388&q=80",
-                  isBiker: true,
-                  txt: null,
-                  imageUrl: null,
-                ),
-                MessageWidget(
-                  isBiker: false,
-                  txt: "This is very longgggggggggggggggggggggggg message and testing from customer",
-                  fileUrl: null,
-                  imageUrl: null,
-                ),
-                MessageWidget(
-                  imageUrl: "https://www.shutterstock.com/image-vector/crowd-behaviors-measuring-social-sampling-600w-689023369.jpg",
-                  isBiker: false,
-                  txt: null,
-                  fileUrl: null,
-                ),
-                MessageWidget(
-                  fileUrl: "https://www.shutterstock.com/image-vector/crowd-behaviors-measuring-social-sampling-600w-689023369.jpg",
-                  isBiker: false,
-                  txt: null,
-                  imageUrl: null,
-                ),
-                MessageWidget(
-                  isBiker: true,
-                  txt: "This is longgggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg message from biker",
-                  fileUrl: null,
-                  imageUrl: null,
-                ),
-              ],
             ),
           ),
           if(newFile != null || newImage != null || newVideo != null)Positioned(
