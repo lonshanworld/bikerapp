@@ -168,4 +168,26 @@ class ErrorHandler{
     );
   }
 
+
+  // handleDBerror(String title, String txt, VoidCallback Funcs ){
+  //   Get.back();
+  //   showDialog(
+  //     context: Get.context!,
+  //     barrierDismissible: false,
+  //     builder: (ctx){
+  //       return ErrorScreen(
+  //         // title: "Unknown Error",
+  //         // txt: txt,
+  //         title: title,
+  //         txt: txt,
+  //         btntxt: "Click to leave the app",
+  //         Func: (){
+  //           Funcs();
+  //           logOutService.logout(Get.context!);
+  //           ForceExitAppService().exitApp();
+  //         },
+  //       );
+  //     },
+  //   );
+  // }
 }

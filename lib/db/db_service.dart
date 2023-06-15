@@ -1,11 +1,17 @@
 import 'dart:convert';
 
+import 'package:delivery/error_handlers/error_handlers.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_exit_app/flutter_exit_app.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_disposable.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../models/noti_model.dart';
+import '../views/loading_screen.dart';
 
 @pragma('vm:entry-point')
 class DBservices{
@@ -20,12 +26,13 @@ class DBservices{
     String path = join(databasepath, _tablename);
     print("This is db path -----------------------------------------------------------$path");
     if(_db != null){
-      // await deleteDatabase(path);
+      print("There is db in data");
+      // await openDatabase(path);
       return ;
     }
 
     try{
-      // await deleteDatabase(path);
+      print("if the db is null");
       _db = await openDatabase(
           path,
           version: _version,
@@ -45,7 +52,34 @@ class DBservices{
           }
       );
     }catch(err){
-      rethrow;
+      await deleteDatabase(path);
+      print("There is error in db");
+      _db = await openDatabase(
+          path,
+          version: _version,
+          onCreate: (db, version){
+            return db.execute(
+                "CREATE TABLE $_tablename("
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    "notiTitle STRING,"
+                    "orderId STRING,"
+                    "notiBody STRING,"
+                    "notiData TEXT,"
+                    "detailDate STRING,"
+                    "Date STRING,"
+                    "showFlag STRING,"
+                    "NotiType STRING)"
+            );
+          }
+      );
+      if(defaultTargetPlatform == TargetPlatform.iOS){
+        FlutterExitApp.exitApp(iosForceExit: true);
+        SystemNavigator.pop();
+      }if(defaultTargetPlatform ==  TargetPlatform.android){
+        SystemNavigator.pop();
+      }else{
+        SystemNavigator.pop();
+      }
     }
   }
 
@@ -103,10 +137,15 @@ class DBservices{
 
   @pragma('vm:entry-point')
   static deleteAllNoti()async{
+    print("delete db");
     return await _db!.execute("DELETE FROM $_tablename");
     // var databasepath = await getDatabasesPath();
     // String path = join(databasepath, _tablename);
     // // await _db!.close();
+    // var databasepath = await getDatabasesPath();
+    // String path = "$databasepath$_tablename";
+
+    // String path = join(databasepath, _tablename);
     // return await deleteDatabase(path);
   }
 }

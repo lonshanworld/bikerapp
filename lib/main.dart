@@ -138,7 +138,7 @@ void main() async{
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   // Get.put(LifeCycleController());
   await GetStorage.init();
-  // await DBservices.initDB();
+  await DBservices.initDB();
   GlobalBindings().dependencies();
   await Firebase.initializeApp();
 
