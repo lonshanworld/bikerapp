@@ -12,6 +12,7 @@ import "package:delivery/controllers/useraccount_controller.dart";
 import "package:delivery/error_handlers/error_screen.dart";
 import "package:delivery/models/schedule_model.dart";
 import "package:delivery/routehelper.dart";
+import "package:delivery/views/chat_screen.dart";
 import "package:delivery/views/drawer.dart";
 import "package:delivery/views/loading_screen.dart";
 import "package:flutter/material.dart";
@@ -121,7 +122,7 @@ class _HomeScreenState extends State<HomeScreen> {
       if(diff.inSeconds > 0){
         timer = Timer(
           Duration(seconds: diff.inSeconds),
-          forcecheckout,
+          forcecheckout(),
         );
       }else{
         // if(mounted){
@@ -129,7 +130,7 @@ class _HomeScreenState extends State<HomeScreen> {
         //     showErrorbox = true;
         //   });
         // }
-        forcecheckout;
+        forcecheckout();
       }
     }
     // print("This is check out detail $checkoutall");  DateTime.parse("${checkoutDay}T${checkoutTime}")
@@ -173,6 +174,7 @@ class _HomeScreenState extends State<HomeScreen> {
     // DBservices.initDB().then((_){
     //   loadData();
     // });
+    chatSignalControlller.sendSignal();
     loadData();
   }
 
@@ -289,7 +291,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 width: deviceWidth > 500 ? deviceWidth * 0.8 : deviceWidth,
                 child: ListView(
                   children: [
-                    // ElevatedButton(onPressed: ()=>{chatSignalControlller.sendSignal()}, child: Text("testing")),
+                    // ElevatedButton(onPressed: ()=>{
+                    //   Get.to(()=>ChatScreen(
+                    //     orderId: "K9UF-M6C9-0V3O-SGZO",
+                    //   ))
+                    // }, child: Text("testing")),
                     Padding(
                       padding: EdgeInsets.only(
                         left: 20,

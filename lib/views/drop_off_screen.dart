@@ -532,7 +532,9 @@ class _DropOffScreenState extends State<DropOffScreen>  with SingleTickerProvide
                                     topLeft: Radius.circular(20),
                                     topRight: Radius.circular(20),
                                   ),
-                                  child: ChatScreen(),
+                                  child: ChatScreen(
+                                    orderId: orderDetailModel!.orderId!,
+                                  ),
                                 ),
                               );
                             },);
