@@ -3,6 +3,7 @@ import "dart:async";
 
 import "package:delivery/constants/txtconstants.dart";
 import "package:delivery/constants/uiconstants.dart";
+import "package:delivery/controllers/chatsignal_controller.dart";
 import "package:delivery/controllers/check_in_out_controller.dart";
 import "package:delivery/controllers/noti_controller.dart";
 import "package:delivery/controllers/order_controller.dart";
@@ -42,6 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final OrderController orderController = Get.find<OrderController>();
   final CheckInOutController checkInOutController = Get.find<CheckInOutController>();
   final ScheduleController scheduleController = Get.find<ScheduleController>();
+  final ChatSignalControlller chatSignalControlller = Get.put(ChatSignalControlller());
 
   // final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
   ScheduleModel? checkinModel;
@@ -287,6 +289,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 width: deviceWidth > 500 ? deviceWidth * 0.8 : deviceWidth,
                 child: ListView(
                   children: [
+                    // ElevatedButton(onPressed: ()=>{chatSignalControlller.sendSignal()}, child: Text("testing")),
                     Padding(
                       padding: EdgeInsets.only(
                         left: 20,
