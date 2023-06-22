@@ -167,54 +167,54 @@ class _ChatScreenState extends State<ChatScreen> {
             :
         Stack(
           children: [
-            // Positioned(
-            //   top: 0,
-            //   bottom: 70,
-            //   left: 0,
-            //   right: 0,
-            //   child: Obx((){
-            //     return ListView(
-            //       padding: EdgeInsets.symmetric(
-            //           horizontal: 10
-            //       ),
-            //       reverse: true,
-            //       children: List.generate(chatSignalControlller.chatlist.length, (index){
-            //         ChatMessageModel item = chatSignalControlller.chatlist[index];
-            //         // print("this is list message");
-            //         // print(item.chatAttachment);
-            //         return MessageWidget(
-            //             isBiker: item.isBiker!,
-            //             txt: item.message,
-            //             imageUrl: item.chatAttachment,
-            //         );
-            //       }),
-            //     );
-            //   }),
-            // ),
             Positioned(
               top: 0,
               bottom: 70,
               left: 0,
               right: 0,
-              child: ListView(
-                padding: EdgeInsets.symmetric(
-                    horizontal: 10
-                ),
-                reverse: true,
-                children: [
-                  MessageWidget(
-                    isBiker: false,
-                    txt: null,
-                    imageUrl: "https://www.shutterstock.com/image-vector/free-sample-outline-glyph-icon-600w-1798019332.jpg",
+              child: Obx((){
+                return ListView(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: 10
                   ),
-                  MessageWidget(
-                    isBiker: true,
-                    txt: null,
-                    imageUrl: "https://www.shutterstock.com/image-vector/free-sample-outline-glyph-icon-600w-1798019332.jpg",
-                  ),
-                ],
-              ),
+                  reverse: true,
+                  children: List.generate(chatSignalControlller.chatlist.length, (index){
+                    ChatMessageModel item = chatSignalControlller.chatlist[index];
+                    // print("this is list message");
+                    // print(item.chatAttachment);
+                    return MessageWidget(
+                        isBiker: item.isBiker!,
+                        txt: item.message,
+                        imageUrl: item.chatAttachment,
+                    );
+                  }),
+                );
+              }),
             ),
+            // Positioned(
+            //   top: 0,
+            //   bottom: 70,
+            //   left: 0,
+            //   right: 0,
+            //   child: ListView(
+            //     padding: EdgeInsets.symmetric(
+            //         horizontal: 10
+            //     ),
+            //     reverse: true,
+            //     children: [
+            //       MessageWidget(
+            //         isBiker: false,
+            //         txt: null,
+            //         imageUrl: "https://www.shutterstock.com/image-vector/free-sample-outline-glyph-icon-600w-1798019332.jpg",
+            //       ),
+            //       MessageWidget(
+            //         isBiker: true,
+            //         txt: null,
+            //         imageUrl: "https://www.shutterstock.com/image-vector/free-sample-outline-glyph-icon-600w-1798019332.jpg",
+            //       ),
+            //     ],
+            //   ),
+            // ),
             // if(newFile != null || newImage != null || newVideo != null)Positioned(
             //   bottom: 70,
             //   left: 0,

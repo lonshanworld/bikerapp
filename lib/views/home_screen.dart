@@ -122,7 +122,7 @@ class _HomeScreenState extends State<HomeScreen> {
       if(diff.inSeconds > 0){
         timer = Timer(
           Duration(seconds: diff.inSeconds),
-          forcecheckout(),
+          forcecheckout,
         );
       }else{
         // if(mounted){

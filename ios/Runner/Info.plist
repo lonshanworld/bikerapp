@@ -19,10 +19,11 @@
         <true/>
         <key>LSSupportsOpeningDocumentsInPlace</key>
         <true/>
-        <key>NSPhotoLibraryUsageDescription</key>
-        <string>Explain why your app uses photo library</string>
+
 		<key>CFBundleDisplayName</key>
 		<string>Delivery</string>
+		<key>NSPhotoLibraryAddUsageDescription</key>
+        <string>Add image</string>
 		<key>NSAppTransportSecurity</key>
         <dict>
             <key>NSAllowsArbitraryLoads</key><true/>

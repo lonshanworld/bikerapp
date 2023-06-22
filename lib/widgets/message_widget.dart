@@ -31,8 +31,8 @@ class MessageWidget extends StatefulWidget {
 
 class _MessageWidgetState extends State<MessageWidget> {
 
-  int percentage = 0;
-  bool showdownloadIndicator = false;
+  // int percentage = 0;
+  // bool showdownloadIndicator = false;
   bool showComplete = false;
 
   ReceivePort _port = ReceivePort();
@@ -46,7 +46,12 @@ class _MessageWidgetState extends State<MessageWidget> {
       String id = data[0];
       DownloadTaskStatus status = DownloadTaskStatus(data[1]);
       int progress = data[2];
-      setState((){ });
+      setState((){
+        print("This is in download init");
+        print(id);
+        print(status);
+        print(progress);
+      });
     });
 
     FlutterDownloader.registerCallback(downloadCallback);
@@ -65,10 +70,10 @@ class _MessageWidgetState extends State<MessageWidget> {
   }
 
   downloadfileFunc(String fileurl)async{
+    print("Inside downloadfile func");
     final directory = await getApplicationDocumentsDirectory();
     final taskId = await FlutterDownloader.enqueue(
-      url: 'your download link',
-      headers: {}, // optional: header send with url (auth token etc)
+      url: fileurl,
       savedDir: directory.path,
       showNotification: true, // show download progress in status bar (for Android)
       openFileFromNotification: true, // click on notification to open downloaded file (for Android)
@@ -76,7 +81,10 @@ class _MessageWidgetState extends State<MessageWidget> {
       timeout: 30000,
       saveInPublicStorage: true,
     );
-
+    setState(() {
+      print(taskId);
+      showComplete = true;
+    });
     await FlutterDownloader.registerCallback(downloadCallback); // callback is a top-level or static function
   }
 
@@ -84,19 +92,19 @@ class _MessageWidgetState extends State<MessageWidget> {
   Widget build(BuildContext context) {
 
     List<Widget> generalwidgetfordownload = [
-     CircularPercentIndicator(
-        radius: 20,
-        lineWidth: 5,
-        percent: percentage/100,
-        progressColor: UIConstant.orange,
-        backgroundColor: Colors.grey.withOpacity(0.5),
-        center: Text(
-          "$percentage%",
-          style: UIConstant.tinytext.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
+     // CircularPercentIndicator(
+     //    radius: 20,
+     //    lineWidth: 5,
+     //    percent: percentage/100,
+     //    progressColor: UIConstant.orange,
+     //    backgroundColor: Colors.grey.withOpacity(0.5),
+     //    center: Text(
+     //      "$percentage%",
+     //      style: UIConstant.tinytext.copyWith(
+     //        fontWeight: FontWeight.bold,
+     //      ),
+     //    ),
+     //  ),
       Icon(
         Icons.check_circle_outline,
         size: 24,
@@ -131,7 +139,18 @@ class _MessageWidgetState extends State<MessageWidget> {
               ];
             },
           ),
-          if(showComplete == false && showdownloadIndicator == false)IconButton(
+          // if(showComplete == false && showdownloadIndicator == false)IconButton(
+          //   tooltip: "Download",
+          //   onPressed: (){
+          //     downloadfileFunc(widget.imageUrl!);
+          //   },
+          //   icon: Icon(
+          //     Icons.download_for_offline_outlined,
+          //     size: 24,
+          //     color: Theme.of(context).primaryColor,
+          //   ),
+          // ),
+          if(showComplete == false)IconButton(
             tooltip: "Download",
             onPressed: (){
               downloadfileFunc(widget.imageUrl!);
@@ -142,8 +161,8 @@ class _MessageWidgetState extends State<MessageWidget> {
               color: Theme.of(context).primaryColor,
             ),
           ),
-          if(showdownloadIndicator)generalwidgetfordownload[0],
-          if(showComplete)generalwidgetfordownload[1],
+          // if(showdownloadIndicator)generalwidgetfordownload[0],
+          if(showComplete)generalwidgetfordownload[0],
         ],
       );
     }
