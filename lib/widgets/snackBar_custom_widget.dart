@@ -44,12 +44,14 @@ class CustomGlobalSnackbar{
                 children: [
                   Icon(
                     icon,
-                    size: 28,
-                    color: Theme.of(context).brightness == Brightness.dark ? Colors.red : Colors.red.shade800,
+                    size: 30,
+                    color: Theme.of(context).brightness == Brightness.dark ? Colors.red : Colors.purple.shade700,
                   ),
                   Text(
                     title,
-                    style: UIConstant.minititle,
+                    style: UIConstant.minititle.copyWith(
+                      fontWeight: FontWeight.w900,
+                    ),
                   ),
                 ],
               ),
@@ -58,7 +60,9 @@ class CustomGlobalSnackbar{
               ),
               Text(
                 txt,
-                style: UIConstant.normal,
+                style: UIConstant.normal.copyWith(
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ],
           ),

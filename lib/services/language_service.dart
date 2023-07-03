@@ -123,7 +123,7 @@ class LanguageKeyStrings extends Translations{
       "payment" : "Payment",
       "noclearanceitem" : "There is no Item in clearance",
       "cashondelivery": "Cash-on Delivery",
-      "m" :"m",
+      "km" :"Km",
       "clearsign" : "Clear Sign",
       "cusinfo" : "Customer Info",
       "note" : "Note",
@@ -138,6 +138,9 @@ class LanguageKeyStrings extends Translations{
       "call": "Call",
       "amount" : "Amount",
       "clicktocheckout": "Please click to Check-out",
+      "shopinfo" : "Shop Info",
+      "finalconfirmtitle" : "Order Delivery finished!",
+      "finalconfirmtext" : "Thank you for your order",
     },
     "my_MM": {
       "dashboard": "အားလုံး",
@@ -229,7 +232,7 @@ class LanguageKeyStrings extends Translations{
       "payment" : "ငွေပေးချေမှု",
       "noclearanceitem" : "စာရင်းရှင်းလင်းမှု မရှိပါ",
       "cashondelivery": "Deli သို့ငွေပေးချေမည်",
-      "m": "မီတာ",
+      "km": "ကီလိုမီတာ",
       "clearsign" : "လတ်မှတ်ဖျက်မည်",
       "cusinfo" : "ဝယ်သူအချက်အလက်",
       "note" : "မှတ်ချက်",
@@ -244,6 +247,9 @@ class LanguageKeyStrings extends Translations{
       "call": "ဖုန်းခေါ်မည်",
       "amount" : "ပမာဏ",
       "clicktocheckout": "ကျေးဇူးပြု၍ ထွက်ခွာရန်နှိပ်ပါ",
+      "shopinfo" : "ဆိုင်အချက်အလက်",
+      "finalconfirmtitle" : "အော်ဒါပို့ဆောင်ခြင်းပြီးဆုံးသည်!",
+      "finalconfirmtext" : "သင်၏အော်ဒါမှာယူခြင်းအတွက်ကျေးဇူးတင်ပါသည်",
     },
   };
 }

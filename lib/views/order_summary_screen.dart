@@ -71,6 +71,24 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double deviceHeight = MediaQuery.of(context).size.height;
 
+    Widget pricerowitem({required String name, required int price}){
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            name,
+            style: UIConstant.normal,
+          ),
+          Text(
+            "${price} ${"mmk".tr}",
+            style: UIConstant.normal.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      );
+    }
+
     final control = HandSignatureControl(
       threshold: 3.0,
       smoothRatio: 0.65,
@@ -185,75 +203,209 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
                           Radius.circular(10),
                         ),
                       ),
+                      // child: Column(
+                      //   children: [
+                      //     Row(
+                      //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //       children: [
+                      //         Text(
+                      //           "ordertotal".tr,
+                      //           style: UIConstant.small,
+                      //         ),
+                      //         Text(
+                      //           "${_orderDetailModel!.totalOnlinePrice} ${"mmk".tr}",
+                      //           style: UIConstant.small.copyWith(
+                      //             fontWeight: FontWeight.bold,
+                      //           ),
+                      //         ),
+                      //       ],
+                      //     ),
+                      //     SizedBox(
+                      //       height: 5,
+                      //     ),
+                      //     Row(
+                      //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //       children: [
+                      //         Text(
+                      //           "deliverycharges".tr,
+                      //           style: UIConstant.small,
+                      //         ),
+                      //         Text(
+                      //           "${_orderDetailModel!.deliCharges} ${"mmk".tr}",
+                      //           style: UIConstant.small
+                      //               .copyWith(fontWeight: FontWeight.bold),
+                      //         ),
+                      //       ],
+                      //     ),
+                      //     SizedBox(
+                      //       height: 5,
+                      //     ),
+                      //     Row(
+                      //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //       children: [
+                      //         Text(
+                      //           "cashcollected".tr,
+                      //           style: UIConstant.small,
+                      //         ),
+                      //         Text(
+                      //           "${_orderDetailModel!.totalOnlinePrice! + _orderDetailModel!.deliCharges!} ${"mmk".tr}",
+                      //           style: UIConstant.small.copyWith(
+                      //             fontWeight: FontWeight.bold,
+                      //           ),
+                      //         ),
+                      //       ],
+                      //     ),
+                      //     SizedBox(
+                      //       height: 5,
+                      //     ),
+                      //     Row(
+                      //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //       children: [
+                      //         Text(
+                      //           "vat".tr,
+                      //           style: UIConstant.small,
+                      //         ),
+                      //         Text(
+                      //           "${_orderDetailModel!.tax} ${"mmk".tr}",
+                      //           style: UIConstant.small.copyWith(
+                      //             fontWeight: FontWeight.bold,
+                      //           ),
+                      //         ),
+                      //       ],
+                      //     ),
+                      //   ],
+                      // ),
                       child: Column(
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "ordertotal".tr,
-                                style: UIConstant.small,
-                              ),
-                              Text(
-                                "${_orderDetailModel!.totalOnlinePrice} ${"mmk".tr}",
-                                style: UIConstant.small.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
+                          // Row(
+                          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //   children: [
+                          //     Text(
+                          //       "${"order".tr} ${"total".tr}",
+                          //       style: UIConstant.normal,
+                          //     ),
+                          //     Text(
+                          //       "${_orderDetailModel.totalOnlinePrice} ${"mmk".tr}",
+                          //       style: UIConstant.normal.copyWith(
+                          //         fontWeight: FontWeight.bold,
+                          //       ),
+                          //     ),
+                          //   ],
+                          // ),
+                          pricerowitem(name: "${"order".tr} ${"total".tr}", price: _orderDetailModel!.totalPrice!.toInt()),
                           SizedBox(
-                            height: 5,
+                            height: 10,
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "deliverycharges".tr,
-                                style: UIConstant.small,
-                              ),
-                              Text(
-                                "${_orderDetailModel!.deliCharges} ${"mmk".tr}",
-                                style: UIConstant.small
-                                    .copyWith(fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
+                          // Row(
+                          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //   children: [
+                          //     Text(
+                          //       "deliverycharges".tr,
+                          //       style: UIConstant.normal,
+                          //     ),
+                          //     Text(
+                          //       "${_orderDetailModel.deliCharges} ${"mmk".tr}",
+                          //       style: UIConstant.normal.copyWith(
+                          //         fontWeight: FontWeight.bold,
+                          //       ),
+                          //     ),
+                          //   ],
+                          // ),
+                          pricerowitem(name: "Discount", price: _orderDetailModel!.discountAmount!.toInt()),
                           SizedBox(
-                            height: 5,
+                            height: 10,
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "cashcollected".tr,
-                                style: UIConstant.small,
-                              ),
-                              Text(
-                                "${_orderDetailModel!.totalOnlinePrice! + _orderDetailModel!.deliCharges!} ${"mmk".tr}",
-                                style: UIConstant.small.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
+                          // Row(
+                          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //   children: [
+                          //     Text(
+                          //       "cashcollected".tr,
+                          //       style: UIConstant.normal,
+                          //     ),
+                          //     Text(
+                          //       "${_orderDetailModel.totalOnlinePrice! + _orderDetailModel.deliCharges!} ${"mmk".tr}",
+                          //       style: UIConstant.normal.copyWith(
+                          //         fontWeight: FontWeight.bold,
+                          //       ),
+                          //     ),
+                          //   ],
+                          // ),
+                          pricerowitem(name: "Net Total", price: _orderDetailModel!.totalOnlinePrice!.toInt()),
                           SizedBox(
-                            height: 5,
+                            height: 10,
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "vat".tr,
-                                style: UIConstant.small,
-                              ),
-                              Text(
-                                "${_orderDetailModel!.tax} ${"mmk".tr}",
-                                style: UIConstant.small.copyWith(
-                                  fontWeight: FontWeight.bold,
+                          pricerowitem(name: "Container Charges", price: _orderDetailModel!.containerCharges!.toInt()),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          if(_orderDetailModel!.paymentType?.toLowerCase() == "credit")pricerowitem(
+                            name: "Credit Charges",
+                            price: _orderDetailModel!.creditCharges!.toInt(),
+                          ),
+                          if(_orderDetailModel!.paymentType?.toLowerCase() == "credit")SizedBox(
+                            height: 10,
+                          ),
+                          if(_orderDetailModel!.promotAmt!.toInt() > 0 )pricerowitem(
+                            name: "Promo Amt",
+                            price: _orderDetailModel!.promotAmt!.toInt(),
+                          ),
+                          if(_orderDetailModel!.promotAmt!.toInt() > 0 )SizedBox(
+                            height: 10,
+                          ),
+                          pricerowitem(name: "vat".tr, price: _orderDetailModel!.tax!.toInt()),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          pricerowitem(name: "Delivery Charges", price: _orderDetailModel!.deliCharges!.toInt()),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          if(_orderDetailModel!.tipsMoney!.toInt() > 0 )pricerowitem(
+                            name: "Sub Total",
+                            price: _orderDetailModel!.subTotal!.toInt(),
+                          ),
+                          if(_orderDetailModel!.tipsMoney!.toInt() > 0 )SizedBox(
+                            height: 10,
+                          ),
+                          if(_orderDetailModel!.tipsMoney!.toInt() > 0 )pricerowitem(
+                            name: "Tips",
+                            price: _orderDetailModel!.tipsMoney!.toInt(),
+                          ),
+                          if(_orderDetailModel!.tipsMoney!.toInt() > 0 )SizedBox(
+                            height: 10,
+                          ),
+                          // Row(
+                          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //   children: [
+                          //     Text(
+                          //       "vat".tr,
+                          //       style: UIConstant.normal,
+                          //     ),
+                          //     Text(
+                          //       "${_orderDetailModel.tax} ${"mmk".tr}",
+                          //       style: UIConstant.normal.copyWith(
+                          //         fontWeight: FontWeight.bold,
+                          //       ),
+                          //     ),
+                          //   ],
+                          // ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 50,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Total",
+                                  style: UIConstant.minititle,
                                 ),
-                              ),
-                            ],
+                                Text(
+                                  "${_orderDetailModel!.grandTotal} ${"mmk".tr}",
+                                  style: UIConstant.minititle,
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
@@ -562,9 +714,12 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
                                             // for e-sign
                                             Get.dialog(LoadingScreen(), barrierDismissible: false);
                                             orderController.bikerDropOff(_orderDetailModel!.orderId!).then((_){
+
                                               Get.back();
-                                              Get.offAllNamed(RouteHelper.getHomePage());
+                                              Get.toNamed(RouteHelper.getFinalSuccessPage(title: "finalconfirmtitle".tr, txt: "finalconfirmtext".tr));
                                             });
+                                            
+                                            // Get.toNamed(RouteHelper.getFinalSuccessPage(title: "finalconfirmtitle".tr, txt: "finalconfirmtext".tr));
                                           },
                                           txtClr: Colors.white,
                                           bgClr: UIConstant.orange,

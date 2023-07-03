@@ -46,6 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final ScheduleController scheduleController = Get.find<ScheduleController>();
   final ChatSignalControlller chatSignalControlller = Get.put(ChatSignalControlller());
 
+
   // final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
   ScheduleModel? checkinModel;
   final box = GetStorage();
@@ -174,8 +175,9 @@ class _HomeScreenState extends State<HomeScreen> {
     // DBservices.initDB().then((_){
     //   loadData();
     // });
-    chatSignalControlller.sendSignal();
-    loadData();
+    chatSignalControlller.sendSignal().then((_){
+      loadData();
+    });
   }
 
 

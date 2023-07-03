@@ -25,57 +25,52 @@ class OrderController extends GetxController{
 
       for(int e = 0 ; e < info.length; e++){
         dynamic data = info[e];
-        List<OrderChoice> _orderChoices = [];
-        if( data["orderChoices"] != null &&  data["orderChoices"] != [] && data["orderChoices"] != "null"){
-          for(int a = 0; a < data["orderChoices"].length; a++){
-            OrderChoice _neworderChoice = OrderChoice(
-              itemId: data["orderChoices"][a]["itemId"].toString(),
-              citemId: data["orderChoices"][a]["citemid"],
-              citemName: data["orderChoices"][a]["citemName"],
-              orderId: data["orderChoices"][a]["orderId"],
-              uniqueId: data["orderChoices"][a]["uniqueId"],
-              onlinePrice: data["orderChoices"][a]["onlinePrice"],
-              price: data["orderChoices"][a]["price"],
-              contractPrice: data["orderChoices"][a]["contractPrice"],
-            );
-            _orderChoices.add(_neworderChoice);
+        List<OrderChoice> orderchoiceList = [];
+        if(data["orderChoices"] != null){
+          for(int a=0; a < data["orderChoices"].length; a++){
+            if(!orderchoiceList.contains(data["orderChoices"][a])){
+              OrderChoice orderChoice = OrderChoice(
+                citemId: data["orderChoices"][a]["citemid"],
+                citemName: data["orderChoices"][a]["citemName"],
+                onlinePrice: data["orderChoices"][a]["onlinePrice"],
+                price: data["orderChoices"][a]["price"],
+                contractPrice: data["orderChoices"][a]["contractPrice"],
+              );
+              orderchoiceList.add(orderChoice);
+            }
           }
-        }else{
-          print("This is null in order choices");
         }
 
-        List<OrderItem> _orderItems = [];
-        if(data["orderItems"] != null && data["orderItems"] != [] && data["orderItems"] != "null"){
+        List<OrderItem> orderitemList = [];
+        if(data["orderItems"] != null){
           for(int b = 0; b < data["orderItems"].length; b++){
-
-            List<OrderChoice> _choicesforsingleItem = [];
-            dynamic _uniqueId = json.decode(data["orderItems"][b]["uniqueId"]) == 0 ? [] : json.decode(data["orderItems"][b]["uniqueId"]);
-            for(int c = 0; c < _orderChoices.length; c++){
-              int? _citemid = _orderChoices[c].citemId;
-              String? _itemid = _orderChoices[c].itemId;
-              if(_uniqueId.contains(_citemid) && data["orderItems"][b]["itemId"] == _itemid){
-                _choicesforsingleItem.add(_orderChoices[c]);
+            if(!orderitemList.contains(data["orderItems"][b])){
+              List<OrderChoice> orderchoiceforsingleitem = [];
+              List idlist=  json.decode(data["orderItems"][b]["uniqueId"]) == 0 ? [] : json.decode(data["orderItems"][b]["uniqueId"]);
+              for(int c = 0; c <idlist.length; c++){
+                OrderChoice choiceitem = orderchoiceList.firstWhere((element) => element.citemId == idlist[c]);
+                orderchoiceforsingleitem.add(choiceitem);
               }
-            }
-            OrderItem _neworderItem = OrderItem(
-              orderId: data["orderItems"][b]["orderId"],
-              itemId: data["orderItems"][b]["itemId"],
-              itemName: data["orderItems"][b]["itemName"],
-              uniqueId: data["orderItems"][b]["uniqueId"],
-              shopId: data["orderItems"][b]["shopId"],
-              shopName: data["orderItems"][b]["shopName"],
-              image: data["orderItems"][b]["image"],
-              qty: data["orderItems"][b]["qty"],
-              contractPrice: data["orderItems"][b]["contractPrice"],
-              price: data["orderItems"][b]["price"],
-              onlinePrice: data["orderItems"][b]["onlinePrice"],
-              specialRequest: data["orderItems"][b]["specialRequest"],
-              orderChoices: _choicesforsingleItem,
-              pickupFlag: data["orderItems"][b]["pickupFlag"],
-              shopConfirm:  data["orderItems"][b]["shopConfirm"],
-            );
 
-            _orderItems.add(_neworderItem);
+              OrderItem orderitem = OrderItem(
+                orderId: data["orderItems"][b]["orderId"],
+                itemId: data["orderItems"][b]["itemId"],
+                itemName: data["orderItems"][b]["itemName"],
+                uniqueId: data["orderItems"][b]["uniqueId"],
+                shopId: data["orderItems"][b]["shopId"],
+                shopName: data["orderItems"][b]["shopName"],
+                image: data["orderItems"][b]["image"],
+                qty: data["orderItems"][b]["qty"],
+                contractPrice: data["orderItems"][b]["contractPrice"],
+                price: data["orderItems"][b]["price"],
+                onlinePrice: data["orderItems"][b]["onlinePrice"],
+                specialRequest: data["orderItems"][b]["specialRequest"],
+                orderChoices: orderchoiceforsingleitem,
+                pickupFlag: data["orderItems"][b]["pickupFlag"],
+                shopConfirm:  data["orderItems"][b]["shopConfirm"],
+              );
+              orderitemList.add(orderitem);
+            }
           }
         }
 
@@ -111,7 +106,7 @@ class OrderController extends GetxController{
           grandTotal: data["grandTotal"],
           orderStatus: data["orderStatus"],
           bikerFees: data["bikerFees"] ?? 0,
-          orderItems: _orderItems,
+          orderItems: orderitemList,
           containerCharges: data["containerCharges"],
           orderComment: data["orderComment"],
           orderType: data["orderType"],
@@ -134,56 +129,52 @@ class OrderController extends GetxController{
     http.Response response = await service.getSingleOrderDetail(orderId);
     var rawdata = json.decode(response.body);
     var data = rawdata["data"];
-    List<OrderChoice> _orderChoices = [];
-    // print(data["orderChoices"]);
-    if( data["orderChoices"] != [] && data["orderChoices"] != null && data["orderChoices"] == "null"){
-      for(int a = 0; a < data["orderChoices"].length; a++){
-        OrderChoice _neworderChoice = OrderChoice(
-          itemId: data["orderChoices"][a]["itemId"].toString(),
-          citemId: data["orderChoices"][a]["citemid"],
-          citemName: data["orderChoices"][a]["citemName"],
-          orderId: data["orderChoices"][a]["orderId"],
-          uniqueId: data["orderChoices"][a]["uniqueId"],
-          onlinePrice: data["orderChoices"][a]["onlinePrice"],
-          price: data["orderChoices"][a]["price"],
-          contractPrice: data["orderChoices"][a]["contractPrice"],
-        );
-        _orderChoices.add(_neworderChoice);
+    List<OrderChoice> orderchoiceList = [];
+    if(data["orderChoices"] != []){
+      for(int a=0; a < data["orderChoices"].length; a++){
+        if(!orderchoiceList.contains(data["orderChoices"][a])){
+          OrderChoice orderChoice = OrderChoice(
+            citemId: data["orderChoices"][a]["citemid"],
+            citemName: data["orderChoices"][a]["citemName"],
+            onlinePrice: data["orderChoices"][a]["onlinePrice"],
+            price: data["orderChoices"][a]["price"],
+            contractPrice: data["orderChoices"][a]["contractPrice"],
+          );
+          orderchoiceList.add(orderChoice);
+        }
       }
     }
 
-    List<OrderItem> _orderItems = [];
-    if(data["orderItems"] != [] && data["orderItems"] != null && data["orderItems"] != "null"){
+    List<OrderItem> orderitemList = [];
+    if(data["orderItems"] != []){
       for(int b = 0; b < data["orderItems"].length; b++){
-
-        List<OrderChoice> _choicesforsingleItem = [];
-        dynamic _uniqueId = json.decode(data["orderItems"][b]["uniqueId"]) == 0 ? [] : json.decode(data["orderItems"][b]["uniqueId"]);
-        for(int c = 0; c < _orderChoices.length; c++){
-          int? _citemid = _orderChoices[c].citemId;
-          String? _itemid = _orderChoices[c].itemId;
-          if(_uniqueId.contains(_citemid) && data["orderItems"][b]["itemId"] == _itemid){
-            _choicesforsingleItem.add(_orderChoices[c]);
+        if(!orderitemList.contains(data["orderItems"][b])){
+          List<OrderChoice> orderchoiceforsingleitem = [];
+          List idlist=  json.decode(data["orderItems"][b]["uniqueId"]) == 0 ? [] : json.decode(data["orderItems"][b]["uniqueId"]);
+          for(int c = 0; c <idlist.length; c++){
+            OrderChoice choiceitem = orderchoiceList.firstWhere((element) => element.citemId == idlist[c]);
+            orderchoiceforsingleitem.add(choiceitem);
           }
-        }
-        OrderItem _neworderItem = OrderItem(
-          orderId: data["orderItems"][b]["orderId"],
-          itemId: data["orderItems"][b]["itemId"],
-          itemName: data["orderItems"][b]["itemName"],
-          uniqueId: data["orderItems"][b]["uniqueId"],
-          shopId: data["orderItems"][b]["shopId"],
-          shopName: data["orderItems"][b]["shopName"],
-          image: data["orderItems"][b]["image"],
-          qty: data["orderItems"][b]["qty"],
-          contractPrice: data["orderItems"][b]["contractPrice"],
-          price: data["orderItems"][b]["price"],
-          onlinePrice: data["orderItems"][b]["onlinePrice"],
-          specialRequest: data["orderItems"][b]["specialRequest"],
-          orderChoices: _choicesforsingleItem,
-          pickupFlag: data["orderItems"][b]["pickupFlag"],
-          shopConfirm:  data["orderItems"][b]["shopConfirm"],
-        );
 
-        _orderItems.add(_neworderItem);
+          OrderItem orderitem = OrderItem(
+            orderId: data["orderItems"][b]["orderId"],
+            itemId: data["orderItems"][b]["itemId"],
+            itemName: data["orderItems"][b]["itemName"],
+            uniqueId: data["orderItems"][b]["uniqueId"],
+            shopId: data["orderItems"][b]["shopId"],
+            shopName: data["orderItems"][b]["shopName"],
+            image: data["orderItems"][b]["image"],
+            qty: data["orderItems"][b]["qty"],
+            contractPrice: data["orderItems"][b]["contractPrice"],
+            price: data["orderItems"][b]["price"],
+            onlinePrice: data["orderItems"][b]["onlinePrice"],
+            specialRequest: data["orderItems"][b]["specialRequest"],
+            orderChoices: orderchoiceforsingleitem,
+            pickupFlag: data["orderItems"][b]["pickupFlag"],
+            shopConfirm:  data["orderItems"][b]["shopConfirm"],
+          );
+          orderitemList.add(orderitem);
+        }
       }
     }
 
@@ -219,7 +210,7 @@ class OrderController extends GetxController{
       grandTotal: data["grandTotal"],
       orderStatus: data["orderStatus"],
       bikerFees: data["bikerFees"] ?? 0,
-      orderItems: _orderItems,
+      orderItems: orderitemList,
       containerCharges: data["containerCharges"],
       orderComment: data["orderComment"],
       orderType: data["orderType"],
@@ -243,56 +234,52 @@ class OrderController extends GetxController{
 
       for(int e = 0 ; e < info.length; e++){
         dynamic data = info[e];
-        List<OrderChoice> _orderChoices = [];
-
-        if( data["orderChoices"] != null &&  data["orderChoices"] != [] && data["orderChoices"] != "null"){
-          for(int a = 0; a < data["orderChoices"].length; a++){
-            OrderChoice _neworderChoice = OrderChoice(
-              itemId: data["orderChoices"][a]["itemId"].toString(),
-              citemId: data["orderChoices"][a]["citemid"],
-              citemName: data["orderChoices"][a]["citemName"],
-              orderId: data["orderChoices"][a]["orderId"],
-              uniqueId: data["orderChoices"][a]["uniqueId"],
-              onlinePrice: data["orderChoices"][a]["onlinePrice"],
-              price: data["orderChoices"][a]["price"],
-              contractPrice: data["orderChoices"][a]["contractPrice"],
-            );
-            _orderChoices.add(_neworderChoice);
+        List<OrderChoice> orderchoiceList = [];
+        if(data["orderChoices"] != []){
+          for(int a=0; a < data["orderChoices"].length; a++){
+            if(!orderchoiceList.contains(data["orderChoices"][a])){
+              OrderChoice orderChoice = OrderChoice(
+                citemId: data["orderChoices"][a]["citemid"],
+                citemName: data["orderChoices"][a]["citemName"],
+                onlinePrice: data["orderChoices"][a]["onlinePrice"],
+                price: data["orderChoices"][a]["price"],
+                contractPrice: data["orderChoices"][a]["contractPrice"],
+              );
+              orderchoiceList.add(orderChoice);
+            }
           }
         }
 
-        List<OrderItem> _orderItems = [];
-        if(data["orderItems"] != null && data["orderItems"] != [] && data["orderItems"] != "null"){
+        List<OrderItem> orderitemList = [];
+        if(data["orderItems"] != []){
           for(int b = 0; b < data["orderItems"].length; b++){
-
-            List<OrderChoice> _choicesforsingleItem = [];
-            dynamic _uniqueId = json.decode(data["orderItems"][b]["uniqueId"]) == 0 ? [] : json.decode(data["orderItems"][b]["uniqueId"]);
-            for(int c = 0; c < _orderChoices.length; c++){
-              int? _citemid = _orderChoices[c].citemId;
-              String? _itemid = _orderChoices[c].itemId;
-              if(_uniqueId.contains(_citemid) && data["orderItems"][b]["itemId"] == _itemid){
-                _choicesforsingleItem.add(_orderChoices[c]);
+            if(!orderitemList.contains(data["orderItems"][b])){
+              List<OrderChoice> orderchoiceforsingleitem = [];
+              List idlist=  json.decode(data["orderItems"][b]["uniqueId"]) == 0 ? [] : json.decode(data["orderItems"][b]["uniqueId"]);
+              for(int c = 0; c <idlist.length; c++){
+                OrderChoice choiceitem = orderchoiceList.firstWhere((element) => element.citemId == idlist[c]);
+                orderchoiceforsingleitem.add(choiceitem);
               }
-            }
-            OrderItem _neworderItem = OrderItem(
-              orderId: data["orderItems"][b]["orderId"],
-              itemId: data["orderItems"][b]["itemId"],
-              itemName: data["orderItems"][b]["itemName"],
-              uniqueId: data["orderItems"][b]["uniqueId"],
-              shopId: data["orderItems"][b]["shopId"],
-              shopName: data["orderItems"][b]["shopName"],
-              image: data["orderItems"][b]["image"],
-              qty: data["orderItems"][b]["qty"],
-              contractPrice: data["orderItems"][b]["contractPrice"],
-              price: data["orderItems"][b]["price"],
-              onlinePrice: data["orderItems"][b]["onlinePrice"],
-              specialRequest: data["orderItems"][b]["specialRequest"],
-              orderChoices: _choicesforsingleItem,
-              pickupFlag: data["orderItems"][b]["pickupFlag"],
-              shopConfirm:  data["orderItems"][b]["shopConfirm"],
-            );
 
-            _orderItems.add(_neworderItem);
+              OrderItem orderitem = OrderItem(
+                orderId: data["orderItems"][b]["orderId"],
+                itemId: data["orderItems"][b]["itemId"],
+                itemName: data["orderItems"][b]["itemName"],
+                uniqueId: data["orderItems"][b]["uniqueId"],
+                shopId: data["orderItems"][b]["shopId"],
+                shopName: data["orderItems"][b]["shopName"],
+                image: data["orderItems"][b]["image"],
+                qty: data["orderItems"][b]["qty"],
+                contractPrice: data["orderItems"][b]["contractPrice"],
+                price: data["orderItems"][b]["price"],
+                onlinePrice: data["orderItems"][b]["onlinePrice"],
+                specialRequest: data["orderItems"][b]["specialRequest"],
+                orderChoices: orderchoiceforsingleitem,
+                pickupFlag: data["orderItems"][b]["pickupFlag"],
+                shopConfirm:  data["orderItems"][b]["shopConfirm"],
+              );
+              orderitemList.add(orderitem);
+            }
           }
         }
 
@@ -328,7 +315,7 @@ class OrderController extends GetxController{
           grandTotal: data["grandTotal"],
           orderStatus: data["orderStatus"],
           bikerFees: data["bikerFees"] ?? 0,
-          orderItems: _orderItems,
+          orderItems: orderitemList,
           containerCharges: data["containerCharges"],
           orderComment: data["orderComment"],
           orderType: data["orderType"],

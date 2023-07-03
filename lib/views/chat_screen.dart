@@ -124,6 +124,7 @@ class _ChatScreenState extends State<ChatScreen> {
     chatSignalControlller.orderId.value = "";
     chatSignalControlller.conversationId.value = "";
     textEditingController.clear();
+    clearFiles();
     super.dispose();
   }
 
@@ -183,9 +184,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     // print("this is list message");
                     // print(item.chatAttachment);
                     return MessageWidget(
-                        isBiker: item.isBiker!,
-                        txt: item.message,
-                        imageUrl: item.chatAttachment,
+                      item: item,
                     );
                   }),
                 );
@@ -481,7 +480,7 @@ class _ChatScreenState extends State<ChatScreen> {
             color:  Theme.of(context).brightness == Brightness.dark ? UIConstant.bgDark : UIConstant.bgWhite,
             boxShadow: [
               BoxShadow(
-                color: Theme.of(context).brightness == Brightness.dark ? Colors.grey.shade900 : Colors.grey.shade300,
+                color: Theme.of(context).brightness == Brightness.dark ? Colors.transparent : Colors.grey.shade300,
                 blurRadius: 4.0,
                 spreadRadius: 1.0,
                 offset: Offset(0, -3),
@@ -576,12 +575,18 @@ class _ChatScreenState extends State<ChatScreen> {
                 cusIconBtn(
                   Icons.send,
                   ()async{
-                    if(isloading == false && textEditingController.text.isNotEmpty){
+                    if(isloading == false && (textEditingController.text.isNotEmpty || newImage != null)){
                       print(conversationId);
-                      await chatSignalControlller.sendMessage(conversationId: conversationId!, txt: textEditingController.text, file: null).then((value){
+                      await chatSignalControlller.sendMessage(conversationId: conversationId!, txt: textEditingController.text, file: newImage).then((_){
                         print("value after sending message");
-                        print(value);
+                        // print(value);
+                        textEditingController.clear();
+                        clearFiles();
+                        setState(() {
+
+                        });
                         // await
+                        // chatSignalControlller.getchatList(conversationId: value, pagenum: 0);
                       });
                     }else{
                       print("Can not send message");

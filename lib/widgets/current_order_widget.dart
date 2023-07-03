@@ -70,7 +70,7 @@ class _CurrentOrderWidgetState extends State<CurrentOrderWidget> {
       child: InkWell(
         onTap: (){
           // print('checking image in current order widget----------------');
-          // print(widget.currentOrderModel.image);
+          print(widget.currentOrderModel.image);
           setState(() {
             showDetail = !showDetail;
           });
@@ -189,7 +189,7 @@ class _CurrentOrderWidgetState extends State<CurrentOrderWidget> {
                         Radius.circular(10),
                       ),
                       image: DecorationImage(
-                        onError: (Oobject,stacktrace){
+                        onError: (object,stacktrace){
                           // WidgetsBinding.instance.addPostFrameCallback((_) {
                           //   print("this is inside addpostframecallback.......................");
                           //   setState(() {
@@ -241,7 +241,7 @@ class _CurrentOrderWidgetState extends State<CurrentOrderWidget> {
                         ),
                       ),
                       Text(
-                        "${widget.currentOrderModel.distanceMeter} ${"m".tr}",
+                        "${widget.currentOrderModel.distanceMeter} ${"km".tr}",
                         style: UIConstant.small,
                       ),
                     ],
@@ -290,10 +290,10 @@ class _CurrentOrderWidgetState extends State<CurrentOrderWidget> {
                           //   orderId: widget.currentOrderModel.orderId,
                           //   hasButton: true,
                           // ));
-                          Get.toNamed(RouteHelper.getDropOffPage(orderId: widget.currentOrderModel.orderId!));
+                          // Get.toNamed(RouteHelper.getDropOffPage(orderId: widget.currentOrderModel.orderId!));
                           // Get.toNamed(RouteHelper.getOrderSummaryPage(orderId: widget.currentOrderModel.orderId!));
 
-                          // Get.toNamed(RouteHelper.getOrderDetailPage(orderId: widget.currentOrderModel.orderId!, hasButton: true));
+                          Get.toNamed(RouteHelper.getOrderDetailPage(orderId: widget.currentOrderModel.orderId!, hasButton: true));
                         }
                       },
                       txtClr: UIConstant.orange,

@@ -32,8 +32,8 @@ class UserAccountController extends GetxController{
     dynamic userdataRaw = json.decode(response.body);
     phoneNumber.value = number.toString();
     // getrandomrum();
-    print("This is accesstoken ${userdataRaw["data"]["access_token"]}");
-    print("This is refreshtoken ${userdataRaw["data"]["refresh_token"]}");
+    // print("This is accesstoken ${userdataRaw["data"]["access_token"]}");
+    // print("This is refreshtoken ${userdataRaw["data"]["refresh_token"]}");
     box.write(TxtConstant.accesstoken, userdataRaw["data"]["access_token"]);
     box.write(TxtConstant.refreshtoken, userdataRaw["data"]["refresh_token"]);
     box.write(TxtConstant.user_id, userdataRaw["data"]["user"]["id"]);
@@ -87,8 +87,8 @@ class UserAccountController extends GetxController{
     http.Response response = await service.refreshUserToken();
     await registerNotiToken();
     dynamic userdataRaw = await json.decode(response.body);
-    print("This is accesstoken ${userdataRaw["data"]["access_token"]}");
-    print("This is refreshtoken ${userdataRaw["data"]["refresh_token"]}");
+    // print("This is accesstoken ${userdataRaw["data"]["access_token"]}");
+    // print("This is refreshtoken ${userdataRaw["data"]["refresh_token"]}");
     box.write(TxtConstant.accesstoken, userdataRaw["data"]["access_token"]);
     box.write(TxtConstant.refreshtoken, userdataRaw["data"]["refresh_token"]);
   }
@@ -143,6 +143,7 @@ class UserAccountController extends GetxController{
     }
     return punishmentList;
   }
+
 
 
   

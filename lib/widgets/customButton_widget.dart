@@ -26,6 +26,7 @@ class CustomButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: func,
       style: FilledButton.styleFrom(
+        elevation: 0,
         backgroundColor: bgClr,
         padding: EdgeInsets.symmetric(
           vertical: verticalPadding,

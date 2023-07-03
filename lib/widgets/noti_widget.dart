@@ -129,24 +129,12 @@ class _NotiWidgetState extends State<NotiWidget> with SingleTickerProviderStateM
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              widget.shopName,
-                              style: UIConstant.normal.copyWith(
-                                overflow: TextOverflow.ellipsis,
-                                color: UIConstant.orange,
-                              ),
-                            ),
-                          ),
-                          Text(
-                            "${widget.distance} ${"m".tr}",
-                            style: UIConstant.small.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
+                      Text(
+                        widget.shopName,
+                        style: UIConstant.normal.copyWith(
+                          overflow: TextOverflow.ellipsis,
+                          color: UIConstant.orange,
+                        ),
                       ),
                       Row(
                         children: [
@@ -289,7 +277,7 @@ class _NotiWidgetState extends State<NotiWidget> with SingleTickerProviderStateM
                       ),
                     ),
                     Text(
-                      "${widget.distance} m",
+                      "${widget.distance} ${"km".tr}",
                       style: UIConstant.small,
                     ),
                   ],

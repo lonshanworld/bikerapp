@@ -1,4 +1,5 @@
 import "package:delivery/constants/uiconstants.dart";
+import "package:delivery/controllers/chatsignal_controller.dart";
 import "package:delivery/controllers/check_in_out_controller.dart";
 import "package:delivery/controllers/noti_controller.dart";
 import "package:delivery/controllers/useraccount_controller.dart";
@@ -26,6 +27,7 @@ class _DrawerPageState extends State<DrawerPage> {
   final UserAccountController userAccountController = Get.find<UserAccountController>();
   // final NotiController notiController = Get.find<NotiController>();
   final CheckInOutController checkInOutController = Get.find<CheckInOutController>();
+  final ChatSignalControlller chatSignalControlller = Get.find<ChatSignalControlller>();
   final LogOutService logOutService = LogOutService();
 
   bool showdefaultimage = false;
@@ -51,6 +53,8 @@ class _DrawerPageState extends State<DrawerPage> {
   @override
   void initState() {
     super.initState();
+    print("Checking image in profile");
+    print(userAccountController.bikermodel[0].profileImage);
     // checkImageError();
   }
 
@@ -95,6 +99,7 @@ class _DrawerPageState extends State<DrawerPage> {
               acceptfunc: ()async{
                 Get.dialog(const LoadingScreen(), barrierDismissible: false);
                 await checkInOutController.checkOut();
+                await chatSignalControlller.closehub();
                 logOutService.logout(context);
                 // Future.delayed(Duration(seconds: 2),(){
                 //   if(Theme.of(context).brightness == Brightness.dark){
@@ -144,6 +149,7 @@ class _DrawerPageState extends State<DrawerPage> {
                   CheckOutAlert(context);
                 }else{
                   Get.dialog(const LoadingScreen(), barrierDismissible: false);
+                  await chatSignalControlller.closehub();
                   logOutService.logout(context);
                   // Future.delayed(Duration(seconds: 2),(){
                   //   if(Theme.of(context).brightness == Brightness.dark){
@@ -182,6 +188,7 @@ class _DrawerPageState extends State<DrawerPage> {
                           shape: BoxShape.circle,
                           image: DecorationImage(
                             onError: (object, stacktrace){
+
                               if(mounted){
                                 setState(() {
                                   showdefaultimage = true;

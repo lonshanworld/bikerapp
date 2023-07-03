@@ -200,13 +200,13 @@ class _DropOffScreenState extends State<DropOffScreen>  with SingleTickerProvide
       reverseCurve: Curves.bounceOut,
     );
     assignOrder().then((_){
-      if(mounted){
-        Future.delayed(Duration(seconds: 3),(){
+      Future.delayed(Duration(seconds: 3),(){
+        if(mounted){
           setState(() {
             isloading = false;
           });
-        });
-      }
+        }
+      });
     });
   }
 
@@ -224,6 +224,8 @@ class _DropOffScreenState extends State<DropOffScreen>  with SingleTickerProvide
 
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double deviceHeight = MediaQuery.of(context).size.height;
+
+    List<String> calltype = ["Via Online", "Via Phone Call"];
 
     late Marker marker1 = Marker(
       markerId: MarkerId("biker"),
@@ -489,18 +491,69 @@ class _DropOffScreenState extends State<DropOffScreen>  with SingleTickerProvide
                 // ),
                 Row(
                   children: [
+                    // Expanded(
+                    //   child: CustomButton(
+                    //     verticalPadding: 5,
+                    //     horizontalPadding: 0,
+                    //     txt: "call".tr,
+                    //     func: (){
+                    //       _makePhoneCall(orderDetailModel!.phone!);
+                    //     },
+                    //     txtClr: Colors.white,
+                    //     bgClr: UIConstant.orange,
+                    //     txtsize: 12,
+                    //     rad: 5,
+                    //   ),
+                    // ),
                     Expanded(
-                      child: CustomButton(
-                        verticalPadding: 5,
-                        horizontalPadding: 0,
-                        txt: "call".tr,
-                        func: (){
-                          _makePhoneCall(orderDetailModel!.phone!);
+                      child: PopupMenuButton(
+                        position: PopupMenuPosition.over,
+                        onSelected: (value){
+                          if(value == calltype[1]){
+                            _makePhoneCall(orderDetailModel!.phone!);
+                          }else if(value == calltype[0]){
+
+                          } else{
+
+                          }
                         },
-                        txtClr: Colors.white,
-                        bgClr: UIConstant.orange,
-                        txtsize: 12,
-                        rad: 5,
+                        padding: EdgeInsets.zero,
+                        constraints: BoxConstraints(
+                          maxWidth: 150,
+                        ),
+                        color: UIConstant.pink,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: UIConstant.orange,
+                            borderRadius: BorderRadius.all(Radius.circular(5)),
+                          ),
+                          padding: EdgeInsets.symmetric(
+                            vertical: 5,
+                          ),
+                          alignment: Alignment.center,
+                          child: Text(
+                            "call".tr,
+                            style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        itemBuilder: (BuildContext ctx) {
+                          return [
+                            for(String item in calltype) PopupMenuItem(
+                              value: item,
+                              child: Text(
+                                item,
+                                style: UIConstant.normal.copyWith(
+                                  color: Colors.black
+                                ),
+                              ),
+                            ),
+                          ];
+                        },
+
                       ),
                     ),
                     SizedBox(

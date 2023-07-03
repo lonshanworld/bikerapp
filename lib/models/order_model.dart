@@ -119,9 +119,7 @@ class OrderItem{
 }
 
 class OrderChoice{
-  String? orderId;
-  String? itemId;
-  String? uniqueId;
+
   int? citemId;
   String? citemName;
   num? contractPrice;
@@ -129,11 +127,8 @@ class OrderChoice{
   num? onlinePrice;
 
   OrderChoice({
-    required this.itemId,
     required this.citemId,
     required this.citemName,
-    required this.orderId,
-    required this.uniqueId,
     required this.onlinePrice,
     required this.price,
     required this.contractPrice,

@@ -3,7 +3,7 @@ class ChatMessageModel{
   String? messageId;
   String? fullname;
   String? message;
-  String? sendOn;
+  String? sentOn;
   String? chatAttachment;
   bool? isBiker;
 
@@ -12,7 +12,7 @@ class ChatMessageModel{
     required this.messageId,
     required this.fullname,
     required this.message,
-    required this.sendOn,
+    required this.sentOn,
     required this.chatAttachment,
     required this.isBiker,
 });
@@ -22,8 +22,8 @@ class ChatMessageModel{
     messageId = json["messageId"];
     fullname = json["fullName"];
     message = json["message"];
-    sendOn = json["sendOn"];
+    sentOn = json["sentOn"];
     chatAttachment = json["chatAttachment"];
-    isBiker = bikerId == json["userId"] ? true : false;
+    isBiker = (bikerId == json["userId"]) ? true : false;
   }
 }

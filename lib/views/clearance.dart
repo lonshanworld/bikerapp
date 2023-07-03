@@ -14,14 +14,14 @@ import '../widgets/customtextfield_widget.dart';
 import '../widgets/loading_widget.dart';
 import '../widgets/textfieldWithLabel.dart';
 
-class Clerance extends StatefulWidget {
-  const Clerance({Key? key}) : super(key: key);
+class Clearance extends StatefulWidget {
+  const Clearance({Key? key}) : super(key: key);
 
   @override
-  State<Clerance> createState() => _CleranceState();
+  State<Clearance> createState() => _ClearanceState();
 }
 
-class _CleranceState extends State<Clerance> {
+class _ClearanceState extends State<Clearance> {
 
   final ClearanceController clearanceController = Get.find<ClearanceController>();
   final TextEditingController levelController = TextEditingController();
@@ -87,7 +87,7 @@ class _CleranceState extends State<Clerance> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Clerance"),
+        title: Text("Clearance"),
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,

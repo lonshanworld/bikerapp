@@ -34,36 +34,81 @@ class ChatSignalControlller extends GetxController{
   }
 
   Future<void> sendSignal()async{
-    await hubConnection.start()?.then((value) async {
-      print("Hub coneection success=====");
-      print(hubConnection.connectionId);
-      print(box.read(TxtConstant.user_id));
+    print("conecting chat signal");
+    if(hubConnection.state != HubConnectionState.Connected){
+      await hubConnection.start()?.then((value) async {
+        await hubConnection.invoke("SaveConnection", args: [
+          hubConnection.connectionId!,
+          box.read(TxtConstant.user_id),
+        ]);
+      });
+    }
+    hubConnection.on("Status", (res) {
+      // print(res);
+    });
+    hubConnection.on("ReceivedMessage", (res) {
+      print("Recievedmessage triggered======================");
+      List<Object?>? rawdata = res;
+      var data = rawdata![0]  as Map<String, dynamic>;
+      assignDataList(data);
+    });
+    hubConnection.onreconnected(({connectionId}) async{
+      print("on reconnected =================");
       await hubConnection.invoke("SaveConnection", args: [
         hubConnection.connectionId!,
         box.read(TxtConstant.user_id),
       ]);
     });
-    print("checking hub connection====================================");
-    print(hubConnection.state);
-    hubConnection.on("Status", (res) {
-      print(res);
+  }
+
+  assignDataList(dynamic data)async{
+    var userId = data["userId"];
+    var messageId = data["messageId"];
+    var fullname = data["fullName"];
+    var message = data["message"];
+    var sentOn = data["sentOn"];
+    var fileattachment = data["chatAttachment"]["filePath"];
+    var isuser = data["userId"] == box.read(TxtConstant.user_id) ? true : false;
+    //
+
+    print("get data from recieve message");
+    print(userId);
+    print(messageId);
+    print(fullname);
+    print(message);
+    print(sentOn);
+    print(fileattachment);
+    print(isuser);
+    bool imageexist = await checkIfImageExists(fileattachment);
+
+    ChatMessageModel chat = ChatMessageModel(
+        userId: userId,
+        messageId: messageId,
+        fullname: fullname,
+        message: message,
+        sentOn: sentOn,
+        chatAttachment: imageexist ? fileattachment : null,
+        isBiker: isuser,
+    );
+
+    final messageidlist= [];
+    chatlist.map((element){
+      print(element.messageId);
+      messageidlist.add(element.messageId);
     });
-    hubConnection.on("Receivemessage", (res) {
-      if(orderId.value != "" && conversationId.value != ""){
-        getchatList(conversationId: conversationId.value, pagenum: 0);
-      }
-    });
+    if(!messageidlist.contains(chat.messageId)){
+      chatlist.insert(0, chat);
+    }
   }
 
   Future<dynamic> startconversation({required String orderId, required String initialMessage,})async{
-    print("start conversation");
     final conversationID = await hubConnection.invoke("CreateConversation",args: [
       hubConnection.connectionId!,
       box.read(TxtConstant.user_id),
-      "",
+      "Hi Customer",
       orderId,
+      // "",
     ]);
-    print(conversationID);
     return conversationID;
   }
 
@@ -73,27 +118,51 @@ class ChatSignalControlller extends GetxController{
       box.read(TxtConstant.user_id),
       conversationId,
       txt!,
+      file == null ? "" : file.path,
     ]);
+    // print("this is send message data");
+    // print(data);
   }
 
   Future<void> getchatList({required String conversationId, required int pagenum})async{
     http.Response response = await chatService.getchatList(conversationId: conversationId, pagesize: pagenum, pagerow: 20);
     dynamic rawdata = json.decode(response.body);
-    print(rawdata["data"]["messages"].length);
     if(pagenum > 0){
-      print("Inside more chat list");
       for(dynamic data in rawdata["data"]["messages"]){
-
         ChatMessageModel chat = ChatMessageModel.fromJson(data, bikerId: box.read(TxtConstant.user_id));
-        chatlist.add(chat);
+        chatlist.insert(0,chat);
       }
     }else{
-      print("Inside more chat list but int is -");
       chatlist.clear();
       for(dynamic data in rawdata["data"]["messages"]){
+        print(data);
         ChatMessageModel chat = ChatMessageModel.fromJson(data, bikerId: box.read(TxtConstant.user_id));
-        chatlist.add(chat);
+        chatlist.insert(0,chat);
       }
+    }
+  }
+
+  Future<void> closehub()async{
+    if(hubConnection.state == HubConnectionState.Connected){
+      chatlist.clear();
+      orderId.value = "";
+      conversationId.value = "";
+      await hubConnection.stop();
+    }
+  }
+
+
+
+  Future<bool> checkIfImageExists(String url) async {
+    try{
+      final response = await http.get(Uri.parse(url));
+      if(response.statusCode == 200){
+        return true;
+      }else{
+        return false;
+      }
+    }catch(err){
+      return false;
     }
   }
 

@@ -1,8 +1,9 @@
 import "package:delivery/error_handlers/location_eror_screen.dart";
 import "package:delivery/views/check_in.dart";
-import "package:delivery/views/clerance.dart";
+import "package:delivery/views/clearance.dart";
 import "package:delivery/views/clerance_history.dart";
 import "package:delivery/views/drop_off_screen.dart";
+import "package:delivery/views/final_success_screen.dart";
 import "package:delivery/views/home_screen.dart";
 import "package:delivery/views/login_screen.dart";
 import "package:delivery/views/noti_screen.dart";
@@ -49,6 +50,7 @@ class RouteHelper{
   static const String ClearanceHistoryPage = "/clearanceHistory";
   static const String RulePage = "/rule";
   static const String LocationErrorPage = "/locationerror";
+  static const String FinalSuccessPage = "/finalsuccess";
 
   //---------------
   // static const String ClearancePage = "/clearance";
@@ -77,6 +79,7 @@ class RouteHelper{
   static String getClearanceHistoryPage() => ClearanceHistoryPage;
   static String getRulePage() => RulePage;
   static String getLocationErrorPage({required bool turnOn}) => "$LocationErrorPage?turnOn=$turnOn";
+  static String getFinalSuccessPage({required String title, required String txt}) => "$FinalSuccessPage?title=$title&txt=$txt";
 
   static List<GetPage> routes = [
     GetPage(
@@ -150,7 +153,7 @@ class RouteHelper{
     ),
     GetPage(
       name: ClearancePage,
-      page: () => const Clerance(),
+      page: () => const Clearance(),
     ),
     GetPage(
       name: ClearanceHistoryPage,
@@ -166,6 +169,16 @@ class RouteHelper{
         var turnOn = Get.parameters["turnOn"];
         return LocationErrorScreen(turnOn: turnOn!.toBoolean());
       },
+    ),
+    GetPage(
+      name: FinalSuccessPage,
+      page: (){
+        var title = Get.parameters["title"];
+        var txt = Get.parameters["txt"];
+        return FinalSuccessScreen(title: title!, txt: txt!);
+      },
+      transition: Transition.upToDown,
+      transitionDuration: Duration(milliseconds: 500),
     ),
   ];
 }

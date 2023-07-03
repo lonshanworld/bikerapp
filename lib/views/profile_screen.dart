@@ -86,7 +86,8 @@ class _ProfileScreenState extends State<ProfileScreen>{
   @override
   void initState() {
     super.initState();
-
+    print("Checking image in profile");
+    print(userAccountController.bikermodel[0].profileImage);
     nameController.text = userAccountController.bikermodel[0].fullName ??  "";
     nrcController.text = userAccountController.bikermodel[0].nrc ?? "";
     emailController.text = userAccountController.bikermodel[0].email ?? "";
@@ -145,7 +146,8 @@ class _ProfileScreenState extends State<ProfileScreen>{
                           shape: BoxShape.circle,
                           image: DecorationImage(
                             onError: (object, stacktrace){
-                              print("This is in error image ... ${ userAccountController.bikermodel[0].profileImage}");
+                              print("Checking image in profile");
+                              print(userAccountController.bikermodel[0].profileImage!);
                               if(mounted){
                                 setState(() {
                                   showdefaultimage = true;
