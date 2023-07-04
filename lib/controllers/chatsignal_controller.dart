@@ -112,13 +112,13 @@ class ChatSignalControlller extends GetxController{
     return conversationID;
   }
 
-  Future sendMessage({required String conversationId,required String? txt, required File? file})async{
+  Future sendMessage({required String conversationId,required String? txt, required String filename})async{
     return await hubConnection.invoke("SendMessage",args: [
       hubConnection.connectionId!,
       box.read(TxtConstant.user_id),
       conversationId,
       txt!,
-      file == null ? "" : file.path,
+      filename,
     ]);
     // print("this is send message data");
     // print(data);
@@ -166,4 +166,14 @@ class ChatSignalControlller extends GetxController{
     }
   }
 
+
+  Future<String> sendImage(File imageFile)async{
+    http.Response? response = await chatService.sendImage(imageFile);
+    if(response != null){
+      final data = json.decode(response.body);
+      return data["meta"]["attachmentId"];
+    }else{
+      return "";
+    }
+  }
 }

@@ -93,7 +93,7 @@ class UserAccountController extends GetxController{
     box.write(TxtConstant.refreshtoken, userdataRaw["data"]["refresh_token"]);
   }
 
-  Future<void> getInfo()async{
+  Future<void>  getInfo()async{
     http.Response response = await service.getBikerInfo();
     dynamic data = json.decode(response.body)["data"];
     BikerModel bikerdata = BikerModel.fromjson(data);

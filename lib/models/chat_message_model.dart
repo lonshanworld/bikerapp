@@ -23,7 +23,7 @@ class ChatMessageModel{
     fullname = json["fullName"];
     message = json["message"];
     sentOn = json["sentOn"];
-    chatAttachment = json["chatAttachment"];
+    chatAttachment = json["chatAttachment"] == null ? null :  json["chatAttachment"]["filePath"];
     isBiker = (bikerId == json["userId"]) ? true : false;
   }
 }

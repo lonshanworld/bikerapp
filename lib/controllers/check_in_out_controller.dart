@@ -98,7 +98,6 @@ class CheckInOutController extends GetxController{
         icon: Icons.info_outline,
         position: false,
       );
-
     }
   }
 }

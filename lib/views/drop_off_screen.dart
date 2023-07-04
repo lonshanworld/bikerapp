@@ -1,4 +1,3 @@
-
 import 'dart:async';
 import 'dart:typed_data';
 
@@ -14,16 +13,14 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import "package:get/get.dart";
 
-
 import '../constants/uiconstants.dart';
 import '../controllers/location_controller.dart';
+import '../services/call_service.dart';
 import '../widgets/customButton_widget.dart';
 import 'chat_screen.dart';
 import 'map_screen.dart';
 
-
 class DropOffScreen extends StatefulWidget {
-
   final String orderId;
 
   const DropOffScreen({
@@ -35,9 +32,10 @@ class DropOffScreen extends StatefulWidget {
   State<DropOffScreen> createState() => _DropOffScreenState();
 }
 
-class _DropOffScreenState extends State<DropOffScreen>  with SingleTickerProviderStateMixin{
-
-  final Completer<GoogleMapController> _controller = Completer<GoogleMapController>();
+class _DropOffScreenState extends State<DropOffScreen>
+    with SingleTickerProviderStateMixin {
+  final Completer<GoogleMapController> _controller =
+  Completer<GoogleMapController>();
   GoogleMapController? mapController;
   // CameraPosition _initialcameraPosition = CameraPosition(
   //     target: LatLng(0, 0),
@@ -45,7 +43,11 @@ class _DropOffScreenState extends State<DropOffScreen>  with SingleTickerProvide
   // );
   final OrderController orderController = Get.find<OrderController>();
   final LocationController _locationController = Get.put(LocationController());
-  final UserAccountController userAccountController = Get.find<UserAccountController>();
+  final UserAccountController userAccountController =
+  Get.find<UserAccountController>();
+
+  final CallSocket _callSocket = Get.find<CallSocket>();
+  // final Feaklib _vcService = Get.find<Feaklib>();
 
   bool isloading = true;
   double curlat = 0;
@@ -53,13 +55,12 @@ class _DropOffScreenState extends State<DropOffScreen>  with SingleTickerProvide
   String curplacename = "";
   late List<LatLng> polypoints = [];
   BitmapDescriptor custommarkerIcon = BitmapDescriptor.defaultMarker;
-  BitmapDescriptor bikermarkerIcon= BitmapDescriptor.defaultMarker;
+  BitmapDescriptor bikermarkerIcon = BitmapDescriptor.defaultMarker;
   BitmapDescriptor shopMarkerIcon = BitmapDescriptor.defaultMarker;
   OrderDetailModel? orderDetailModel;
 
   AnimationController? anicontroller;
   CurvedAnimation? curvedAnimation;
-
 
   _makePhoneCall(String phoneNumber) async {
     final Uri launchUri = Uri(
@@ -69,7 +70,24 @@ class _DropOffScreenState extends State<DropOffScreen>  with SingleTickerProvide
     await launchUrl(launchUri);
   }
 
-  getCurrentLocation(){
+  RemoteUserIdentification? remoteUser;
+  Future<void> _getRemoteUser() async {
+    if (remoteUser != null) return;
+
+    const orderId = "KR5C-AUGP-3CAO-5W00";
+    remoteUser = await _callSocket.joinConnection(orderId);
+
+    if (mounted) setState(() {});
+  }
+
+  // Future<void> _makeOnlineCall() async {
+  //   await _getRemoteUser();
+  //   if (remoteUser == null) return;
+  //
+  //   _vcService.add(JumpStartEsoplump(remoteUser));
+  // }
+
+  getCurrentLocation() {
     // await _locationController.getPermission().then((value){
     //   if(value){
     //     _locationController.getcurLagLong().then((_location){
@@ -126,17 +144,19 @@ class _DropOffScreenState extends State<DropOffScreen>  with SingleTickerProvide
     //   );
     // }
 
-    _locationController.getPermission().then((_)async{
+    _locationController.getPermission().then((_) async {
       Position _location = await _locationController.getcurLagLong();
-      Placemark txtplace = await _locationController.getplacemark(_location.latitude, _location.longitude);
+      Placemark txtplace = await _locationController.getplacemark(
+          _location.latitude, _location.longitude);
       curlat = _location.latitude;
       curlong = _location.longitude;
-      curplacename = "${txtplace.thoroughfare}, ${txtplace.subAdministrativeArea}, ${txtplace.administrativeArea}";
+      curplacename =
+      "${txtplace.thoroughfare}, ${txtplace.subAdministrativeArea}, ${txtplace.administrativeArea}";
       await getPolypoints();
     });
   }
 
-  Future<void> getPolypoints()async{
+  Future<void> getPolypoints() async {
     // _locationController.getpolyPointList(LatLng(curlat, curlong), LatLng(orderDetailModel!.cuslat!.toDouble(), orderDetailModel!.cuslong!.toDouble())).then((value)async{
     //   print("This is from drop off screen............................");
     //   print(LatLng(curlat, curlong));
@@ -150,38 +170,45 @@ class _DropOffScreenState extends State<DropOffScreen>  with SingleTickerProvide
     //   }
     // });
 
-    polypoints = await _locationController.getpolyPointList(LatLng(curlat, curlong), LatLng(orderDetailModel!.cuslat!.toDouble(), orderDetailModel!.cuslong!.toDouble()));
+    polypoints = await _locationController.getpolyPointList(
+        LatLng(curlat, curlong),
+        LatLng(orderDetailModel!.cuslat!.toDouble(),
+            orderDetailModel!.cuslong!.toDouble()));
   }
 
-  Future getcustomMarker()async{
+  Future getcustomMarker() async {
     // await _locationController.getmarkerIcon().then((icon){
     //   setState(() {
     //     custommarkerIcon = BitmapDescriptor.fromBytes(icon);
     //   });
     // });
 
-    Uint8List cusicon = await _locationController.getmarkerIcon("assets/images/cus_icon.png");
-    Uint8List shopicon = await _locationController.getmarkerIcon("assets/images/shop_icon.png");
-    Uint8List bikericon = await _locationController.getmarkerIcon("assets/images/biker_icon.png");
+    Uint8List cusicon =
+    await _locationController.getmarkerIcon("assets/images/cus_icon.png");
+    Uint8List shopicon =
+    await _locationController.getmarkerIcon("assets/images/shop_icon.png");
+    Uint8List bikericon =
+    await _locationController.getmarkerIcon("assets/images/biker_icon.png");
     custommarkerIcon = BitmapDescriptor.fromBytes(cusicon);
     shopMarkerIcon = BitmapDescriptor.fromBytes(shopicon);
     bikermarkerIcon = BitmapDescriptor.fromBytes(bikericon);
   }
 
-  Future<void> assignOrder()async{
+  Future<void> assignOrder() async {
     // await orderController.getSingleOrderDetail(widget.orderId).then((value) async{
     //   orderDetailModel = value;
     //   await getcustomMarker();
     //   await getCurrentLocation();
     // });
 
-    orderDetailModel = await orderController.getSingleOrderDetail(widget.orderId);
+    orderDetailModel =
+    await orderController.getSingleOrderDetail(widget.orderId);
     await getCurrentLocation();
     await getcustomMarker();
-
   }
 
-  Future<void>makemapcomplete(Completer<GoogleMapController> Cuscompleter)async{
+  Future<void> makemapcomplete(
+      Completer<GoogleMapController> Cuscompleter) async {
     mapController = await Cuscompleter.future;
   }
 
@@ -190,8 +217,8 @@ class _DropOffScreenState extends State<DropOffScreen>  with SingleTickerProvide
     super.initState();
     anicontroller = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 800),
-      reverseDuration: Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 800),
+      reverseDuration: const Duration(milliseconds: 500),
       animationBehavior: AnimationBehavior.preserve,
     );
     curvedAnimation = CurvedAnimation(
@@ -199,9 +226,9 @@ class _DropOffScreenState extends State<DropOffScreen>  with SingleTickerProvide
       curve: Curves.bounceIn,
       reverseCurve: Curves.bounceOut,
     );
-    assignOrder().then((_){
-      Future.delayed(Duration(seconds: 3),(){
-        if(mounted){
+    assignOrder().then((_) {
+      Future.delayed(const Duration(seconds: 3), () {
+        if (mounted) {
           setState(() {
             isloading = false;
           });
@@ -209,7 +236,6 @@ class _DropOffScreenState extends State<DropOffScreen>  with SingleTickerProvide
       });
     });
   }
-
 
   @override
   void dispose() {
@@ -221,44 +247,46 @@ class _DropOffScreenState extends State<DropOffScreen>  with SingleTickerProvide
 
   @override
   Widget build(BuildContext context) {
-
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double deviceHeight = MediaQuery.of(context).size.height;
 
     List<String> calltype = ["Via Online", "Via Phone Call"];
 
     late Marker marker1 = Marker(
-      markerId: MarkerId("biker"),
-      position: LatLng(curlat,curlong),
+      markerId: const MarkerId("biker"),
+      position: LatLng(curlat, curlong),
       draggable: false,
-      icon:bikermarkerIcon,
+      icon: bikermarkerIcon,
       infoWindow: InfoWindow(
         title: curplacename,
       ),
     );
 
     late Marker shopMarker = Marker(
-      markerId: MarkerId("shop"),
-      position: LatLng(orderDetailModel!.shoplat!.toDouble(), orderDetailModel!.shoplong!.toDouble()),
+      markerId: const MarkerId("shop"),
+      position: LatLng(orderDetailModel!.shoplat!.toDouble(),
+          orderDetailModel!.shoplong!.toDouble()),
       infoWindow: InfoWindow(
-        title: "${orderDetailModel!.shopName} ,${orderDetailModel!.shopAddress}",
+        title:
+        "${orderDetailModel!.shopName} ,${orderDetailModel!.shopAddress}",
       ),
       icon: shopMarkerIcon,
       zIndex: 10,
     );
 
     late Marker cusMarker = Marker(
-      markerId: MarkerId("cus"),
-      position: LatLng(orderDetailModel!.cuslat!.toDouble(), orderDetailModel!.cuslong!.toDouble()),
+      markerId: const MarkerId("cus"),
+      position: LatLng(orderDetailModel!.cuslat!.toDouble(),
+          orderDetailModel!.cuslong!.toDouble()),
       infoWindow: InfoWindow(
         title: orderDetailModel!.cusAddress,
       ),
-      icon:custommarkerIcon,
+      icon: custommarkerIcon,
       zIndex: 10,
     );
 
     late Polyline _polyline = Polyline(
-      polylineId: PolylineId("1"),
+      polylineId: const PolylineId("1"),
       color: Colors.grey,
       points: polypoints,
       width: 6,
@@ -267,380 +295,402 @@ class _DropOffScreenState extends State<DropOffScreen>  with SingleTickerProvide
       startCap: Cap.roundCap,
     );
 
-
     return isloading
-        ?
-      Scaffold(
-        appBar: AppBar(
-          title: Text(
-            userAccountController.bikermodel[0].fullName!,
-          ),
-          leading: IconButton(
-            icon: Icon(
-              Icons.arrow_back,
-              size: 24,
-            ),
-            onPressed: (){
-              // Get.offAllNamed(RouteHelper.getHomePage());
-              Get.back();
-            },
-          ),
+        ? Scaffold(
+      appBar: AppBar(
+        title: Text(
+          userAccountController.bikermodel[0].fullName!,
         ),
-        body: LoadingWidget(),
-      )
-        :
-      Scaffold(
-        appBar: AppBar(
-          title: Text(
-            userAccountController.bikermodel[0].fullName!,
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back,
+            size: 24,
           ),
-          leading: IconButton(
-            icon: Icon(
-              Icons.arrow_back,
-              size: 24,
-            ),
-            onPressed: (){
-              // Get.offAllNamed(RouteHelper.getHomePage());
-              Get.back();
-            },
-          ),
+          onPressed: () {
+            // Get.offAllNamed(RouteHelper.getHomePage());
+            Get.back();
+          },
         ),
-        body: Center(
-          child: SizedBox(
-            width: deviceWidth > 500 ? deviceWidth * 0.85 : deviceWidth,
-            child: ListView(
-              padding: EdgeInsets.symmetric(
-                horizontal: 20,
-              ),
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                        "cusmap".tr,
-                      style: UIConstant.normal.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+      ),
+      body: const LoadingWidget(),
+    )
+        : Scaffold(
+      appBar: AppBar(
+        title: Text(
+          userAccountController.bikermodel[0].fullName!,
+        ),
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back,
+            size: 24,
+          ),
+          onPressed: () {
+            // Get.offAllNamed(RouteHelper.getHomePage());
+            Get.back();
+          },
+        ),
+      ),
+      body: Center(
+        child: SizedBox(
+          width: deviceWidth > 500 ? deviceWidth * 0.85 : deviceWidth,
+          child: ListView(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20,
+            ),
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "cusmap".tr,
+                    style: UIConstant.normal.copyWith(
+                      fontWeight: FontWeight.bold,
                     ),
-                    CustomButton(
-                      verticalPadding: 5,
-                      horizontalPadding: 20,
-                      txt: "askhelp".tr,
-                      func: (){
+                  ),
+                  CustomButton(
+                    verticalPadding: 5,
+                    horizontalPadding: 20,
+                    txt: "askhelp".tr,
+                    func: () {},
+                    txtClr: Colors.white,
+                    bgClr: UIConstant.orange,
+                    txtsize: 12,
+                    rad: 5,
+                  ),
+                ],
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(10),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color:
+                      Theme.of(context).brightness == Brightness.dark
+                          ? Colors.grey.shade800
+                          : Colors.grey.shade300,
+                      blurRadius: 4.0,
+                      spreadRadius: 1.0,
+                      offset: const Offset(2.0, 2.0),
+                    ),
+                  ],
+                ),
+                height: deviceHeight / 2,
+                child: GoogleMap(
+                  initialCameraPosition: CameraPosition(
+                      target: LatLng(curlat, curlong), zoom: 16),
+                  mapType: MapType.normal,
+                  zoomControlsEnabled: false,
+                  compassEnabled: false,
+                  mapToolbarEnabled: false,
+                  myLocationButtonEnabled: false,
+                  myLocationEnabled: false,
+                  scrollGesturesEnabled: false,
+                  zoomGesturesEnabled: false,
+                  onMapCreated: (GoogleMapController controller) async {
+                    // setState(() {
+                    //   _controller = controller;
+                    // });
+                    // controller.animateCamera(
+                    //     CameraUpdate.newLatLngBounds(
+                    //       LatLngBounds(
+                    //           southwest: LatLng(
+                    //             curlat <= orderDetailModel!.cuslat!.toDouble() ? curlat : orderDetailModel!.cuslat!.toDouble(),
+                    //             curlong <= orderDetailModel!.cuslong!.toDouble() ? curlong : orderDetailModel!.cuslong!.toDouble(),
+                    //           ),
+                    //           northeast: LatLng(
+                    //             curlat >= orderDetailModel!.cuslat!.toDouble() ? curlat : orderDetailModel!.cuslat!.toDouble(),
+                    //             curlong >= orderDetailModel!.cuslong!.toDouble() ? curlong : orderDetailModel!.cuslong!.toDouble(),
+                    //           )
+                    //       ),
+                    //       80,
+                    //     )
+                    // );
+                    // if(!_controller.isCompleted){
+                    //
+                    // }
+                    _controller.complete(controller);
 
+                    makemapcomplete(_controller).then((_) {
+                      Future.delayed(const Duration(seconds: 1), () {
+                        mapController!
+                            .animateCamera(CameraUpdate.newLatLngBounds(
+                          LatLngBounds(
+                              southwest: LatLng(
+                                curlat <=
+                                    orderDetailModel!.cuslat!
+                                        .toDouble()
+                                    ? curlat
+                                    : orderDetailModel!.cuslat!
+                                    .toDouble(),
+                                curlong <=
+                                    orderDetailModel!.cuslong!
+                                        .toDouble()
+                                    ? curlong
+                                    : orderDetailModel!.cuslong!
+                                    .toDouble(),
+                              ),
+                              northeast: LatLng(
+                                curlat >=
+                                    orderDetailModel!.cuslat!
+                                        .toDouble()
+                                    ? curlat
+                                    : orderDetailModel!.cuslat!
+                                    .toDouble(),
+                                curlong >=
+                                    orderDetailModel!.cuslong!
+                                        .toDouble()
+                                    ? curlong
+                                    : orderDetailModel!.cuslong!
+                                    .toDouble(),
+                              )),
+                          80,
+                        ));
+                      });
+                    });
+                    // print("Completer value ${_controller.isCompleted}");
+                    // print(_controller.future);
+                  },
+                  markers: <Marker>{
+                    marker1,
+                    shopMarker,
+                    cusMarker,
+                  },
+                  polylines: <Polyline>{
+                    _polyline,
+                  },
+                  onLongPress: (_) {
+                    mapController?.dispose();
+                    Get.to(() => MapScreen(
+                        shopLatLng: LatLng(
+                            orderDetailModel!.shoplat!.toDouble(),
+                            orderDetailModel!.shoplong!.toDouble()),
+                        cusLatLng: LatLng(
+                            orderDetailModel!.cuslat!.toDouble(),
+                            orderDetailModel!.cuslong!.toDouble()),
+                        cusAddress: orderDetailModel!.cusAddress!,
+                        shopaddress: orderDetailModel!.shopAddress!,
+                        isDropOff: true));
+                  },
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    orderDetailModel!.phone!,
+                    style: UIConstant.normal.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: UIConstant.orange,
+                    ),
+                  ),
+                  CustomButton(
+                    verticalPadding: 5,
+                    horizontalPadding: 20,
+                    txt: "viewmap".tr,
+                    func: () {
+                      mapController?.dispose();
+                      Get.to(() => MapScreen(
+                          shopLatLng: LatLng(
+                              orderDetailModel!.shoplat!.toDouble(),
+                              orderDetailModel!.shoplong!.toDouble()),
+                          cusLatLng: LatLng(
+                              orderDetailModel!.cuslat!.toDouble(),
+                              orderDetailModel!.cuslong!.toDouble()),
+                          cusAddress: orderDetailModel!.cusAddress!,
+                          shopaddress: orderDetailModel!.shopAddress!,
+                          isDropOff: true));
+                    },
+                    txtClr: Colors.white,
+                    bgClr: Colors.grey.shade600,
+                    txtsize: 12,
+                    rad: 5,
+                  ),
+                ],
+              ),
+              Text(
+                orderDetailModel!.cusName!,
+                style: UIConstant.small.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                orderDetailModel!.cusAddress!,
+                style: UIConstant.small,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              // CustomButton(
+              //   verticalPadding: 5,
+              //   horizontalPadding: 0,
+              //   txt: "call".tr,
+              //   func: (){
+              //     _makePhoneCall(orderDetailModel!.phone!);
+              //   },
+              //   txtClr: Colors.white,
+              //   bgClr: UIConstant.orange,
+              //   txtsize: 12,
+              //   rad: 5,
+              // ),
+              Row(
+                children: [
+                  // Expanded(
+                  //   child: CustomButton(
+                  //     verticalPadding: 5,
+                  //     horizontalPadding: 0,
+                  //     txt: "call".tr,
+                  //     func: (){
+                  //       _makePhoneCall(orderDetailModel!.phone!);
+                  //     },
+                  //     txtClr: Colors.white,
+                  //     bgClr: UIConstant.orange,
+                  //     txtsize: 12,
+                  //     rad: 5,
+                  //   ),
+                  // ),
+                  Expanded(
+                    child: PopupMenuButton(
+                      position: PopupMenuPosition.over,
+                      onSelected: (value) {
+                        if (value == calltype[1]) {
+                          _makePhoneCall(orderDetailModel!.phone!);
+                        } else if (value == calltype[0]) {
+                          // _makeOnlineCall();
+                        } else {}
+                      },
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(
+                        maxWidth: 150,
+                      ),
+                      color: UIConstant.pink,
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: UIConstant.orange,
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(5)),
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 5,
+                        ),
+                        alignment: Alignment.center,
+                        child: Text(
+                          "call".tr,
+                          style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      itemBuilder: (BuildContext ctx) {
+                        return [
+                          for (String item in calltype)
+                            PopupMenuItem(
+                              value: item,
+                              child: Text(
+                                item,
+                                style: UIConstant.normal
+                                    .copyWith(color: Colors.black),
+                              ),
+                            ),
+                        ];
+                      },
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 30,
+                  ),
+                  Expanded(
+                    child: CustomButton(
+                      verticalPadding: 5,
+                      horizontalPadding: 0,
+                      txt: "Chat",
+                      func: () {
+                        showModalBottomSheet(
+                          backgroundColor: Colors.transparent,
+                          transitionAnimationController: anicontroller,
+                          isScrollControlled: true,
+                          context: context,
+                          builder: (ctx) {
+                            return Container(
+                              height:
+                              MediaQuery.of(context).size.height - 70,
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).brightness ==
+                                    Brightness.dark
+                                    ? UIConstant.bgDark
+                                    : UIConstant.bgWhite,
+                                borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(20),
+                                  topRight: Radius.circular(20),
+                                ),
+                              ),
+                              child: ClipRRect(
+                                borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(20),
+                                  topRight: Radius.circular(20),
+                                ),
+                                child: ChatScreen(
+                                  orderId: orderDetailModel!.orderId!,
+                                ),
+                              ),
+                            );
+                          },
+                        );
                       },
                       txtClr: Colors.white,
                       bgClr: UIConstant.orange,
                       txtsize: 12,
                       rad: 5,
                     ),
-                  ],
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(10),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Theme.of(context).brightness == Brightness.dark ? Colors.grey.shade800 : Colors.grey.shade300,
-                        blurRadius: 4.0,
-                        spreadRadius: 1.0,
-                        offset: Offset(2.0, 2.0),
-                      ),
-                    ],
                   ),
-                  height: deviceHeight / 2,
-                  child:  GoogleMap(
-                    initialCameraPosition:  CameraPosition(
-                        target: LatLng(curlat, curlong),
-                        zoom: 16
-                    ),
-                    mapType: MapType.normal,
-                    zoomControlsEnabled: false,
-                    compassEnabled: false,
-                    mapToolbarEnabled: false,
-                    myLocationButtonEnabled: false,
-                    myLocationEnabled: false,
-                    scrollGesturesEnabled: false,
-                    zoomGesturesEnabled: false,
-
-                    onMapCreated: (GoogleMapController controller)async{
-                      // setState(() {
-                      //   _controller = controller;
-                      // });
-                      // controller.animateCamera(
-                      //     CameraUpdate.newLatLngBounds(
-                      //       LatLngBounds(
-                      //           southwest: LatLng(
-                      //             curlat <= orderDetailModel!.cuslat!.toDouble() ? curlat : orderDetailModel!.cuslat!.toDouble(),
-                      //             curlong <= orderDetailModel!.cuslong!.toDouble() ? curlong : orderDetailModel!.cuslong!.toDouble(),
-                      //           ),
-                      //           northeast: LatLng(
-                      //             curlat >= orderDetailModel!.cuslat!.toDouble() ? curlat : orderDetailModel!.cuslat!.toDouble(),
-                      //             curlong >= orderDetailModel!.cuslong!.toDouble() ? curlong : orderDetailModel!.cuslong!.toDouble(),
-                      //           )
-                      //       ),
-                      //       80,
-                      //     )
-                      // );
-                      // if(!_controller.isCompleted){
-                      //
-                      // }
-                      _controller.complete(controller);
-
-                      makemapcomplete(_controller).then((_){
-                        Future.delayed(Duration(seconds: 1),(){
-                          mapController!.animateCamera(
-                              CameraUpdate.newLatLngBounds(
-                                LatLngBounds(
-                                    southwest: LatLng(
-                                      curlat <= orderDetailModel!.cuslat!.toDouble() ? curlat : orderDetailModel!.cuslat!.toDouble(),
-                                      curlong <= orderDetailModel!.cuslong!.toDouble() ? curlong : orderDetailModel!.cuslong!.toDouble(),
-                                    ),
-                                    northeast: LatLng(
-                                      curlat >= orderDetailModel!.cuslat!.toDouble() ? curlat : orderDetailModel!.cuslat!.toDouble(),
-                                      curlong >= orderDetailModel!.cuslong!.toDouble() ? curlong : orderDetailModel!.cuslong!.toDouble(),
-                                    )
-                                ),
-                                80,
-                              )
-                          );
-                        });
-                      });
-                      // print("Completer value ${_controller.isCompleted}");
-                      // print(_controller.future);
-
-
-                    },
-                    markers: <Marker>{
-                      marker1,
-                      shopMarker,
-                      cusMarker,
-                    },
-                    polylines: <Polyline>{
-                      _polyline,
-                    },
-                    onLongPress: (_){
-                      mapController?.dispose();
-                      Get.to(() => MapScreen(
-                          shopLatLng: LatLng(orderDetailModel!.shoplat!.toDouble(),orderDetailModel!.shoplong!.toDouble()),
-                          cusLatLng: LatLng(orderDetailModel!.cuslat!.toDouble(),orderDetailModel!.cuslong!.toDouble()),
-                          cusAddress: orderDetailModel!.cusAddress!,
-                          shopaddress: orderDetailModel!.shopAddress!,
-                          isDropOff: true
-                      ));
-                    },
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      orderDetailModel!.phone!,
-                      style: UIConstant.normal.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: UIConstant.orange,
-                      ),
-                    ),
-                    CustomButton(
-                      verticalPadding: 5,
-                      horizontalPadding: 20,
-                      txt: "viewmap".tr,
-                      func: (){
-                        mapController?.dispose();
-                        Get.to(() => MapScreen(
-                            shopLatLng: LatLng(orderDetailModel!.shoplat!.toDouble(),orderDetailModel!.shoplong!.toDouble()),
-                            cusLatLng: LatLng(orderDetailModel!.cuslat!.toDouble(),orderDetailModel!.cuslong!.toDouble()),
-                            cusAddress: orderDetailModel!.cusAddress!,
-                            shopaddress: orderDetailModel!.shopAddress!,
-                            isDropOff: true
-                        ));
-                      },
-                      txtClr: Colors.white,
-                      bgClr: Colors.grey.shade600,
-                      txtsize: 12,
-                      rad: 5,
-                    ),
-                  ],
-                ),
-                Text(
-                  orderDetailModel!.cusName!,
-                  style: UIConstant.small.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(
-                  orderDetailModel!.cusAddress!,
-                  style: UIConstant.small,
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                // CustomButton(
-                //   verticalPadding: 5,
-                //   horizontalPadding: 0,
-                //   txt: "call".tr,
-                //   func: (){
-                //     _makePhoneCall(orderDetailModel!.phone!);
-                //   },
-                //   txtClr: Colors.white,
-                //   bgClr: UIConstant.orange,
-                //   txtsize: 12,
-                //   rad: 5,
-                // ),
-                Row(
-                  children: [
-                    // Expanded(
-                    //   child: CustomButton(
-                    //     verticalPadding: 5,
-                    //     horizontalPadding: 0,
-                    //     txt: "call".tr,
-                    //     func: (){
-                    //       _makePhoneCall(orderDetailModel!.phone!);
-                    //     },
-                    //     txtClr: Colors.white,
-                    //     bgClr: UIConstant.orange,
-                    //     txtsize: 12,
-                    //     rad: 5,
-                    //   ),
-                    // ),
-                    Expanded(
-                      child: PopupMenuButton(
-                        position: PopupMenuPosition.over,
-                        onSelected: (value){
-                          if(value == calltype[1]){
-                            _makePhoneCall(orderDetailModel!.phone!);
-                          }else if(value == calltype[0]){
-
-                          } else{
-
-                          }
-                        },
-                        padding: EdgeInsets.zero,
-                        constraints: BoxConstraints(
-                          maxWidth: 150,
-                        ),
-                        color: UIConstant.pink,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: UIConstant.orange,
-                            borderRadius: BorderRadius.all(Radius.circular(5)),
-                          ),
-                          padding: EdgeInsets.symmetric(
-                            vertical: 5,
-                          ),
-                          alignment: Alignment.center,
-                          child: Text(
-                            "call".tr,
-                            style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                            ),
-                          ),
-                        ),
-                        itemBuilder: (BuildContext ctx) {
-                          return [
-                            for(String item in calltype) PopupMenuItem(
-                              value: item,
-                              child: Text(
-                                item,
-                                style: UIConstant.normal.copyWith(
-                                  color: Colors.black
-                                ),
-                              ),
-                            ),
-                          ];
-                        },
-
-                      ),
-                    ),
-                    SizedBox(
-                      width: 30,
-                    ),
-                    Expanded(
-                      child: CustomButton(
-                        verticalPadding: 5,
-                        horizontalPadding: 0,
-                        txt: "Chat",
-                        func: (){
-                          showModalBottomSheet(
-                            backgroundColor: Colors.transparent,
-                            transitionAnimationController: anicontroller,
-                            isScrollControlled: true,
-                            context: context,
-                            builder: (ctx){
-                              return Container(
-                                height: MediaQuery.of(context).size.height - 70,
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context).brightness == Brightness.dark ? UIConstant.bgDark : UIConstant.bgWhite,
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(20),
-                                    topRight: Radius.circular(20),
-                                  ),
-                                ),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(20),
-                                    topRight: Radius.circular(20),
-                                  ),
-                                  child: ChatScreen(
-                                    orderId: orderDetailModel!.orderId!,
-                                  ),
-                                ),
-                              );
-                            },);
-                        },
-                        txtClr: Colors.white,
-                        bgClr: UIConstant.orange,
-                        txtsize: 12,
-                        rad: 5,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-        bottomSheet: Container(
-          padding: EdgeInsets.only(
-            top: 20,
-            bottom: 20,
-            left: 25,
-            right: 25,
-          ),
-          width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey,
-                blurRadius: 4.0,
-                spreadRadius: 1.0,
-                offset: Offset(0.0, 0.0),
+                ],
               ),
             ],
-            borderRadius: BorderRadius.only(
-              topRight: Radius.circular(20),
-              topLeft: Radius.circular(20),
-            ),
-            color:  Theme.of(context).brightness == Brightness.dark ? UIConstant.bgDark : UIConstant.bgWhite,
-          ),
-          child: CustomButton(
-            verticalPadding: 10,
-            horizontalPadding: 20,
-            txt: "dropoff".tr,
-            func: (){
-              Get.toNamed(RouteHelper.getOrderSummaryPage(orderId: widget.orderId));
-            },
-            txtClr: Colors.white,
-            bgClr: UIConstant.orange,
-            txtsize: 16,
-            rad: 20,
           ),
         ),
-      );
-
+      ),
+      bottomSheet: Container(
+        padding: const EdgeInsets.only(
+          top: 20,
+          bottom: 20,
+          left: 25,
+          right: 25,
+        ),
+        width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(
+          boxShadow: [
+            const BoxShadow(
+              color: Colors.grey,
+              blurRadius: 4.0,
+              spreadRadius: 1.0,
+              offset: Offset(0.0, 0.0),
+            ),
+          ],
+          borderRadius: const BorderRadius.only(
+            topRight: Radius.circular(20),
+            topLeft: Radius.circular(20),
+          ),
+          color: Theme.of(context).brightness == Brightness.dark
+              ? UIConstant.bgDark
+              : UIConstant.bgWhite,
+        ),
+        child: CustomButton(
+          verticalPadding: 10,
+          horizontalPadding: 20,
+          txt: "dropoff".tr,
+          func: () {
+            Get.toNamed(
+                RouteHelper.getOrderSummaryPage(orderId: widget.orderId));
+          },
+          txtClr: Colors.white,
+          bgClr: UIConstant.orange,
+          txtsize: 16,
+          rad: 20,
+        ),
+      ),
+    );
   }
 }

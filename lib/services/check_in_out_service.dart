@@ -10,6 +10,7 @@ class CheckInOutService{
   final box = GetStorage();
   final ErrorHandler errorHandler = ErrorHandler();
 
+
   Future checkIn(File image)async{
     String uri = "${TxtConstant.mainUrl}schedules/check-in";
 
@@ -47,6 +48,7 @@ class CheckInOutService{
   }
 
   Future checkOut()async{
+    // String uri = "${TxtConstant.mainUrl}schedules/check-out?scheduledate=2023-07-03";
     String uri = "${TxtConstant.mainUrl}schedules/check-out";
     try{
       http.Response response = await http.post(Uri.parse(uri),headers: {

@@ -10,6 +10,7 @@ import "package:delivery/controllers/signalr_controller.dart";
 import "package:delivery/controllers/useraccount_controller.dart";
 import "package:delivery/db/db_service.dart";
 import "package:delivery/error_handlers/error_handlers.dart";
+import "package:delivery/services/call_service.dart";
 import "package:delivery/services/useraccount_service.dart";
 
 import 'package:flutter/material.dart';
@@ -20,8 +21,10 @@ import "controllers/noti_controller.dart";
 
 class GlobalBindings extends Bindings{
   @override
-  void dependencies() {
+  Future<void> dependencies() async {
     // TODO: implement dependencies
+    final userAccountController = UserAccountController();
+
     Get.isRegistered<UserAccountController>() ? Get.find<UserAccountController>() : Get.put(UserAccountController(), permanent: true);
     Get.isRegistered<ScheduleController>() ? Get.find<ScheduleController>() : Get.put(ScheduleController(),permanent: true);
     // Get.isRegistered<NotiController>() ? Get.find<NotiController>() :  Get.lazyPut<NotiController>(()=> NotiController());
@@ -32,7 +35,11 @@ class GlobalBindings extends Bindings{
     Get.isRegistered<SignalRController>() ? Get.find<SignalRController>() : Get.put(SignalRController(),permanent: true);
 
     Get.isRegistered<ClearanceController>() ? Get.find<ClearanceController>() : Get.put(ClearanceController(),permanent: true);
+    final callSocket = await CallSocket.getInstance(userAccountController);
 
+    Get.isRegistered<CallSocket>()
+        ? Get.find<CallSocket>()
+        : Get.put(callSocket, permanent: true);
 
     // // Get.lazyPut<UserAccountController>(()=> UserAccountController());
     // Get.isRegistered<UserAccountController>() ? Get.find<UserAccountController>() : Get.put(UserAccountController(), permanent: true);

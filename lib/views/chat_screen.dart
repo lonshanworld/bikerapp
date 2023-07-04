@@ -10,6 +10,7 @@ import "../constants/uiconstants.dart";
 import "dart:io";
 
 import "../widgets/loading_widget.dart";
+import "loading_screen.dart";
 
 class ChatScreen extends StatefulWidget {
 
@@ -576,9 +577,16 @@ class _ChatScreenState extends State<ChatScreen> {
                   Icons.send,
                   ()async{
                     if(isloading == false && (textEditingController.text.isNotEmpty || newImage != null)){
-                      print(conversationId);
-                      await chatSignalControlller.sendMessage(conversationId: conversationId!, txt: textEditingController.text, file: newImage).then((_){
-                        print("value after sending message");
+
+                      String imageId = "";
+
+                      if(newImage != null){
+                        Get.dialog(const LoadingScreen(), barrierDismissible: false);
+                        imageId = await chatSignalControlller.sendImage(newImage!);
+                        Get.back();
+                      }
+                      print(imageId);
+                      await chatSignalControlller.sendMessage(conversationId: conversationId!, txt: textEditingController.text, filename: imageId).then((_){
                         // print(value);
                         textEditingController.clear();
                         clearFiles();
@@ -588,6 +596,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         // await
                         // chatSignalControlller.getchatList(conversationId: value, pagenum: 0);
                       });
+
                     }else{
                       print("Can not send message");
                     }

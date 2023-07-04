@@ -1,11 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:delivery/constants/txtconstants.dart';
 import 'package:delivery/controllers/schedule_controller.dart';
 import 'package:delivery/services/noti_service.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 
 import '../models/noti_model.dart';
@@ -18,6 +20,8 @@ class NotiController extends GetxController{
   final RxList<RandomNotiModel> notiList = List<RandomNotiModel>.empty().obs;
   final RxList<NotiOrderModel> notiListByAlert = List<NotiOrderModel>.empty().obs;
   final RxList<NotiOrderModel> notiListByshowFlag = List<NotiOrderModel>.empty().obs;
+  
+  final box = GetStorage();
 
   Future<void>initController()async{
     await getAllNotis();
@@ -206,7 +210,7 @@ class NotiController extends GetxController{
       iOS: _iOSNotificationDetail,
     );
 
-    await flutterLocalNotificationsPlugin.show(0, remoteMessage.notification!.title, remoteMessage.notification!.body, notidetails);
+    // await flutterLocalNotificationsPlugin.show(0, remoteMessage.notification!.title, remoteMessage.notification!.body, notidetails);
     print("checking noti data ----------------------------------------------------");
     print(remoteMessage.data);
     // print("This is checking noti ${remoteMessage.data["type"]}");
@@ -244,6 +248,9 @@ class NotiController extends GetxController{
         // );
         print('This is order pick up noti ----- ${remoteMessage.data["type"].toString().trim()}');
         updateshowFlag(remoteMessage.data["orderId"].toString().trim());
+        if(remoteMessage.data["bikerId"].toString() != box.read(TxtConstant.user_id)){
+          await flutterLocalNotificationsPlugin.show(0, remoteMessage.notification!.title, remoteMessage.notification!.body, notidetails);
+        }
 
       }else if(remoteMessage.data["type"].toString().toLowerCase().trim() == "orderalert"){
         print("the type is order alert");
@@ -273,6 +280,8 @@ class NotiController extends GetxController{
         print(notiData);
         addNotiData(notiModel: notiData);
         print(notiListByshowFlag.length);
+
+        await flutterLocalNotificationsPlugin.show(0, remoteMessage.notification!.title, remoteMessage.notification!.body, notidetails);
       }else if(remoteMessage.data["type"].toString().toLowerCase().trim() == "schedule"){
         print("This is inside schedule");
         RandomNotiModel randomNotiModel = RandomNotiModel(
@@ -282,6 +291,8 @@ class NotiController extends GetxController{
         );
         addRandomNoti(randomNotiModel);
         await scheduleController.scheduleReload();
+        await flutterLocalNotificationsPlugin.show(0, remoteMessage.notification!.title, remoteMessage.notification!.body, notidetails);
+
       }else{
         print("has key but no type");
         RandomNotiModel randomNotiModel = RandomNotiModel(
@@ -290,6 +301,8 @@ class NotiController extends GetxController{
           date: DateFormat("y-MMM-d H:mm a").format(DateTime.now()),
         );
         addRandomNoti(randomNotiModel);
+
+        await flutterLocalNotificationsPlugin.show(0, remoteMessage.notification!.title, remoteMessage.notification!.body, notidetails);
         // await scheduleController.scheduleReload();
       }
     }else{
@@ -300,6 +313,8 @@ class NotiController extends GetxController{
         date: DateFormat("y-MMM-d H:mm a").format(DateTime.now()),
       );
       addRandomNoti(randomNotiModel);
+      
+      await flutterLocalNotificationsPlugin.show(0, remoteMessage.notification!.title, remoteMessage.notification!.body, notidetails);
       // await scheduleController.scheduleReload();
     }
 
