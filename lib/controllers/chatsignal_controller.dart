@@ -1,5 +1,6 @@
 import 'dart:convert';
 import "dart:io";
+import 'package:delivery/controllers/noti_controller.dart';
 import 'package:delivery/models/chat_message_model.dart';
 import 'package:delivery/services/chat_service.dart';
 import 'package:get/get.dart';
@@ -13,6 +14,7 @@ import '../constants/txtconstants.dart';
 class ChatSignalControlller extends GetxController{
   final box = GetStorage();
   final chatService = ChatService();
+  final NotiController notiController = Get.find<NotiController>();
 
   final RxList<ChatMessageModel> chatlist = List<ChatMessageModel>.empty().obs;
   final RxString orderId = "".obs;
@@ -50,6 +52,7 @@ class ChatSignalControlller extends GetxController{
       print("Recievedmessage triggered======================");
       List<Object?>? rawdata = res;
       var data = rawdata![0]  as Map<String, dynamic>;
+      print(data);
       assignDataList(data);
     });
     hubConnection.onreconnected(({connectionId}) async{
@@ -70,6 +73,8 @@ class ChatSignalControlller extends GetxController{
     var fileattachment = data["chatAttachment"]["filePath"];
     var isuser = data["userId"] == box.read(TxtConstant.user_id) ? true : false;
     //
+
+
 
     print("get data from recieve message");
     print(userId);
@@ -99,6 +104,8 @@ class ChatSignalControlller extends GetxController{
     if(!messageidlist.contains(chat.messageId)){
       chatlist.insert(0, chat);
     }
+
+    notiController.showNotiforChat(sender: 'From Chat', text: message ?? "");
   }
 
   Future<dynamic> startconversation({required String orderId, required String initialMessage,})async{

@@ -20,8 +20,6 @@ class TxtConstant{
   static const String user_fullName = "user_fullName";
   static const String user_role = "user_role";
 
-  static const String checkIn = "CheckIn";
-  static const String checkOutBtn = "CheckOutBtn";
   static const String tableName = "importantNoti_table";
 
   static const String Apikeyforandroid = "AIzaSyB-m8EmkEroNVsQha_T90UANoQZ9dlCTVY";

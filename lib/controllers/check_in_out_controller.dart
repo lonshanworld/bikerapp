@@ -27,8 +27,8 @@ class CheckInOutController extends GetxController{
     if(response.statusCode < 299){
       String data = await response.stream.bytesToString();
       print(data);
-      box.write(TxtConstant.checkIn, data);
-      box.write(TxtConstant.checkOutBtn, true);
+      // box.write(TxtConstant.checkIn, data);
+      // box.write(TxtConstant.checkOutBtn, true);
 
       // TODO : reload schedule
       //---------------------------------------- ??
@@ -56,27 +56,30 @@ class CheckInOutController extends GetxController{
     }
   }
 
-  dynamic getCheckInData(){
-    // dynamic data = json.decode(box.read(TxtConstant.checkIn));
-    // print(data["data"]);
+  // dynamic getCheckInData(){
+  //   // dynamic data = json.decode(box.read(TxtConstant.checkIn));
+  //   // print(data["data"]);
+  //
+  //
+  //   // TODO : schedule model nk chate yan
+  //   //------------------------------??
+  //   if(box.read(TxtConstant.checkIn) != null){
+  //     dynamic data = json.decode(box.read(TxtConstant.checkIn));
+  //     return ScheduleModel.fromJson(data["data"]);
+  //   }else{
+  //     return null;
+  //   }
+  // }
 
+  Future<void> checkOut(ScheduleModel checkinSchedule)async{
+    print("Inside checkout===================================");
+    // ScheduleModel checkindata = getCheckInData();
+    String checkoutDay = checkinSchedule.scheduleId.toString().split(" ")[0];
 
-    // TODO : schedule model nk chate yan
-    //------------------------------??
-    if(box.read(TxtConstant.checkIn) != null){
-      dynamic data = json.decode(box.read(TxtConstant.checkIn));
-      return ScheduleModel.fromJson(data["data"]);
-    }else{
-      return null;
-    }
-  }
-
-  Future<void> checkOut()async{
-    print("Inside checkout");
-    http.Response respones = await service.checkOut();
+    http.Response respones = await service.checkOut(checkoutDay);
     if(respones.statusCode < 299){
-      box.remove(TxtConstant.checkIn);
-      box.write(TxtConstant.checkOutBtn, false);
+      // box.remove(TxtConstant.checkIn);
+      // box.write(TxtConstant.checkOutBtn, false);
 
 
       // TODO : reload schedule

@@ -247,12 +247,20 @@ class NotiController extends GetxController{
         //   date: DateFormat("y-MMM-d").format(DateTime.now()),
         // );
         print('This is order pick up noti ----- ${remoteMessage.data["type"].toString().trim()}');
-        updateshowFlag(remoteMessage.data["orderId"].toString().trim());
         if(remoteMessage.data["bikerId"].toString() != box.read(TxtConstant.user_id)){
           await flutterLocalNotificationsPlugin.show(0, remoteMessage.notification!.title, remoteMessage.notification!.body, notidetails);
         }
+        updateshowFlag(remoteMessage.data["orderId"].toString().trim());
 
+
+      }else if(remoteMessage.data["type"].toString().toLowerCase().trim() == "ordercancel"){
+        await flutterLocalNotificationsPlugin.show(0, remoteMessage.notification!.title, remoteMessage.notification!.body, notidetails);
+        updateshowFlag(remoteMessage.data["orderId"].toString().trim());
+        // if(remoteMessage.data["bikerId"].toString() != box.read(TxtConstant.user_id)){
+        //
+        // }
       }else if(remoteMessage.data["type"].toString().toLowerCase().trim() == "orderalert"){
+        await flutterLocalNotificationsPlugin.show(0, remoteMessage.notification!.title, remoteMessage.notification!.body, notidetails);
         print("the type is order alert");
         NotiOrderModel notiData = NotiOrderModel();
         notiData.title = remoteMessage.notification?.title;
@@ -281,8 +289,8 @@ class NotiController extends GetxController{
         addNotiData(notiModel: notiData);
         print(notiListByshowFlag.length);
 
-        await flutterLocalNotificationsPlugin.show(0, remoteMessage.notification!.title, remoteMessage.notification!.body, notidetails);
       }else if(remoteMessage.data["type"].toString().toLowerCase().trim() == "schedule"){
+        await flutterLocalNotificationsPlugin.show(0, remoteMessage.notification!.title, remoteMessage.notification!.body, notidetails);
         print("This is inside schedule");
         RandomNotiModel randomNotiModel = RandomNotiModel(
           title: remoteMessage.notification!.title!,
@@ -291,9 +299,8 @@ class NotiController extends GetxController{
         );
         addRandomNoti(randomNotiModel);
         await scheduleController.scheduleReload();
-        await flutterLocalNotificationsPlugin.show(0, remoteMessage.notification!.title, remoteMessage.notification!.body, notidetails);
-
       }else{
+        await flutterLocalNotificationsPlugin.show(0, remoteMessage.notification!.title, remoteMessage.notification!.body, notidetails);
         print("has key but no type");
         RandomNotiModel randomNotiModel = RandomNotiModel(
           title: remoteMessage.notification!.title!,
@@ -301,11 +308,11 @@ class NotiController extends GetxController{
           date: DateFormat("y-MMM-d H:mm a").format(DateTime.now()),
         );
         addRandomNoti(randomNotiModel);
-
-        await flutterLocalNotificationsPlugin.show(0, remoteMessage.notification!.title, remoteMessage.notification!.body, notidetails);
         // await scheduleController.scheduleReload();
       }
     }else{
+      await flutterLocalNotificationsPlugin.show(0, remoteMessage.notification!.title, remoteMessage.notification!.body, notidetails);
+
       print("no key");
       RandomNotiModel randomNotiModel = RandomNotiModel(
         title: remoteMessage.notification!.title!,
@@ -313,8 +320,6 @@ class NotiController extends GetxController{
         date: DateFormat("y-MMM-d H:mm a").format(DateTime.now()),
       );
       addRandomNoti(randomNotiModel);
-      
-      await flutterLocalNotificationsPlugin.show(0, remoteMessage.notification!.title, remoteMessage.notification!.body, notidetails);
       // await scheduleController.scheduleReload();
     }
 
@@ -346,6 +351,34 @@ class NotiController extends GetxController{
     );
 
     await flutterLocalNotificationsPlugin.show(0, remoteMessage.notification!.title, remoteMessage.notification!.body, notidetails);
+  }
+
+  Future<void> showNotiforChat({
+    required String sender,
+    required String text,
+  })async{
+    AndroidNotificationDetails _androidNotificationDetails = AndroidNotificationDetails(
+      "Youcannameidwhatever",
+      "This is for channal name",
+      channelDescription: "This is channel description",
+      playSound : true,
+      importance: Importance.max,
+      priority: Priority.max,
+      enableVibration: true,
+    );
+
+    DarwinNotificationDetails _iOSNotificationDetail = DarwinNotificationDetails(
+      presentAlert: true,
+      presentBadge: true,
+      presentSound: true,
+    );
+
+    var notidetails = NotificationDetails(
+      android: _androidNotificationDetails,
+      iOS: _iOSNotificationDetail,
+    );
+
+    await flutterLocalNotificationsPlugin.show(0, sender, text, notidetails);
   }
   // @pragma('vm:entry-point')
   // Future<void> showNotificationforBackground({

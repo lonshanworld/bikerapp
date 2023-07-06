@@ -31,6 +31,7 @@ class _MessageWidgetState extends State<MessageWidget> {
   // bool showdownloadIndicator = false;
   bool showComplete = false;
   bool showdate = false;
+  bool showimage = true;
   ReceivePort _port = ReceivePort();
 
   @override
@@ -250,7 +251,7 @@ class _MessageWidgetState extends State<MessageWidget> {
             if(widget.item.chatAttachment != null && widget.item.chatAttachment != "")Row(
               mainAxisAlignment: widget.item.isBiker! ? MainAxisAlignment.end : MainAxisAlignment.start,
               children: [
-                if(!widget.item.isBiker!)Container(
+                if(!showimage)if(!widget.item.isBiker!)Container(
                   width: 30,
                   height: 30,
                   decoration: BoxDecoration(
@@ -263,7 +264,7 @@ class _MessageWidgetState extends State<MessageWidget> {
                     ),
                   ),
                 ),
-                Row(
+                if(!showimage)Row(
                   children: [
                     if(widget.item.isBiker!)widgetsforimage(),
                     Container(
@@ -290,6 +291,11 @@ class _MessageWidgetState extends State<MessageWidget> {
                         child: Image.network(
                           widget.item.chatAttachment!,
                           errorBuilder: (ctx, object, stacktrace){
+                            if(mounted){
+                              setState(() {
+                                showimage = false;
+                              });
+                            }
                             return Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Text(

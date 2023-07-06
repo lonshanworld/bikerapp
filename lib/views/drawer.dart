@@ -98,7 +98,7 @@ class _DrawerPageState extends State<DrawerPage> {
               },
               acceptfunc: ()async{
                 Get.dialog(const LoadingScreen(), barrierDismissible: false);
-                await checkInOutController.checkOut();
+                await checkInOutController.checkOut(userAccountController.bikermodel[0].checkInSchedule!);
                 await chatSignalControlller.closehub();
                 logOutService.logout(context);
                 // Future.delayed(Duration(seconds: 2),(){
@@ -144,8 +144,8 @@ class _DrawerPageState extends State<DrawerPage> {
                 //     Get.offAllNamed('/');
                 //   }
                 // });
-                var value = box.read(TxtConstant.checkOutBtn);
-                if(value == true){
+                bool value = userAccountController.bikermodel[0].checkInSchedule == null;
+                if(value == false){
                   CheckOutAlert(context);
                 }else{
                   Get.dialog(const LoadingScreen(), barrierDismissible: false);
@@ -384,8 +384,8 @@ class _DrawerPageState extends State<DrawerPage> {
                 Icons.logout_outlined,
                 "logout".tr,
                 () {
-                  var value = box.read(TxtConstant.checkOutBtn);
-                  print(value);
+                  // var value = box.read(TxtConstant.checkOutBtn);
+                  // print(value);
 
                   LogoutAlert(context);
                 },

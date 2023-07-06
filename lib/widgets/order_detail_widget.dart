@@ -1,5 +1,6 @@
 
 import "package:delivery/constants/uiconstants.dart";
+import "package:delivery/utils/change_num_format.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
 
@@ -56,7 +57,7 @@ class OrderDetailWidget extends StatelessWidget {
                 width: 20,
               ),
               Text(
-                "${orderItem.onlinePrice} ${"mmk".tr}",
+                "${changeNumberFormat(orderItem.onlinePrice!)} ${"mmk".tr}",
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,

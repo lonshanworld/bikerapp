@@ -336,13 +336,7 @@ class OrderController extends GetxController{
     http.Response response = await service.OrderBikerAccept(orderId);
     if(response.statusCode <299){
       await getCurrentOrderList();
-      CustomGlobalSnackbar.show(
-        context: Get.context!,
-        title: "Order Accept",
-        txt: "Thanks for accepting order.",
-        icon: Icons.emoji_emotions_outlined,
-        position: true,
-      );
+
     }
   }
 
@@ -354,22 +348,22 @@ class OrderController extends GetxController{
 
   Future<void> bikerDropOff(String orderId) async{
     http.Response response = await service.bikerDropOff(orderId);
-    if(response.statusCode < 299){
-      CustomGlobalSnackbar.show(
-        context: Get.context!,
-        title: "Order Accept",
-        txt: "Thanks for accepting order.",
-        icon: Icons.emoji_emotions_outlined,
-        position: true,
-      );
-    }else{
-      CustomGlobalSnackbar.show(
-        context: Get.context!,
-        title: "Order cannot accepted",
-        txt: "Order cannnot be accepted.  Please try again later.",
-        icon: Icons.info_outline,
-        position: true,
-      );
-    }
+    // if(response.statusCode < 299){
+    //   CustomGlobalSnackbar.show(
+    //     context: Get.context!,
+    //     title: "Order Drop-off",
+    //     txt: "Thanks for drop-off the order.",
+    //     icon: Icons.emoji_emotions_outlined,
+    //     position: true,
+    //   );
+    // }else{
+    //   CustomGlobalSnackbar.show(
+    //     context: Get.context!,
+    //     title: "Order cannot be drop-offed",
+    //     txt: "Order cannnot be drop-offed.  Please try again later.",
+    //     icon: Icons.info_outline,
+    //     position: true,
+    //   );
+    // }
   }
 }

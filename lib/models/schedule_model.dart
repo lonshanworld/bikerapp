@@ -15,11 +15,13 @@ class ScheduleModel{
     required this.endSchedule,
   });
 
-  ScheduleModel.fromJson(Map<String,dynamic> json){
-    scheduleDetailId = json["scheduleDetailId"];
-    scheduleId = DateTime.parse(json["scheduleId"]);
-    scheduleName = json["scheduleName"];
-    startSchedule = TimeModel().dateTime(json["startSchedule"]);
-    endSchedule = TimeModel().dateTime(json["endSchedule"]);
+  ScheduleModel.fromJson(Map<String,dynamic>? json){
+    if(json != null){
+      scheduleDetailId = json["scheduleDetailId"];
+      scheduleId = DateTime.parse(json["scheduleId"]);
+      scheduleName = json["scheduleName"];
+      startSchedule = TimeModel().dateTime(json["startSchedule"]);
+      endSchedule = TimeModel().dateTime(json["endSchedule"]);
+    }
   }
 }

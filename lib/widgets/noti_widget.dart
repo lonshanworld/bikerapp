@@ -2,6 +2,7 @@
 import "package:delivery/constants/uiconstants.dart";
 import "package:delivery/controllers/order_controller.dart";
 import "package:delivery/routehelper.dart";
+import "package:delivery/utils/change_num_format.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
 import "package:http/http.dart" as http;
@@ -14,7 +15,7 @@ class NotiWidget extends StatefulWidget {
   final String orderBody;
   final String orderNo;
   final String orderId;
-  final int earning;
+  final num earning;
   final String shopName;
   final double distance;
   final String photo;
@@ -162,7 +163,7 @@ class _NotiWidgetState extends State<NotiWidget> with SingleTickerProviderStateM
                             width: 10,
                           ),
                           Text(
-                            "${"earn".tr} : ${widget.earning} ${"mmk".tr}",
+                            "${"earn".tr} : ${changeNumberFormat(widget.earning)} ${"mmk".tr}",
                             style: UIConstant.small.copyWith(
                               color: UIConstant.secondarytxtClr,
                             ),

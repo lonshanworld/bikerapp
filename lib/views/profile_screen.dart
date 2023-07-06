@@ -161,7 +161,7 @@ class _ProfileScreenState extends State<ProfileScreen>{
                           )
                         ),
                       ),
-                      if(!isShowImage && (showdefaultimage || userAccountController.bikermodel[0].profileImage!=null || userAccountController.bikermodel[0].profileImage!=""))Container(
+                      if(!isShowImage && showdefaultimage)Container(
                         width: 120,
                         height: 120,
                         decoration: BoxDecoration(

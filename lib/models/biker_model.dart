@@ -1,3 +1,5 @@
+import 'package:delivery/models/schedule_model.dart';
+
 class BikerModel{
   String? userId;
   String? userName;
@@ -21,6 +23,7 @@ class BikerModel{
   num? cashCollect;
   bool? status;
   num? creditAmt;
+  ScheduleModel? checkInSchedule;
 
   BikerModel({
     required this.userId,
@@ -45,6 +48,7 @@ class BikerModel{
     required this.zoneId,
     required this.zoneName,
     required this.creditAmt,
+    required this.checkInSchedule,
   });
 
   BikerModel.fromjson(Map<String,dynamic> json){
@@ -70,5 +74,6 @@ class BikerModel{
     zoneId = json["zoneId"];
     zoneName = json["zoneName"];
     creditAmt = json["creditAmt"];
+    checkInSchedule = json["checkInSchedule"] != null ? ScheduleModel.fromJson(json["checkInSchedule"]) : null;
   }
 }

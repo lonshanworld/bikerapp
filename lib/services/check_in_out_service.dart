@@ -47,9 +47,9 @@ class CheckInOutService{
     }
   }
 
-  Future checkOut()async{
-    // String uri = "${TxtConstant.mainUrl}schedules/check-out?scheduledate=2023-07-03";
-    String uri = "${TxtConstant.mainUrl}schedules/check-out";
+  Future checkOut(String date)async{
+    String uri = "${TxtConstant.mainUrl}schedules/check-out?scheduledate=$date";
+    // String uri = "${TxtConstant.mainUrl}schedules/check-out";
     try{
       http.Response response = await http.post(Uri.parse(uri),headers: {
         'Accept': 'application/json',

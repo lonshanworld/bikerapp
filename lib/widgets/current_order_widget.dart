@@ -2,6 +2,7 @@
 import "package:delivery/constants/uiconstants.dart";
 import "package:delivery/models/order_model.dart";
 import "package:delivery/routehelper.dart";
+import "package:delivery/utils/change_num_format.dart";
 import "package:delivery/widgets/customButton_widget.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
@@ -161,6 +162,7 @@ class _CurrentOrderWidgetState extends State<CurrentOrderWidget> {
                           style: UIConstant.normal.copyWith(
                             color: Theme.of(context).scaffoldBackgroundColor,
                             fontWeight: FontWeight.bold,
+                            fontSize: 15,
                           ),
                         ),
                       ),
@@ -241,7 +243,7 @@ class _CurrentOrderWidgetState extends State<CurrentOrderWidget> {
                         ),
                       ),
                       Text(
-                        "${widget.currentOrderModel.distanceMeter} ${"km".tr}",
+                        "${changeNumberFormat(widget.currentOrderModel.distanceMeter!)} ${"km".tr}",
                         style: UIConstant.small,
                       ),
                     ],

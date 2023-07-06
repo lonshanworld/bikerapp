@@ -25,7 +25,7 @@ class ErrorHandler{
           return ErrorScreen(
             // title: "Unauthorized Error : ${response.statusCode}",
             title: "Unauthorized",
-            txt: "Please Click the button to Logout and Login again to continue.",
+            txt: json.decode(response.body)["error"].toString(),
             btntxt: "Click to Logout",
             Func: (){
               // if(Theme.of(Get.context!).brightness == Brightness.dark){
@@ -49,7 +49,7 @@ class ErrorHandler{
             // title: "Internal Server Error : ${response.statusCode}",
             // txt: json.decode(response.body)["error"]["message"],
             title: "We are sorry!",
-            txt: json.decode(response.body)["error"]["message"],
+            txt: json.decode(response.body)["error"].toString(),
             btntxt: "Click to go back",
             Func: (){
               Get.back();
@@ -68,7 +68,7 @@ class ErrorHandler{
             // title: "Unexpected Error : ${response.statusCode}",
             // txt: json.decode(response.body)["error"]["message"],
             title: "We are sorry!",
-            txt: json.decode(response.body)["error"]["message"],
+            txt: json.decode(response.body)["error"].toString(),
             btntxt: "Click to go back",
             Func: (){
               Get.back();
@@ -87,7 +87,7 @@ class ErrorHandler{
             // title: "Unexpected Error : ${response.statusCode}",
             // txt: json.decode(response.body)["error"]["message"],
             title: "We are sorry!",
-            txt: "Something unexcepted occurs",
+            txt: json.decode(response.body)["error"].toString(),
             btntxt: "Click to go back",
             Func: (){
               Get.back();
@@ -131,7 +131,7 @@ class ErrorHandler{
           return ErrorScreen(
             // title: "Unauthorized Error : ${response.statusCode}",
             title: "Unauthorized",
-            txt: "Please Click the button to Logout and Login again to continue.",
+            txt:json.decode(response.body)["error"].toString(),
             btntxt: "Click to Logout",
             Func: (){
               // if(Theme.of(Get.context!).brightness == Brightness.dark){

@@ -1,9 +1,11 @@
 
 import "package:delivery/controllers/order_controller.dart";
+import "package:delivery/utils/change_num_format.dart";
 import "package:delivery/widgets/customButton_widget.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
 import "package:google_maps_flutter/google_maps_flutter.dart";
+import "package:intl/intl.dart";
 
 import "../constants/uiconstants.dart";
 import "../models/order_model.dart";
@@ -70,8 +72,10 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
 
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double deviceHeight = MediaQuery.of(context).size.height;
+
+    // final numformat = NumberFormat("#,##0", "en_US");
     
-    Widget pricerowitem({required String name, required int price}){
+    Widget pricerowitem({required String name, required num price}){
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -80,7 +84,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
             style: UIConstant.normal,
           ),
           Text(
-            "${price} ${"mmk".tr}",
+            "${changeNumberFormat(price)} ${"mmk".tr}",
             style: UIConstant.normal.copyWith(
               fontWeight: FontWeight.bold,
             ),
@@ -361,7 +365,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                     //     ),
                     //   ],
                     // ),
-                    pricerowitem(name: "${"order".tr} ${"total".tr}", price: _orderDetailModel.totalPrice!.toInt()),
+                    pricerowitem(name: "${"order".tr} ${"total".tr}", price: _orderDetailModel.totalPrice!),
                     SizedBox(
                       height: 10,
                     ),
@@ -380,7 +384,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                     //     ),
                     //   ],
                     // ),
-                    pricerowitem(name: "Discount", price: _orderDetailModel.discountAmount!.toInt()),
+                    pricerowitem(name: "Discount", price: _orderDetailModel.discountAmount!),
                     SizedBox(
                       height: 10,
                     ),
@@ -399,48 +403,48 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                     //     ),
                     //   ],
                     // ),
-                    pricerowitem(name: "Net Total", price: _orderDetailModel.totalOnlinePrice!.toInt()),
+                    pricerowitem(name: "Net Total", price: _orderDetailModel.totalOnlinePrice!),
                     SizedBox(
                       height: 10,
                     ),
-                    pricerowitem(name: "Container Charges", price: _orderDetailModel.containerCharges!.toInt()),
+                    pricerowitem(name: "Container Charges", price: _orderDetailModel.containerCharges!),
                     SizedBox(
                       height: 10,
                     ),
                     if(_orderDetailModel.paymentType?.toLowerCase() == "credit")pricerowitem(
                       name: "Credit Charges",
-                      price: _orderDetailModel.creditCharges!.toInt(),
+                      price: _orderDetailModel.creditCharges!,
                     ),
                     if(_orderDetailModel.paymentType?.toLowerCase() == "credit")SizedBox(
                       height: 10,
                     ),
-                    if(_orderDetailModel.promotAmt!.toInt() > 0 )pricerowitem(
+                    if(_orderDetailModel.promotAmt! > 0 )pricerowitem(
                       name: "Promo Amt",
-                      price: _orderDetailModel.promotAmt!.toInt(),
+                      price: _orderDetailModel.promotAmt!,
                     ),
-                    if(_orderDetailModel.promotAmt!.toInt() > 0 )SizedBox(
+                    if(_orderDetailModel.promotAmt! > 0 )SizedBox(
                       height: 10,
                     ),
-                    pricerowitem(name: "vat".tr, price: _orderDetailModel.tax!.toInt()),
+                    pricerowitem(name: "vat".tr, price: _orderDetailModel.tax!),
                     SizedBox(
                       height: 10,
                     ),
-                    pricerowitem(name: "Delivery Charges", price: _orderDetailModel.deliCharges!.toInt()),
+                    pricerowitem(name: "Delivery Charges", price: _orderDetailModel.deliCharges!),
                     SizedBox(
                       height: 10,
                     ),
-                    if(_orderDetailModel.tipsMoney!.toInt() > 0 )pricerowitem(
+                    if(_orderDetailModel.tipsMoney! > 0 )pricerowitem(
                       name: "Sub Total",
-                      price: _orderDetailModel.subTotal!.toInt(),
+                      price: _orderDetailModel.subTotal!,
                     ),
-                    if(_orderDetailModel.tipsMoney!.toInt() > 0 )SizedBox(
+                    if(_orderDetailModel.tipsMoney! > 0 )SizedBox(
                       height: 10,
                     ),
-                    if(_orderDetailModel.tipsMoney!.toInt() > 0 )pricerowitem(
+                    if(_orderDetailModel.tipsMoney! > 0 )pricerowitem(
                       name: "Tips",
-                      price: _orderDetailModel.tipsMoney!.toInt(),
+                      price: _orderDetailModel.tipsMoney!,
                     ),
-                    if(_orderDetailModel.tipsMoney!.toInt() > 0 )SizedBox(
+                    if(_orderDetailModel.tipsMoney! > 0 )SizedBox(
                       height: 10,
                     ),
                     // Row(
@@ -470,7 +474,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                             style: UIConstant.minititle,
                           ),
                           Text(
-                            "${_orderDetailModel.grandTotal} ${"mmk".tr}",
+                            "${changeNumberFormat(_orderDetailModel.grandTotal!)} ${"mmk".tr}",
                             style: UIConstant.minititle,
                           ),
                         ],
