@@ -162,7 +162,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
                                 child: Text(
                                   _item.orderStatus!,
                                   style: TextStyle(
-                                    fontSize: 8,
+                                    fontSize: 12,
                                   ),
                                 ),
                               )
@@ -179,7 +179,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
                               ),
                               Text(
                                 changeDateFormat(_item.orderDate!),
-                                style: UIConstant.tinytext.copyWith(
+                                style: UIConstant.small.copyWith(
                                   fontWeight: FontWeight.bold,
                                 ),
                               )

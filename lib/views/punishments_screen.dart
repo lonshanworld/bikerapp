@@ -29,6 +29,7 @@ class _PunishmentScreenState extends State<PunishmentScreen> {
   @override
   void initState() {
     super.initState();
+    print(Get.currentRoute);
     userAccountController.getPunishment().then((value){
       punishmentList = value;
       if(mounted){

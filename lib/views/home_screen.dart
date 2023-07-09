@@ -122,6 +122,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> loadData() async {
     // DateTime starttime = DateTime.now();
+    if(mounted){
+      setState(() {
+        autoplay  = false;
+      });
+    }
     await userAccountController.getInfo();
     // await _registerCallBloc().then((_) {
     //   _isInitialized = true;
@@ -208,16 +213,6 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     });
   }
-
-  // late Feaklib vcService;
-  // Future<void> _registerCallBloc() async {
-  //   final userId = userAccountController.bikermodel.first.userId ?? "";
-  //   vcService = Feaklib(userId: userId);
-  //   Get.lazyPut(() => vcService);
-  //
-  //   final callSocket = Get.find<CallSocket>();
-  //   await callSocket.start(userId);
-  // }
 
   @override
   void dispose() {

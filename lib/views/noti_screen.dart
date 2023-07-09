@@ -1,5 +1,6 @@
 import "package:delivery/constants/uiconstants.dart";
 import "package:delivery/controllers/noti_controller.dart";
+import "package:delivery/widgets/loading_widget.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
 import "package:intl/intl.dart";
@@ -25,110 +26,118 @@ class NotiScreen extends StatelessWidget {
             size: 24,
           ),
           onPressed: () {
-            // Get.offAllNamed("/home");
             Get.back();
           },
         ),
       ),
-      body: Obx((){
-        return (notiController.notiList.isEmpty)
-            ?
-        Center(
-          child: Text("nonoti".tr),
-        )
-            :
-        Center(
-          child: SizedBox(
-            width: deviceWidth > 500 ? deviceWidth * 0.85 : deviceWidth,
-            child: ListView.builder(
-              padding: EdgeInsets.symmetric(
-                vertical: 10,
-              ),
-              itemCount: notiController.notiList.length,
-              itemBuilder: (_, index) {
-                RandomNotiModel item = notiController.notiList[notiController.notiList.length - index -1];
-                return Container(
-                  // decoration: BoxDecoration(
-                  //   boxShadow: [
-                  //     BoxShadow(
-                  //       color: Colors.grey.shade300,
-                  //       blurRadius: 4.0,
-                  //       spreadRadius: 1.0,
-                  //       offset: Offset(2.0, 2.0),
-                  //     ),
-                  //   ],
-                  //   color: Colors.white,
-                  //   borderRadius: BorderRadius.all(
-                  //     Radius.circular(10),
-                  //   ),
-                  // ),
-                  decoration: BoxDecoration(
-                      border: Border(
-                          bottom: BorderSide(
-                              width: 1,
-                              color: Colors.grey
-                          )
-                      )
-                  ),
-                  padding: EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 15,
-                  ),
-                  margin: EdgeInsets.symmetric(
-                    horizontal: 20,
-                  ),
+      body: FutureBuilder(
+        future: notiController.initController(),
+        builder: (context,AsyncSnapshot) {
+          if(AsyncSnapshot.connectionState == ConnectionState.done){
+            return Obx((){
+              return (notiController.notiList.isEmpty)
+                  ?
+              Center(
+                child: Text("nonoti".tr),
+              )
+                  :
+              Center(
+                child: SizedBox(
+                  width: deviceWidth > 500 ? deviceWidth * 0.85 : deviceWidth,
+                  child: ListView.builder(
+                    padding: EdgeInsets.symmetric(
+                      vertical: 10,
+                    ),
+                    itemCount: notiController.notiList.length,
+                    itemBuilder: (_, index) {
+                      RandomNotiModel item = notiController.notiList[notiController.notiList.length - index -1];
+                      return Container(
+                        // decoration: BoxDecoration(
+                        //   boxShadow: [
+                        //     BoxShadow(
+                        //       color: Colors.grey.shade300,
+                        //       blurRadius: 4.0,
+                        //       spreadRadius: 1.0,
+                        //       offset: Offset(2.0, 2.0),
+                        //     ),
+                        //   ],
+                        //   color: Colors.white,
+                        //   borderRadius: BorderRadius.all(
+                        //     Radius.circular(10),
+                        //   ),
+                        // ),
+                        decoration: BoxDecoration(
+                            border: Border(
+                                bottom: BorderSide(
+                                    width: 1,
+                                    color: Colors.grey
+                                )
+                            )
+                        ),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 15,
+                        ),
+                        margin: EdgeInsets.symmetric(
+                          horizontal: 20,
+                        ),
 
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "${index + 1} .",
-                        style: UIConstant.minititle,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: Text(
-                              item.title,
-                              style: UIConstant.normal.copyWith(
-                                fontWeight: FontWeight.bold,
-                                color: UIConstant.orange,
-                              ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "${index + 1} .",
+                              style: UIConstant.minititle,
                             ),
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                item.date.split(" ")[0],
-                                style: UIConstant.small.copyWith(
-                                  color: UIConstant.secondarytxtClr,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    item.title,
+                                    style: UIConstant.normal.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      color: UIConstant.orange,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                "${item.date.split(" ")[1]} ${item.date.split(" ")[2]}",
-                                style: UIConstant.small.copyWith(
-                                  color: UIConstant.secondarytxtClr,
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      item.date.split(" ")[0],
+                                      style: UIConstant.small.copyWith(
+                                        color: UIConstant.secondarytxtClr,
+                                      ),
+                                    ),
+                                    Text(
+                                      "${item.date.split(" ")[1]} ${item.date.split(" ")[2]}",
+                                      style: UIConstant.small.copyWith(
+                                        color: UIConstant.secondarytxtClr,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      Text(
-                        item.body,
-                        style: UIConstant.small,
-                      ),
-                    ],
+                              ],
+                            ),
+                            Text(
+                              item.body,
+                              style: UIConstant.small,
+                            ),
+                          ],
+                        ),
+                      );
+                    },
                   ),
-                );
-              },
-            ),
-          ),
-        );
-      }),
+                ),
+              );
+            });
+          }else{
+            return LoadingWidget();
+          }
+        }
+      ),
     );
   }
 }

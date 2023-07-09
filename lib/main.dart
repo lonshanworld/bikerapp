@@ -20,6 +20,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 
 import "package:get/get.dart";
@@ -43,92 +44,30 @@ import 'models/noti_model.dart';
 //   print('Handling a background message ${message.messageId}');
 // }
 
-final NotiController notiController = Get.isRegistered<NotiController>() ? Get.find<NotiController>() : Get.put(NotiController());
+// final NotiController notiController = Get.isRegistered<NotiController>() ? Get.find<NotiController>() : Get.put(NotiController());
 
 @pragma('vm:entry-point')
 Future<dynamic> myBackgroundMessageHandler(RemoteMessage message)async{
+  await GetStorage.init();
+  GlobalBindings().dependencies();
   print('This is background message listen ----------------------------------------------------------------------------');
   await DBservices.initDB();
   print("backgroundMessage ${message.notification?.title}");
-  notiController.showNotification(
+  final NotiController notiController = Get.isRegistered<NotiController>() ? Get.find<NotiController>() : Get.put(NotiController());
+  await notiController.showNotification(
     remoteMessage: message,
   );
+}
 
-  // await DBservices.initDB();
-  // if(message.data.containsKey("type")){
-  //   print("This contain key");
-  //   if(message.data["type"].toLowerCase() == "orderpickedup"){
-  //     print("the type is orderpickedup");
-  //     NotiOrderModel notiData = NotiOrderModel();
-  //     notiData.title = message.notification?.title;
-  //
-  //     notiData.body = message.notification?.body;
-  //     notiData.notiBodyModel = NotiBodyModel(
-  //       orderTitle: notiData.title!,
-  //       orderId: message.data["orderId"].toString(),
-  //       refNo: message.data["refNo"].toString(),
-  //       earning: int.parse(message.data["earning"]),
-  //       shopName: message.data["shopName"].toString(),
-  //       lat: double.parse(message.data["lat"]),
-  //       long: double.parse(message.data["long"]),
-  //       photo: message.data["photo"],
-  //       distanceMeter: double.parse(message.data["distanceMeter"]),
-  //       type: message.data["type"].toString().toLowerCase(),
-  //     );
-  //     String _date = DateFormat("y-MMM-d").format(DateTime.now());
-  //     notiData.date = _date;
-  //     notiData.type =  message.data["type"];
-  //     print(notiData.notiBodyModel?.type);
-  //
-  //     notiController.updateshowFlag(notiData.notiBodyModel!.orderId!);
-  //   }else if(message.data["type"].toLowerCase() == "orderalert"){
-  //     print("the type is order alert");
-  //     NotiOrderModel notiData = NotiOrderModel();
-  //     notiData.title = message.notification?.title;
-  //     // var jsonbodydata = json.decode(_notificationInfo!.body);
-  //     notiData.body = message.notification?.body;
-  //     notiData.notiBodyModel = NotiBodyModel(
-  //       orderTitle: notiData.title!,
-  //       orderId: message.data["orderId"].toString(),
-  //       refNo: message.data["refNo"].toString(),
-  //       earning: int.parse(message.data["earning"]),
-  //       shopName: message.data["shopName"].toString(),
-  //       lat: double.parse(message.data["lat"]),
-  //       long: double.parse(message.data["long"]),
-  //       photo: message.data["photo"],
-  //       distanceMeter: double.parse(message.data["distanceMeter"]),
-  //       type: message.data["type"].toString().toLowerCase(),
-  //     );
-  //     String _date = DateFormat("y-MMM-d").format(DateTime.now());
-  //     notiData.date = _date;
-  //     notiData.type =  message.data["type"];
-  //     print(notiData.notiBodyModel?.type);
-  //
-  //     notiData.showFlag = "true";
-  //     print("This is in orderalert typpe");
-  //     print(notiData);
-  //     notiController.addNotiData(notiModel: notiData);
-  //     print(notiController.notiListByshowFlag.length);
-  //   }else{
-  //     print("has key but no type");
-  //     RandomNotiModel randomNotiModel = RandomNotiModel(
-  //       title: message.notification!.title!,
-  //       body: message.notification!.body!,
-  //       date: DateTime.now().toString(),
-  //     );
-  //     notiController.addRandomNoti(randomNotiModel);
-  //     await scheduleController.scheduleReload();
-  //   }
-  // }else{
-  //   print("no key");
-  //   RandomNotiModel randomNotiModel = RandomNotiModel(
-  //     title: message.notification!.title!,
-  //     body: message.notification!.body!,
-  //     date:DateFormat("y-MMM-d").format(DateTime.now()),
-  //   );
-  //   notiController.addRandomNoti(randomNotiModel);
-  //   await scheduleController.scheduleReload();
-  // }
+@pragma('vm:entry-point')
+onTapNotificationforbackground(NotificationResponse response){
+  print("This is in background noti tap");
+  print(response);
+  if(response.payload == "/punishment"){
+    Get.toNamed(RouteHelper.getProfilePage());
+  }else{
+    print("No route for this message");
+  }
 }
 
 void main() async{
