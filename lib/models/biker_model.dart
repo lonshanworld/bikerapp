@@ -62,6 +62,7 @@ class BikerModel{
     level = json["level"];
     permenant = json["permenant"];
     profileImage = json["profileImage"];
+    // profileImage = null;
     status = json["status"];
     miscUsage = json["miscUsage"];
     allowance = json["allowance"];

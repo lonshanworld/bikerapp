@@ -14,6 +14,7 @@ import "package:http/http.dart" as http;
 
 
 import "../routehelper.dart";
+import "loading_screen.dart";
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -161,7 +162,7 @@ class _ProfileScreenState extends State<ProfileScreen>{
                           )
                         ),
                       ),
-                      if(!isShowImage && showdefaultimage)Container(
+                      if(!isShowImage && showdefaultimage || (userAccountController.bikermodel[0].profileImage==null || userAccountController.bikermodel[0].profileImage==""))Container(
                         width: 120,
                         height: 120,
                         decoration: BoxDecoration(
@@ -277,12 +278,14 @@ class _ProfileScreenState extends State<ProfileScreen>{
                 horizontalPadding: 0,
                 txt: "update".tr,
                 func: ()async{
+                  Get.dialog(const LoadingScreen(), barrierDismissible: false);
                   await userAccountController.bikerupdate(
                     name: nameController.text,
                     nrc: nrcController.text,
                     email: emailController.text,
                     profile: newselectedImage!,
                   );
+                  Get.back();
                   Get.offAllNamed(RouteHelper.getHomePage());
                 },
                 txtClr: Colors.white,
