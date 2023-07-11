@@ -137,18 +137,18 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                       color: UIConstant.orange,
                     ),
                   ),
-                  CustomButton(
-                    verticalPadding: 5,
-                    horizontalPadding: 10,
-                    txt: "transfertoother".tr,
-                    func: (){
-
-                    },
-                    txtClr: Colors.white,
-                    bgClr: UIConstant.orange,
-                    txtsize: 10,
-                    rad: 5,
-                  ),
+                  // CustomButton(
+                  //   verticalPadding: 5,
+                  //   horizontalPadding: 10,
+                  //   txt: "transfertoother".tr,
+                  //   func: (){
+                  //
+                  //   },
+                  //   txtClr: Colors.white,
+                  //   bgClr: UIConstant.orange,
+                  //   txtsize: 10,
+                  //   rad: 5,
+                  // ),
                 ],
               ),
               if(!showdefaultimage && (_orderDetailModel.image != null && _orderDetailModel.image != ""))Container(

@@ -54,9 +54,10 @@ class OrderService{
 
   Future getAllOrderHistory()async{
     DateTime currentdate = DateTime.now();
-    String sdate =  DateFormat('y-MM-d').format(currentdate.subtract(Duration(days: 30)));
-    String edate = DateFormat('y-MM-d').format(currentdate);
-
+    String sdate =  DateFormat('y-MM-dd').format(currentdate.subtract(Duration(days: 30)));
+    String edate = DateFormat('y-MM-dd').format(currentdate);
+    print(sdate);
+    print(edate);
     String uri = "${TxtConstant.mainUrl}order/previous-orders?userId=${box.read(TxtConstant.user_id)}&sdate=$sdate&edate=$edate";
     try{
       http.Response response = await http.get(Uri.parse(uri),headers: {

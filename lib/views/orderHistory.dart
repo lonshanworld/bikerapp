@@ -3,6 +3,7 @@ import "package:delivery/constants/uiconstants.dart";
 import "package:delivery/controllers/order_controller.dart";
 import "package:delivery/models/order_model.dart";
 import "package:delivery/routehelper.dart";
+import "package:delivery/utils/change_num_format.dart";
 import "package:delivery/widgets/loading_widget.dart";
 import "package:delivery/widgets/no_item_widget.dart";
 import "package:flutter/material.dart";
@@ -26,7 +27,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
   bool _isloading = true;
 
   String changeDateFormat(DateTime txt){
-    String newtxt = DateFormat('y-MMM-d, ').add_jm().format(txt);
+    String newtxt = DateFormat('y MMM d, ').add_jm().format(txt);
     return newtxt;
   }
 
@@ -56,11 +57,13 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
   @override
   void initState() {
     super.initState();
-    orderController.getCurrentOrderList().then((value){
+    orderController.getOrderHistoryList().then((value){
       orderHistoryList = value;
-      setState(() {
-        _isloading = false;
-      });
+      if(mounted){
+        setState(() {
+          _isloading = false;
+        });
+      }
     });
   }
 
@@ -138,7 +141,29 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
                       padding: EdgeInsets.all(15),
 
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).primaryColor,
+                              borderRadius: BorderRadius.all(Radius.circular(5)),
+                            ),
+                            padding: EdgeInsets.symmetric(
+                              vertical: 1,
+                              horizontal: 6,
+                            ),
+                            child: Text(
+                              "Ref.No : ${_item.refNo}",
+                              style: UIConstant.normal.copyWith(
+                                color: Theme.of(context).scaffoldBackgroundColor,
+                                fontWeight: FontWeight.bold,
+
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -156,18 +181,22 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
                                   ),
                                 ),
                                 padding: EdgeInsets.symmetric(
-                                  vertical: 3,
-                                  horizontal: 15,
+                                  vertical: 2,
+                                  horizontal: 10,
                                 ),
                                 child: Text(
                                   _item.orderStatus!,
                                   style: TextStyle(
                                     fontSize: 12,
+                                    color: Colors.black,
                                   ),
                                 ),
                               )
                             ],
                           ),
+                          // SizedBox(
+                          //   height: 5,
+                          // ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -184,6 +213,14 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
                                 ),
                               )
                             ],
+                          ),
+                          Divider(
+                            thickness: 1,
+                            color: Colors.grey
+                          ),
+                          Text(
+                            "Total : ${changeNumberFormat(_item.grandTotal!)} ${"mmk".tr}",
+                            style: UIConstant.normal,
                           )
                         ],
                       ),

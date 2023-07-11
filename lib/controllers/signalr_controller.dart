@@ -31,21 +31,35 @@ class SignalRController extends GetxController{
   }
 
   Future startSignalR()async{
-    await hubConnection.start()?.then((_){
+    await hubConnection.start()?.then((_)async{
       print("This is success in signalR");
+      await hubConnection.invoke("SaveConnection", args: [
+        hubConnection.connectionId!,
+        box.read(TxtConstant.user_id),
+      ]);
     },onError: (Object) async{
       print("This is error in signalR ${Object.toString()}");
-      await hubConnection.start();
+
+    });
+
+    hubConnection.onreconnected(({connectionId})async{
+      await hubConnection.invoke("SaveConnection", args: [
+        hubConnection.connectionId!,
+        box.read(TxtConstant.user_id),
+      ]);
     });
 
     if(hubConnection.connectionId == null){
       throw errorHandler.handleNoSignalRerror("Notification Server is not connected");
+    }else{
+
     }
     print(hubConnection.state);
-    hubConnection.on("LocationRequest", (res){
+    hubConnection.on("GeoPointRequest", (res){
 
       print(hubConnection.state);
-      if(hubConnection.state == HubConnectionState.Connected){
+    if(hubConnection.state == HubConnectionState.Connected){
+
         locationController.getPermission().then((_) {
           // if(permit){
           //   locationController.getcurLagLong().then((point)async{
@@ -58,10 +72,14 @@ class SignalRController extends GetxController{
           //     });
           //   });
           // }
-          locationController.getcurLagLong().then((point)async{
+        locationController.getcurLagLong().then((point)async{
             print("This working ...");
-            await hubConnection.invoke("LocationSend", args: <Object>[res![0]!,
-              {"userid": box.read(TxtConstant.user_id),"lat" : point.latitude,"lng" : point.longitude},
+            await hubConnection.invoke("SendingGeoPoint", args: <Object>[res![0]!,
+              {
+                // "userid": box.read(TxtConstant.user_id),
+                "lat" : point.latitude,
+                "lng" : point.longitude
+              },
             ]).then((response){
               print(response);
             });

@@ -235,7 +235,7 @@ class OrderController extends GetxController{
       for(int e = 0 ; e < info.length; e++){
         dynamic data = info[e];
         List<OrderChoice> orderchoiceList = [];
-        if(data["orderChoices"] != []){
+        if(data["orderChoices"] != null){
           for(int a=0; a < data["orderChoices"].length; a++){
             if(!orderchoiceList.contains(data["orderChoices"][a])){
               OrderChoice orderChoice = OrderChoice(
@@ -251,7 +251,7 @@ class OrderController extends GetxController{
         }
 
         List<OrderItem> orderitemList = [];
-        if(data["orderItems"] != []){
+        if(data["orderItems"] != null){
           for(int b = 0; b < data["orderItems"].length; b++){
             if(!orderitemList.contains(data["orderItems"][b])){
               List<OrderChoice> orderchoiceforsingleitem = [];
