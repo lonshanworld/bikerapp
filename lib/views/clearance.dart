@@ -2,6 +2,7 @@
 import 'package:delivery/constants/uiconstants.dart';
 import 'package:delivery/controllers/clearance_controller.dart';
 import 'package:delivery/models/clearance_model.dart';
+import 'package:delivery/utils/change_num_format.dart';
 import 'package:delivery/widgets/no_item_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -24,11 +25,11 @@ class Clearance extends StatefulWidget {
 class _ClearanceState extends State<Clearance> {
 
   final ClearanceController clearanceController = Get.find<ClearanceController>();
-  final TextEditingController levelController = TextEditingController();
-  final TextEditingController cashController = TextEditingController();
-  final TextEditingController miscController = TextEditingController();
-  final TextEditingController creditController = TextEditingController();
-  final TextEditingController totalController = TextEditingController();
+  // final TextEditingController levelController = TextEditingController();
+  // final TextEditingController cashController = TextEditingController();
+  // final TextEditingController miscController = TextEditingController();
+  // final TextEditingController creditController = TextEditingController();
+  // final TextEditingController totalController = TextEditingController();
   final TextEditingController paymentController = TextEditingController();
   final CameraImageControlller imageControlller = Get.put(CameraImageControlller());
   ClearanceModel? clearanceModel;
@@ -40,13 +41,13 @@ class _ClearanceState extends State<Clearance> {
 
   Future assignData()async{
     clearanceModel = await clearanceController.getClearance();
-    if(clearanceModel !=null){
-      levelController.text = clearanceModel!.levelName!;
-      cashController.text = clearanceModel!.cod.toString();
-      miscController.text = clearanceModel!.miscusage.toString();
-      creditController.text = clearanceModel!.codPayment.toString();
-      totalController.text = (clearanceModel!.miscusage! + clearanceModel!.deposit! + clearanceModel!.cod!).toString();
-    }
+    // if(clearanceModel !=null){
+    //   levelController.text = clearanceModel!.levelName!;
+    //   cashController.text = clearanceModel!.cod.toString();
+    //   miscController.text = clearanceModel!.miscusage.toString();
+    //   creditController.text = clearanceModel!.codPayment.toString();
+    //   totalController.text = (clearanceModel!.miscusage! + clearanceModel!.deposit! + clearanceModel!.cod!).toString();
+    // }
     setState(() {
       isloading = false;
     });
@@ -84,6 +85,59 @@ class _ClearanceState extends State<Clearance> {
 
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double deviceHeight = MediaQuery.of(context).size.height;
+
+    TableRow tablerowitem(String nametext, String datatext, {bool showpadding = true, bool isCOD = false}){
+      return TableRow(
+        decoration: BoxDecoration(
+          color: isCOD ? UIConstant.orange : Colors.transparent,
+          border: Border(
+              top: showpadding ? BorderSide(
+                  width: 0.5,
+                  color: Colors.grey
+              ) : BorderSide.none,
+          ),
+        ),
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: 5,
+            ),
+            child: Text(
+              nametext,
+              textAlign: TextAlign.end,
+              style: UIConstant.normal.copyWith(
+                color: isCOD ? Colors.white : Theme.of(context).primaryColor
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: 5,
+            ),
+            child: Text(
+              "-",
+              textAlign: TextAlign.center,
+              style: UIConstant.minititle.copyWith(
+                  color: isCOD ? Colors.white : Theme.of(context).primaryColor
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: 5,
+            ),
+            child: Text(
+              datatext,
+              textAlign: TextAlign.start,
+              style: UIConstant.normal.copyWith(
+                fontWeight: FontWeight.bold,
+                color: isCOD ? Colors.white : Theme.of(context).primaryColor
+              ),
+            ),
+          ),
+        ],
+      );
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -128,34 +182,52 @@ class _ClearanceState extends State<Clearance> {
                 horizontal: 20,
             ),
             children: [
-              TextFieldwithLabel(
-                label: "level".tr,
-                txtController: levelController,
-                inputType: TextInputType.text,
-              ),
-              SizedBox(height: 5),
-              TextFieldwithLabel(
-                label: "cashondelivery".tr,
-                txtController: cashController,
-                inputType: TextInputType.number,
-              ),
-              SizedBox(height: 5),
-              TextFieldwithLabel(
-                label: "${"misc".tr} ${"usage".tr}",
-                txtController: miscController,
-                inputType: TextInputType.number,
-              ),
-              SizedBox(height: 5),
-              TextFieldwithLabel(
-                label: "credit".tr,
-                txtController: creditController,
-                inputType: TextInputType.number,
-              ),
-              SizedBox(height: 5),
-              TextFieldwithLabel(
-                label: "${"total".tr} ${"clearance".tr}",
-                txtController: totalController,
-                inputType: TextInputType.number,
+
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                ),
+                child: Table(
+                  columnWidths: const {
+                    0 : FlexColumnWidth(5),
+                    1 : FlexColumnWidth(1),
+                    2 : FlexColumnWidth(5),
+                  },
+                  children: [
+                    tablerowitem("Level Name", clearanceModel!.levelName.toString(),showpadding: false),
+
+                    tablerowitem("Misc Usage", "${changeNumberFormat(clearanceModel!.miscusage!)} ${"mmk".tr}"),
+                    tablerowitem("Deposit", "${changeNumberFormat(clearanceModel!.deposit!)} ${"mmk".tr}"),
+                    tablerowitem("Area Name", clearanceModel!.areaName.toString()),
+                    tablerowitem("COD Collect", "${changeNumberFormat(clearanceModel!.codPayment!)} ${"mmk".tr}", isCOD: true),
+                    TableRow(
+                      children: [
+                        Text(
+                          "Way",
+                          textAlign: TextAlign.end,
+                          style: UIConstant.small.copyWith(
+                              color: UIConstant.orange,
+                          ),
+                        ),
+                        Text(
+                          "-",
+                          textAlign: TextAlign.center,
+                          style: UIConstant.normal.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: UIConstant.orange,
+                          ),
+                        ),
+                        Text(
+                          clearanceModel!.cod.toString(),
+                          textAlign: TextAlign.start,
+                          style: UIConstant.small.copyWith(
+                              color: UIConstant.orange,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
               SizedBox(
                 height: 10,

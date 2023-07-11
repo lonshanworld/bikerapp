@@ -10,6 +10,7 @@ class ClearanceService{
   final ErrorHandler errorHandler = ErrorHandler();
 
   Future getClearance()async{
+    print(box.read(TxtConstant.user_id));
     String uri = "${TxtConstant.mainUrl}transaction/clearance?userId=${box.read(TxtConstant.user_id)}";
     try{
       http.Response response = await http.get(Uri.parse(uri),headers: {
@@ -40,7 +41,7 @@ class ClearanceService{
         'Authorization': 'Bearer ${box.read(TxtConstant.accesstoken)}',
       });
 
-      print("in getClearance service || ${response.statusCode}");
+      print("in getClearanceHistory service || ${response.statusCode}");
       print(response.body);
       if(response.statusCode > 299){
         throw errorHandler.handleError(response);

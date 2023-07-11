@@ -58,36 +58,40 @@ class SignalRController extends GetxController{
     hubConnection.on("GeoPointRequest", (res){
 
       print(hubConnection.state);
-    if(hubConnection.state == HubConnectionState.Connected){
+      if(hubConnection.state == HubConnectionState.Connected){
 
         locationController.getPermission().then((_) {
-          // if(permit){
-          //   locationController.getcurLagLong().then((point)async{
-          //     print("This working ...");
-          //     await hubConnection.invoke("LocationSend", args: <Object>[
-          //       {"userid": box.read(TxtConstant.user_id),"lat" : point.latitude,"lng" : point.longitude},
-          //     ]).then((res){
-          //       print("heytyyyy");
-          //       print(res);
-          //     });
-          //   });
-          // }
-        locationController.getcurLagLong().then((point)async{
-            print("This working ...");
-            await hubConnection.invoke("SendingGeoPoint", args: <Object>[res![0]!,
-              {
-                // "userid": box.read(TxtConstant.user_id),
-                "lat" : point.latitude,
-                "lng" : point.longitude
-              },
-            ]).then((response){
-              print(response);
+            // if(permit){
+            //   locationController.getcurLagLong().then((point)async{
+            //     print("This working ...");
+            //     await hubConnection.invoke("LocationSend", args: <Object>[
+            //       {"userid": box.read(TxtConstant.user_id),"lat" : point.latitude,"lng" : point.longitude},
+            //     ]).then((res){
+            //       print("heytyyyy");
+            //       print(res);
+            //     });
+            //   });
+            // }
+          locationController.getcurLagLong().then((point)async{
+              print("This working ...");
+              await hubConnection.invoke("SendingGeoPoint", args: <Object>[res![0]!,
+                {
+                  // "userid": box.read(TxtConstant.user_id),
+                  "lat" : point.latitude,
+                  "lng" : point.longitude
+                },
+              ]).then((response){
+                print(response);
+              });
             });
           });
-        });
-      }else{
-        print("connection state == ${hubConnection.state}");
-      }
+     }else{
+          print("connection state == ${hubConnection.state}");
+     }
     });
+  }
+
+  Future<void> stopSignal()async{
+    await hubConnection.stop();
   }
 }

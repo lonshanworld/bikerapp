@@ -28,6 +28,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final FocusNode focusNode = FocusNode();
   String labelstring = "Enter your phone number";
 
+  final GlobalKey<FormState> formkey = GlobalKey<FormState>();
+
   var formatter = new NumberFormat("#,###");
 
   @override

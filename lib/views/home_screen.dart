@@ -23,6 +23,7 @@ import "package:get/get.dart";
 import "package:get_storage/get_storage.dart";
 import "package:intl/intl.dart";
 
+import "../controllers/signalr_controller.dart";
 import "../models/noti_model.dart";
 import "../services/call_service.dart";
 import "../widgets/current_order_widget.dart";
@@ -45,6 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Get.find<UserAccountController>();
   final NotiController notiController = Get.find<NotiController>();
   final OrderController orderController = Get.find<OrderController>();
+  final SignalRController signalRController = Get.find<SignalRController>();
   final CheckInOutController checkInOutController =
   Get.find<CheckInOutController>();
   final ScheduleController scheduleController = Get.find<ScheduleController>();
@@ -201,6 +203,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    signalRController.startSignalR();
     // DBservices.initDB().then((_){
     //   loadData();
     // });
@@ -219,7 +222,9 @@ class _HomeScreenState extends State<HomeScreen> {
     if (timer != null) {
       timer!.cancel();
     }
+    signalRController.stopSignal();
     super.dispose();
+
   }
 
   @override

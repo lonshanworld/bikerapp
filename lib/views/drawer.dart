@@ -332,20 +332,20 @@ class _DrawerPageState extends State<DrawerPage> {
                   Get.toNamed(RouteHelper.getClearancePage());
                 },
               ),
-              customListTile(
-                Icons.work_history,
-                "${"clearance".tr} ${"history".tr}",
-                () {
-                  Get.toNamed(RouteHelper.getClearanceHistoryPage());
-                },
-              ),
-              customListTile(
-                Icons.description_outlined,
-                "${"statement".tr} ${"history".tr}",
-                () {
-
-                },
-              ),
+              // customListTile(
+              //   Icons.work_history,
+              //   "${"clearance".tr} ${"history".tr}",
+              //   () {
+              //     Get.toNamed(RouteHelper.getClearanceHistoryPage());
+              //   },
+              // ),
+              // customListTile(
+              //   Icons.description_outlined,
+              //   "${"statement".tr} ${"history".tr}",
+              //   () {
+              //
+              //   },
+              // ),
               customListTile(
                 Icons.rule,
                 "rules".tr,

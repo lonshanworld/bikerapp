@@ -99,7 +99,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
   // This widget is the root of your application.
   final NotiController notiController = Get.isRegistered<NotiController>() ? Get.find<NotiController>() : Get.put(NotiController());
-  final SignalRController signalRController = Get.find<SignalRController>();
+
   final FirebaseNotiController firebaseNotiController = Get.put(FirebaseNotiController(),permanent: true);
 
 
@@ -113,7 +113,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
     await notiController.requestNotiPermission();
     await notiController.initialize();
 
-    await signalRController.startSignalR();
+
 
 
     // close listener after 30 seconds, so the program doesn't run forever
