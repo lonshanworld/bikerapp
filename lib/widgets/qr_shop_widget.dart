@@ -1,22 +1,24 @@
 
 import "package:delivery/constants/uiconstants.dart";
+import "package:delivery/models/order_model.dart";
 import "package:flutter/material.dart";
 
 class QrShopWidget extends StatelessWidget {
 
-  final String name;
-  final bool pickUp;
+  final OrderItem item;
 
   const QrShopWidget({
     Key? key,
-    required this.name,
-    required this.pickUp,
+    required this.item,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(10),
+      margin: EdgeInsets.only(
+        bottom: 5,
+      ),
       decoration: BoxDecoration(
         color: Theme.of(context).brightness == Brightness.dark ? UIConstant.bgDark : UIConstant.bgWhite,
         borderRadius: BorderRadius.all(
@@ -26,10 +28,12 @@ class QrShopWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            name,
-            style: UIConstant.normal.copyWith(
-              fontWeight: FontWeight.bold,
+          Expanded(
+            child: Text(
+              "${item.itemName!}  x ${item.qty}",
+              style: UIConstant.normal.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
           Container(
@@ -38,13 +42,13 @@ class QrShopWidget extends StatelessWidget {
               horizontal: 10,
             ),
             decoration: BoxDecoration(
-              color: pickUp ? Colors.green : UIConstant.orange,
-              borderRadius: pickUp ? null : BorderRadius.all(
+              color: item.pickupFlag! ? Colors.green : UIConstant.orange,
+              borderRadius: item.pickupFlag! ? null : BorderRadius.all(
                 Radius.circular(10),
               ),
-              shape: pickUp ? BoxShape.circle : BoxShape.rectangle
+              shape: item.pickupFlag! ? BoxShape.circle : BoxShape.rectangle
             ),
-            child: pickUp
+            child: item.pickupFlag!
                 ?
               Icon(
                 Icons.check,
@@ -55,7 +59,7 @@ class QrShopWidget extends StatelessWidget {
               Text(
                 "Pending ...",
                 style: TextStyle(
-                  fontSize: 8,
+                  fontSize: 9,
                   color: Colors.white
                 ),
               ),

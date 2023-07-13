@@ -4,6 +4,8 @@ import "package:delivery/routehelper.dart";
 import "package:delivery/utils/change_num_format.dart";
 import "package:delivery/widgets/customButton_widget.dart";
 import "package:delivery/widgets/loading_widget.dart";
+import "package:delivery/widgets/order_summary_widget.dart";
+import "package:delivery/widgets/snackBar_custom_widget.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
 import "package:hand_signature/signature.dart";
@@ -72,23 +74,7 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double deviceHeight = MediaQuery.of(context).size.height;
 
-    Widget pricerowitem({required String name, required num price}){
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            name,
-            style: UIConstant.normal,
-          ),
-          Text(
-            "${changeNumberFormat(price)} ${"mmk".tr}",
-            style: UIConstant.normal.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ],
-      );
-    }
+    
 
     final control = HandSignatureControl(
       threshold: 3.0,
@@ -164,23 +150,43 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Column(
-                      children: [
-                        if (orderItemShopnameList.isEmpty)
-                          for (OrderItem _orderItem
-                              in _orderDetailModel!.orderItems!)
-                            OrderDetailWidget(
-                              orderItem: _orderItem,
-                              hasMoreShop: false,
+                    SizedBox(
+                      height: 5,
+                    ),
+                    if(orderItemShopnameList.isEmpty)Column(
+                      children: List.generate(_orderDetailModel!.orderItems!.length, (index) => OrderDetailWidget(
+                        orderItem: _orderDetailModel!.orderItems![index],
+                      )),
+                    ),
+                    if(orderItemShopnameList.isNotEmpty)ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: orderItemShopnameList.length,
+                      itemBuilder: (ctx, index){
+                        List<OrderItem> itemlist = [];
+                        for(int a = 0; a < _orderDetailModel!.orderItems!.length; a++){
+                          if(orderItemShopnameList[index] == _orderDetailModel!.orderItems![a].shopName){
+                            itemlist.add(_orderDetailModel!.orderItems![a]);
+                          }
+                        }
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              orderItemShopnameList[index],
+                              style: UIConstant.normal.copyWith(
+                                  color: UIConstant.orange
+                              ),
                             ),
-                        if (orderItemShopnameList.isNotEmpty)
-                          for (OrderItem _orderItem
-                              in _orderDetailModel!.orderItems!)
-                            OrderDetailWidget(
-                              orderItem: _orderItem,
-                              hasMoreShop: true,
-                            )
-                      ],
+                            Column(
+                              children: List.generate(itemlist.length, (index) => OrderDetailWidget(orderItem: itemlist[index])),
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                          ],
+                        );
+                      },
                     ),
                     SizedBox(
                       height: 20,
@@ -194,223 +200,7 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
                     SizedBox(
                       height: 5,
                     ),
-                    Container(
-                      padding: EdgeInsets.all(15),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).brightness == Brightness.dark
-                            ? UIConstant.bgDark
-                            : UIConstant.bgWhite,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10),
-                        ),
-                      ),
-                      // child: Column(
-                      //   children: [
-                      //     Row(
-                      //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //       children: [
-                      //         Text(
-                      //           "ordertotal".tr,
-                      //           style: UIConstant.small,
-                      //         ),
-                      //         Text(
-                      //           "${_orderDetailModel!.totalOnlinePrice} ${"mmk".tr}",
-                      //           style: UIConstant.small.copyWith(
-                      //             fontWeight: FontWeight.bold,
-                      //           ),
-                      //         ),
-                      //       ],
-                      //     ),
-                      //     SizedBox(
-                      //       height: 5,
-                      //     ),
-                      //     Row(
-                      //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //       children: [
-                      //         Text(
-                      //           "deliverycharges".tr,
-                      //           style: UIConstant.small,
-                      //         ),
-                      //         Text(
-                      //           "${_orderDetailModel!.deliCharges} ${"mmk".tr}",
-                      //           style: UIConstant.small
-                      //               .copyWith(fontWeight: FontWeight.bold),
-                      //         ),
-                      //       ],
-                      //     ),
-                      //     SizedBox(
-                      //       height: 5,
-                      //     ),
-                      //     Row(
-                      //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //       children: [
-                      //         Text(
-                      //           "cashcollected".tr,
-                      //           style: UIConstant.small,
-                      //         ),
-                      //         Text(
-                      //           "${_orderDetailModel!.totalOnlinePrice! + _orderDetailModel!.deliCharges!} ${"mmk".tr}",
-                      //           style: UIConstant.small.copyWith(
-                      //             fontWeight: FontWeight.bold,
-                      //           ),
-                      //         ),
-                      //       ],
-                      //     ),
-                      //     SizedBox(
-                      //       height: 5,
-                      //     ),
-                      //     Row(
-                      //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //       children: [
-                      //         Text(
-                      //           "vat".tr,
-                      //           style: UIConstant.small,
-                      //         ),
-                      //         Text(
-                      //           "${_orderDetailModel!.tax} ${"mmk".tr}",
-                      //           style: UIConstant.small.copyWith(
-                      //             fontWeight: FontWeight.bold,
-                      //           ),
-                      //         ),
-                      //       ],
-                      //     ),
-                      //   ],
-                      // ),
-                      child: Column(
-                        children: [
-                          // Row(
-                          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          //   children: [
-                          //     Text(
-                          //       "${"order".tr} ${"total".tr}",
-                          //       style: UIConstant.normal,
-                          //     ),
-                          //     Text(
-                          //       "${_orderDetailModel.totalOnlinePrice} ${"mmk".tr}",
-                          //       style: UIConstant.normal.copyWith(
-                          //         fontWeight: FontWeight.bold,
-                          //       ),
-                          //     ),
-                          //   ],
-                          // ),
-                          pricerowitem(name: "${"order".tr} ${"total".tr}", price: _orderDetailModel!.totalPrice!),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          // Row(
-                          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          //   children: [
-                          //     Text(
-                          //       "deliverycharges".tr,
-                          //       style: UIConstant.normal,
-                          //     ),
-                          //     Text(
-                          //       "${_orderDetailModel.deliCharges} ${"mmk".tr}",
-                          //       style: UIConstant.normal.copyWith(
-                          //         fontWeight: FontWeight.bold,
-                          //       ),
-                          //     ),
-                          //   ],
-                          // ),
-                          pricerowitem(name: "Discount", price: _orderDetailModel!.discountAmount!),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          // Row(
-                          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          //   children: [
-                          //     Text(
-                          //       "cashcollected".tr,
-                          //       style: UIConstant.normal,
-                          //     ),
-                          //     Text(
-                          //       "${_orderDetailModel.totalOnlinePrice! + _orderDetailModel.deliCharges!} ${"mmk".tr}",
-                          //       style: UIConstant.normal.copyWith(
-                          //         fontWeight: FontWeight.bold,
-                          //       ),
-                          //     ),
-                          //   ],
-                          // ),
-                          pricerowitem(name: "Net Total", price: _orderDetailModel!.totalOnlinePrice!),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          pricerowitem(name: "Container Charges", price: _orderDetailModel!.containerCharges!),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          if(_orderDetailModel!.paymentType?.toLowerCase() == "credit")pricerowitem(
-                            name: "Credit Charges",
-                            price: _orderDetailModel!.creditCharges!,
-                          ),
-                          if(_orderDetailModel!.paymentType?.toLowerCase() == "credit")SizedBox(
-                            height: 10,
-                          ),
-                          if(_orderDetailModel!.promotAmt! > 0 )pricerowitem(
-                            name: "Promo Amt",
-                            price: _orderDetailModel!.promotAmt!,
-                          ),
-                          if(_orderDetailModel!.promotAmt! > 0 )SizedBox(
-                            height: 10,
-                          ),
-                          pricerowitem(name: "vat".tr, price: _orderDetailModel!.tax!),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          pricerowitem(name: "Delivery Charges", price: _orderDetailModel!.deliCharges!),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          if(_orderDetailModel!.tipsMoney! > 0 )pricerowitem(
-                            name: "Sub Total",
-                            price: _orderDetailModel!.subTotal!,
-                          ),
-                          if(_orderDetailModel!.tipsMoney! > 0 )SizedBox(
-                            height: 10,
-                          ),
-                          if(_orderDetailModel!.tipsMoney! > 0 )pricerowitem(
-                            name: "Tips",
-                            price: _orderDetailModel!.tipsMoney!,
-                          ),
-                          if(_orderDetailModel!.tipsMoney! > 0 )SizedBox(
-                            height: 10,
-                          ),
-                          // Row(
-                          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          //   children: [
-                          //     Text(
-                          //       "vat".tr,
-                          //       style: UIConstant.normal,
-                          //     ),
-                          //     Text(
-                          //       "${_orderDetailModel.tax} ${"mmk".tr}",
-                          //       style: UIConstant.normal.copyWith(
-                          //         fontWeight: FontWeight.bold,
-                          //       ),
-                          //     ),
-                          //   ],
-                          // ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 50,
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "Total",
-                                  style: UIConstant.minititle,
-                                ),
-                                Text(
-                                  "${changeNumberFormat(_orderDetailModel!.grandTotal!)} ${"mmk".tr}",
-                                  style: UIConstant.minititle,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    OrderSummaryWidget(orderDetailModel: _orderDetailModel!),
                     SizedBox(
                       height: 20,
                     ),
@@ -713,12 +503,24 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
                                           func: (){
 
                                             // for e-sign
-                                            Get.dialog(LoadingScreen(), barrierDismissible: false);
-                                            orderController.bikerDropOff(_orderDetailModel!.orderId!).then((_){
 
-                                              Get.back();
-                                              Get.toNamed(RouteHelper.getFinalSuccessPage(title: "finalconfirmtitle".tr, txt: "finalconfirmtext".tr));
-                                            });
+
+                                            if(control.isFilled){
+                                              Get.dialog(LoadingScreen(), barrierDismissible: false);
+                                              orderController.bikerDropOff(_orderDetailModel!.orderId!).then((_){
+
+                                                Get.back();
+                                                Get.toNamed(RouteHelper.getFinalSuccessPage(title: "finalconfirmtitle".tr, txt: "finalconfirmtext".tr));
+                                              });
+                                            }else{
+                                              CustomGlobalSnackbar.show(
+                                                  context: context,
+                                                  title: "E-sign",
+                                                  txt: "Please draw E-sign to confirm the order.",
+                                                  icon: Icons.draw,
+                                                  position: true,
+                                              );
+                                            }
                                             
                                             // Get.toNamed(RouteHelper.getFinalSuccessPage(title: "finalconfirmtitle".tr, txt: "finalconfirmtext".tr));
                                           },

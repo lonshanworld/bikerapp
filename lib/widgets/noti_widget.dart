@@ -278,7 +278,7 @@ class _NotiWidgetState extends State<NotiWidget> with SingleTickerProviderStateM
                       ),
                     ),
                     Text(
-                      "${widget.distance} ${"km".tr}",
+                      "${changeNumberFormat(widget.distance/1000)} ${"km".tr}",
                       style: UIConstant.small,
                     ),
                   ],
@@ -289,7 +289,7 @@ class _NotiWidgetState extends State<NotiWidget> with SingleTickerProviderStateM
                 Align(
                   alignment: Alignment.center,
                   child: Text(
-                    "${"youearn".tr} : ${widget.earning} ${"mmk".tr}",
+                    "${"youearn".tr} : ${changeNumberFormat(widget.earning)} ${"mmk".tr}",
                     style: UIConstant.normal.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -302,6 +302,7 @@ class _NotiWidgetState extends State<NotiWidget> with SingleTickerProviderStateM
                   func: ()async{
 
                     Get.dialog(const LoadingScreen(), barrierDismissible: false);
+                    widget.func();
                     await orderController.acceptOrder(widget.orderId);
                     // // Get.to(()=>OrderDetailScreen(refNO: widget.orderNo,orderId: widget.orderId,bikername: generalController.bikerModel[0].fullName,));
                     // _generalController.getOrderDetails(widget.orderId).then((value){
@@ -313,7 +314,7 @@ class _NotiWidgetState extends State<NotiWidget> with SingleTickerProviderStateM
                     // });
                     Get.back();
                     Get.toNamed(RouteHelper.getOrderDetailPage(orderId: widget.orderId, hasButton: true));
-                    widget.func();
+
                     // _generalController.getCurrentOrder();
                   },
                   txtClr: Colors.white,

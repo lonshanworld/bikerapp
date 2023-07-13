@@ -143,6 +143,15 @@ class _HomeScreenState extends State<HomeScreen> {
     await scheduleController.scheduleReload();
     await orderController.getCurrentOrderList();
     checkinModel = userAccountController.bikermodel[0].checkInSchedule;
+    // print(checkinModel!.scheduleId!);
+    String data = "2023-07-13T00:00:00";
+    String data2 = "2023-07-13T03:00:00";
+    List<String> datelist = [
+      "2023-07-13T00:00:00",
+      "2023-07-13T00:00:00",
+      "2023-07-13T00:00:00",
+    ];
+
     if (checkinModel != null) {
       var checkoutDay = checkinModel!.scheduleId!.toString().split(" ");
       String checkoutdetailtime = DateFormat.Hms()

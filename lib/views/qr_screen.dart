@@ -164,9 +164,9 @@ class _QRscreenState extends State<QRscreen> {
                     // ),
                     eyeStyle: QrEyeStyle(
                       eyeShape: QrEyeShape.square,
-                      color: Theme.of(context).primaryColor,
+                      color: Colors.black,
                     ),
-                    backgroundColor: Theme.of(context).brightness == Brightness.dark ? UIConstant.bgDark : UIConstant.bgWhite,
+                    backgroundColor: Colors.white,
                     errorStateBuilder: (cxt, err) {
                       return const Center(
                         child: Text(
@@ -187,18 +187,49 @@ class _QRscreenState extends State<QRscreen> {
                 SizedBox(
                   height: 10,
                 ),
-                if(orderItemShopnameList.isNotEmpty)Column(
-                  children: List.generate(
-                    orderDetailModel!.orderItems!.length,
-                        (index) => QrShopWidget(
-                      name: orderDetailModel!.orderItems![index].itemName!,
-                      pickUp: orderDetailModel!.orderItems![index].pickupFlag!,
-                    ),
+                if(orderItemShopnameList.isNotEmpty)ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: orderItemShopnameList.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    List<OrderItem> itemlist= [];
+                    for(int a = 0 ; a < orderDetailModel!.orderItems!.length; a++){
+                      if(orderDetailModel!.orderItems![a].shopName == orderItemShopnameList[index]){
+                        itemlist.add(orderDetailModel!.orderItems![a]);
+                      }
+                    }
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          orderItemShopnameList[index],
+                          style: UIConstant.normal.copyWith(
+                              color: UIConstant.orange
+                          ),
+                        ),
+                        Column(
+                          children: List.generate(itemlist.length, (int) => QrShopWidget(item: itemlist[int])),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                      ],
+                    );
+                  },
+                ),
+                if(orderItemShopnameList.isEmpty)Text(
+                  orderDetailModel!.shopName!,
+                  style: UIConstant.normal.copyWith(
+                      color: UIConstant.orange
                   ),
                 ),
-                if(orderItemShopnameList.isEmpty)QrShopWidget(
-                    name: orderDetailModel!.shopName!,
-                    pickUp: orderDetailModel!.orderItems![0].pickupFlag!
+                if(orderItemShopnameList.isEmpty)Column(
+                  children: List.generate(
+                    orderDetailModel!.orderItems!.length,
+                        (index) =>  QrShopWidget(
+                          item: orderDetailModel!.orderItems![index],
+                        ),
+                  ),
                 ),
               ],
             ),
@@ -221,7 +252,7 @@ class _QRscreenState extends State<QRscreen> {
         ),
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
-          color: UIConstant.bgWhite,
+          color: Theme.of(context).brightness == Brightness.light ? UIConstant.bgWhite : UIConstant.bgDark,
           // boxShadow: [
           //   BoxShadow(
           //     color: Theme.of(context).brightness == Brightness.dark ? Colors.grey.shade800 : Colors.grey.shade300,

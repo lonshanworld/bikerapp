@@ -86,7 +86,7 @@ class NotiScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "${index + 1} .",
+                              "${ notiController.notiList.length - index} .",
                               style: UIConstant.minititle,
                             ),
                             Row(

@@ -49,11 +49,11 @@ class SignalRController extends GetxController{
       ]);
     });
 
-    if(hubConnection.connectionId == null){
-      throw errorHandler.handleNoSignalRerror("Notification Server is not connected");
-    }else{
-
-    }
+    // if(hubConnection.connectionId == null){
+    //   throw errorHandler.handleNoSignalRerror("Notification Server is not connected");
+    // }else{
+    //
+    // }
     print(hubConnection.state);
     hubConnection.on("GeoPointRequest", (res){
 

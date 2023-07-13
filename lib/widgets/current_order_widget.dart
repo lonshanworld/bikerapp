@@ -243,7 +243,7 @@ class _CurrentOrderWidgetState extends State<CurrentOrderWidget> {
                         ),
                       ),
                       Text(
-                        "${changeNumberFormat(widget.currentOrderModel.distanceMeter!)} ${"km".tr}",
+                        "${changeNumberFormat(widget.currentOrderModel.distanceMeter!/1000)} ${"km".tr}",
                         style: UIConstant.small,
                       ),
                     ],

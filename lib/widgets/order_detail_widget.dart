@@ -9,19 +9,22 @@ import "../models/order_model.dart";
 class OrderDetailWidget extends StatelessWidget {
 
   final OrderItem orderItem;
-  final bool hasMoreShop;
+
 
   OrderDetailWidget({
     required this.orderItem,
-    required this.hasMoreShop,
+
 });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(15),
-      margin: EdgeInsets.symmetric(
+      padding: EdgeInsets.symmetric(
+        horizontal: 15,
         vertical: 10,
+      ),
+      margin: EdgeInsets.symmetric(
+        vertical: 3,
       ),
       decoration: BoxDecoration(
         color: Theme.of(context).brightness == Brightness.dark ? UIConstant.bgDark : UIConstant.bgWhite,
@@ -32,16 +35,6 @@ class OrderDetailWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if(hasMoreShop)Text(
-            orderItem.shopName!,
-            style: TextStyle(
-              fontSize: 14,
-              color: UIConstant.orange,
-            ),
-          ),
-          if(hasMoreShop)SizedBox(
-            height: 10,
-          ),
           Row(
             children: [
               Expanded(
@@ -65,16 +58,16 @@ class OrderDetailWidget extends StatelessWidget {
               ),
             ],
           ),
-          if(orderItem.orderChoices!.isNotEmpty)SizedBox(
-            height: 10,
-          ),
+          // if(orderItem.orderChoices!.isNotEmpty)SizedBox(
+          //   height: 10,
+          // ),
           if(orderItem.orderChoices!.isNotEmpty) Wrap(
             children: [
               for(OrderChoice _orderChoice in orderItem.orderChoices!) Text(
                 "${_orderChoice.citemName}, ",
                 style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.black54,
+                  fontSize: 12,
+                  color: Colors.grey,
                 ),
               ),
             ],

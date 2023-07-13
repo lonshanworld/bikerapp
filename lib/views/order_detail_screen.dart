@@ -12,6 +12,7 @@ import "../models/order_model.dart";
 import "../routehelper.dart";
 import "../widgets/loading_widget.dart";
 import "../widgets/order_detail_widget.dart";
+import "../widgets/order_summary_widget.dart";
 import "map_screen.dart";
 import "package:http/http.dart" as http;
 
@@ -41,6 +42,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
 
   Future<void> assignvalue() async{
     _orderDetailModel = await orderController.getSingleOrderDetail(widget.orderId);
+    print(_orderDetailModel.paymentType);
     if(_orderDetailModel.orderItems!.length > 1){
       for(int a = 0; a < _orderDetailModel.orderItems!.length; a++){
         if(_orderDetailModel.shopName != _orderDetailModel.orderItems![a].shopName){
@@ -320,16 +322,55 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
               //     return OrderDetailWidget(orderItem: _orderDetailModel.orderItems[index]);
               //   },
               // ),
-              Column(
-                children: [
-                  if(orderItemShopnameList.isEmpty)for(OrderItem _orderItem in _orderDetailModel.orderItems!) OrderDetailWidget(
-                    orderItem: _orderItem,hasMoreShop: false,
-                  ),
-                  if(orderItemShopnameList.isNotEmpty)for(OrderItem _orderItem in _orderDetailModel.orderItems!) OrderDetailWidget(
-                    orderItem: _orderItem,hasMoreShop: true,
-                  )
-                ],
+              SizedBox(
+                height: 5,
               ),
+              if(orderItemShopnameList.isEmpty)Column(
+                children: List.generate(_orderDetailModel.orderItems!.length, (index) => OrderDetailWidget(
+                  orderItem: _orderDetailModel.orderItems![index],
+                )),
+              ),
+              if(orderItemShopnameList.isNotEmpty)ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: orderItemShopnameList.length,
+                itemBuilder: (ctx, index){
+                  List<OrderItem> itemlist = [];
+                  for(int a = 0; a < _orderDetailModel.orderItems!.length; a++){
+                    if(orderItemShopnameList[index] == _orderDetailModel.orderItems![a].shopName){
+                      itemlist.add(_orderDetailModel.orderItems![a]);
+                    }
+                  }
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        orderItemShopnameList[index],
+                        style: UIConstant.normal.copyWith(
+                            color: UIConstant.orange
+                        ),
+                      ),
+                      Column(
+                        children: List.generate(itemlist.length, (index) => OrderDetailWidget(orderItem: itemlist[index])),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                    ],
+                  );
+                },
+              ),
+
+              // Column(
+              //   children: [
+              //     if(orderItemShopnameList.isEmpty)for(OrderItem _orderItem in _orderDetailModel.orderItems!) OrderDetailWidget(
+              //       orderItem: _orderItem,
+              //     ),
+              //     if(orderItemShopnameList.isNotEmpty)for(OrderItem _orderItem in _orderDetailModel.orderItems!) OrderDetailWidget(
+              //       orderItem: _orderItem,
+              //     )
+              //   ],
+              // ),
               SizedBox(
                 height: 15,
               ),
@@ -340,149 +381,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
               SizedBox(
                 height: 10,
               ),
-              Container(
-                padding: EdgeInsets.all(15),
-                decoration: BoxDecoration(
-                  color : Theme.of(context).brightness == Brightness.dark ? UIConstant.bgDark : UIConstant.bgWhite,
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(10),
-                  ),
-                ),
-                child: Column(
-                  children: [
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //   children: [
-                    //     Text(
-                    //       "${"order".tr} ${"total".tr}",
-                    //       style: UIConstant.normal,
-                    //     ),
-                    //     Text(
-                    //       "${_orderDetailModel.totalOnlinePrice} ${"mmk".tr}",
-                    //       style: UIConstant.normal.copyWith(
-                    //         fontWeight: FontWeight.bold,
-                    //       ),
-                    //     ),
-                    //   ],
-                    // ),
-                    pricerowitem(name: "${"order".tr} ${"total".tr}", price: _orderDetailModel.totalPrice!),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //   children: [
-                    //     Text(
-                    //       "deliverycharges".tr,
-                    //       style: UIConstant.normal,
-                    //     ),
-                    //     Text(
-                    //       "${_orderDetailModel.deliCharges} ${"mmk".tr}",
-                    //       style: UIConstant.normal.copyWith(
-                    //         fontWeight: FontWeight.bold,
-                    //       ),
-                    //     ),
-                    //   ],
-                    // ),
-                    pricerowitem(name: "Discount", price: _orderDetailModel.discountAmount!),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //   children: [
-                    //     Text(
-                    //       "cashcollected".tr,
-                    //       style: UIConstant.normal,
-                    //     ),
-                    //     Text(
-                    //       "${_orderDetailModel.totalOnlinePrice! + _orderDetailModel.deliCharges!} ${"mmk".tr}",
-                    //       style: UIConstant.normal.copyWith(
-                    //         fontWeight: FontWeight.bold,
-                    //       ),
-                    //     ),
-                    //   ],
-                    // ),
-                    pricerowitem(name: "Net Total", price: _orderDetailModel.totalOnlinePrice!),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    pricerowitem(name: "Container Charges", price: _orderDetailModel.containerCharges!),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    if(_orderDetailModel.paymentType?.toLowerCase() == "credit")pricerowitem(
-                      name: "Credit Charges",
-                      price: _orderDetailModel.creditCharges!,
-                    ),
-                    if(_orderDetailModel.paymentType?.toLowerCase() == "credit")SizedBox(
-                      height: 10,
-                    ),
-                    if(_orderDetailModel.promotAmt! > 0 )pricerowitem(
-                      name: "Promo Amt",
-                      price: _orderDetailModel.promotAmt!,
-                    ),
-                    if(_orderDetailModel.promotAmt! > 0 )SizedBox(
-                      height: 10,
-                    ),
-                    pricerowitem(name: "vat".tr, price: _orderDetailModel.tax!),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    pricerowitem(name: "Delivery Charges", price: _orderDetailModel.deliCharges!),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    if(_orderDetailModel.tipsMoney! > 0 )pricerowitem(
-                      name: "Sub Total",
-                      price: _orderDetailModel.subTotal!,
-                    ),
-                    if(_orderDetailModel.tipsMoney! > 0 )SizedBox(
-                      height: 10,
-                    ),
-                    if(_orderDetailModel.tipsMoney! > 0 )pricerowitem(
-                      name: "Tips",
-                      price: _orderDetailModel.tipsMoney!,
-                    ),
-                    if(_orderDetailModel.tipsMoney! > 0 )SizedBox(
-                      height: 10,
-                    ),
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //   children: [
-                    //     Text(
-                    //       "vat".tr,
-                    //       style: UIConstant.normal,
-                    //     ),
-                    //     Text(
-                    //       "${_orderDetailModel.tax} ${"mmk".tr}",
-                    //       style: UIConstant.normal.copyWith(
-                    //         fontWeight: FontWeight.bold,
-                    //       ),
-                    //     ),
-                    //   ],
-                    // ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 50,
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Total",
-                            style: UIConstant.minititle,
-                          ),
-                          Text(
-                            "${changeNumberFormat(_orderDetailModel.grandTotal!)} ${"mmk".tr}",
-                            style: UIConstant.minititle,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              OrderSummaryWidget(orderDetailModel: _orderDetailModel),
             ],
           ),
         ),

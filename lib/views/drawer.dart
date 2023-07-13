@@ -6,6 +6,7 @@ import "package:delivery/controllers/useraccount_controller.dart";
 import "package:delivery/routehelper.dart";
 import "package:delivery/services/logout_service.dart";
 import "package:delivery/services/theme_service.dart";
+import "package:delivery/utils/change_num_format.dart";
 import "package:delivery/views/setting_screen.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
@@ -268,7 +269,7 @@ class _DrawerPageState extends State<DrawerPage> {
                     Row(
                       children: [
                         Text(
-                          userAccountController.bikermodel[0].cashCollect.toString(),
+                          changeNumberFormat(userAccountController.bikermodel[0].cashCollect!),
                           style: UIConstant.normal.copyWith(
                             color: UIConstant.orange,
                           ),

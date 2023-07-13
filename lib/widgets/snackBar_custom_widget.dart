@@ -70,7 +70,7 @@ class CustomGlobalSnackbar{
           margin: EdgeInsets.only(
             left: 15,
             right:  15,
-            bottom:  position ? deviceHeight- (140) : 40,
+            bottom:  position ? deviceHeight- (180) : 40,
             // bottom: deviceHeight - (oneUnitHeight * 130),
           ),
         )
